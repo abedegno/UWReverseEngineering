@@ -50,7 +50,7 @@ seg000_0 dw 0
 
 ; Attributes: bp-based frame
 
-seg000_2 proc far
+AllocScreenRegion_seg000_2 proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -197,7 +197,7 @@ mov	sp, bp
 seg000_71:
 pop	bp
 retf			; Return Far from Procedure
-seg000_2 endp
+AllocScreenRegion_seg000_2 endp
 
 
 seg000_73:
@@ -250,7 +250,7 @@ seg000_94:		; Logical AND
 and	word ptr [bx+0], 0FFFDh
 
 seg000_99:		; Call Procedure
-call	seg000_229
+call	MarkRegionDirty_seg000_229
 
 seg000_9C:		; Logical Exclusive OR
 xor	ax, ax
@@ -277,7 +277,7 @@ retf			; Return Far from Procedure
 
 ; Attributes: bp-based frame
 
-seg000_A6 proc far
+SetRegionBounds_seg000_A6 proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -350,7 +350,7 @@ seg000_DA:
 mov	[bx+7],	dl
 
 seg000_DE:		; Call Procedure
-call	seg000_229
+call	MarkRegionDirty_seg000_229
 
 seg000_E1:		; Logical Exclusive OR
 xor	ax, ax
@@ -375,13 +375,13 @@ pop	bp
 
 seg000_EA:		; Return Far from Procedure
 retf
-seg000_A6 endp
+SetRegionBounds_seg000_A6 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg000_EB proc far
+SetRegionCallback_seg000_EB proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -438,7 +438,7 @@ seg000_10E:		; Logical Inclusive OR
 or	word ptr [bx+0], 2
 
 seg000_113:		; Call Procedure
-call	seg000_229
+call	MarkRegionDirty_seg000_229
 xor	ax, ax		; Logical Exclusive OR
 
 seg000_118:
@@ -451,13 +451,13 @@ assume ds:dseg_67d6
 mov	sp, bp
 pop	bp
 retf			; Return Far from Procedure
-seg000_EB endp
+SetRegionCallback_seg000_EB endp
 
 
 
 ; Attributes: bp-based frame
 
-seg000_120 proc	far
+SetRegionCallbackWithRedraw_seg000_120 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -510,7 +510,7 @@ mov	[bx+0Bh], dx
 
 seg000_143:		; Logical Inclusive OR
 or	word ptr [bx+0], 12h
-call	seg000_229	; Call Procedure
+call	MarkRegionDirty_seg000_229	; Call Procedure
 xor	ax, ax		; Logical Exclusive OR
 
 seg000_14D:
@@ -529,13 +529,13 @@ pop	bp
 
 seg000_154:		; Return Far from Procedure
 retf
-seg000_120 endp
+SetRegionCallbackWithRedraw_seg000_120 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg000_155 proc	far
+ClearRegionCallback_seg000_155 proc	far
 
 arg_0= word ptr	 6
 
@@ -583,7 +583,7 @@ jz	short seg000_181 ; Jump	if Zero	(ZF=1)
 and	word ptr [bx+0], 0FFFDh	; Logical AND
 
 seg000_17E:		; Call Procedure
-call	seg000_229
+call	MarkRegionDirty_seg000_229
 
 seg000_181:		; Logical Exclusive OR
 xor	ax, ax
@@ -598,13 +598,13 @@ assume ds:dseg_67d6
 mov	sp, bp
 pop	bp
 retf			; Return Far from Procedure
-seg000_155 endp
+ClearRegionCallback_seg000_155 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg000_18B proc	far
+SetRegionPosition_seg000_18B proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -639,7 +639,7 @@ seg000_1AA:
 mov	[bx+2],	dx
 mov	dx, [bp+arg_4]
 mov	[bx+4],	dl
-call	seg000_229	; Call Procedure
+call	MarkRegionDirty_seg000_229	; Call Procedure
 xor	ax, ax		; Logical Exclusive OR
 
 seg000_1BA:
@@ -654,13 +654,13 @@ mov	sp, bp
 seg000_1C0:
 pop	bp
 retf			; Return Far from Procedure
-seg000_18B endp
+SetRegionPosition_seg000_18B endp
 
 
 
 ; Attributes: bp-based frame
 
-seg000_1C2 proc	far
+SetRegionSize_seg000_1C2 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -701,7 +701,7 @@ mov	dx, [bp+arg_4]
 
 seg000_1E8:
 mov	[bx+7],	dl
-call	seg000_229	; Call Procedure
+call	MarkRegionDirty_seg000_229	; Call Procedure
 
 seg000_1EF:		; Logical Exclusive OR
 xor	ax, ax
@@ -720,13 +720,13 @@ pop	bp
 
 seg000_1F8:		; Return Far from Procedure
 retf
-seg000_1C2 endp
+SetRegionSize_seg000_1C2 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg000_1F9 proc	far
+SetRegionDrawMode_seg000_1F9 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -760,7 +760,7 @@ mov	dx, [bp+arg_2]
 mov	[bx+8],	dl
 
 seg000_21C:		; Call Procedure
-call	seg000_229
+call	MarkRegionDirty_seg000_229
 
 seg000_21F:		; Logical Exclusive OR
 xor	ax, ax
@@ -777,12 +777,12 @@ mov	sp, bp
 seg000_227:
 pop	bp
 retf			; Return Far from Procedure
-seg000_1F9 endp
+SetRegionDrawMode_seg000_1F9 endp
 
 
 
 
-seg000_229 proc	near
+MarkRegionDirty_seg000_229 proc	near
 mov	cs:seg000_0, 1
 mov	si, ax
 shl	si, 4		; Shift	Logical	Left
@@ -937,13 +937,13 @@ jmp	seg000_2A6
 
 seg000_32F:		; Return Near from Procedure
 retn
-seg000_229 endp
+MarkRegionDirty_seg000_229 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg000_330 proc	far
+ProcessDirtyRegions_seg000_330 proc	far
 push	bp
 mov	bp, sp
 push	ds
@@ -1170,7 +1170,7 @@ seg000_451:
 mov	es:seg048MaybeGraphics_DC5, 1
 
 seg000_457:		; Call Procedure
-call	seg009_353
+call	DrawCursorIconScaled_seg009_353
 add	sp, 0Ch		; Add
 
 seg000_45F:
@@ -1313,7 +1313,7 @@ pop	bp
 
 seg000_4E9:		; Return Far from Procedure
 retf
-seg000_330 endp
+ProcessDirtyRegions_seg000_330 endp
 
 seg000 ends
 
@@ -1359,7 +1359,7 @@ seg001_023B_1F:
 push	ax
 
 seg001_023B_20:		; Call Procedure
-call	seg003_0272_49AE
+call	GetPixelFar_seg003_0272_49AE
 
 seg001_023B_25:		; Add
 add	sp, 2
@@ -1932,9 +1932,9 @@ seg001_023B_22F:
 push	109h
 
 seg001_023B_232:	; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 add	sp, 2		; Add
-call	seg003_0272_4CF2 ; Call	Procedure
+call	SetDisplayPageFar_seg003_0272_4CF2 ; Call	Procedure
 add	sp, 8		; Add
 
 seg001_023B_242:	; Logical Exclusive OR
@@ -2035,7 +2035,7 @@ seg001_023B_290:
 push	10Ah
 
 seg001_023B_293:	; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 seg001_023B_298:	; Add
 add	sp, 2
@@ -2077,7 +2077,7 @@ seg001_023B_2B0:
 push	ax
 
 seg001_023B_2B1:	; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 seg001_023B_2B6:	; Add
 add	sp, 8
@@ -2364,37 +2364,37 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; case 0x0
 
-seg003_0272_0 proc far
+DispatchPlotPixel_seg003_0272_0 proc far
 mov	bp, 32B4h
 
 seg003_0272_3:		; Jump
-jmp	seg003_0272_5311
-seg003_0272_0 endp
+jmp	GfxDriverDispatch_seg003_0272_5311
+DispatchPlotPixel_seg003_0272_0 endp
 
 
 
 
-seg003_0272_8 proc far
+DispatchDrawHLine_seg003_0272_8 proc far
 mov	bp, 375Ch
 
 seg003_0272_B:		; Jump
-jmp	seg003_0272_5311
-seg003_0272_8 endp
+jmp	GfxDriverDispatch_seg003_0272_5311
+DispatchDrawHLine_seg003_0272_8 endp
 
 
 
 
-seg003_0272_10 proc far
+DispatchDrawLine_seg003_0272_10 proc far
 mov	bp, 368Eh
 
 seg003_0272_13:		; Jump
-jmp	seg003_0272_5311
-seg003_0272_10 endp
+jmp	GfxDriverDispatch_seg003_0272_5311
+DispatchDrawLine_seg003_0272_10 endp
 
 
 
 
-seg003_0272_18 proc far
+DispatchWithStackCheck_seg003_0272_18 proc far
 
 ; FUNCTION CHUNK AT 52FF SIZE 00000012 BYTES
 ; FUNCTION CHUNK AT 533A SIZE 00000029 BYTES
@@ -2403,7 +2403,7 @@ mov	bp, 46h	; 'F'
 
 seg003_0272_1B:		; Jump
 jmp	seg003_0272_52FF
-seg003_0272_18 endp
+DispatchWithStackCheck_seg003_0272_18 endp
 
 
 seg003_0272_1E:
@@ -2413,14 +2413,14 @@ seg003_0272_21:		; Jump
 jmp	seg003_0272_52FF
 
 seg003_0272_24:		; Call Procedure
-call	seg003_0272_28
+call	WaitForVRetrace_seg003_0272_28
 
 seg003_0272_27:		; Return Far from Procedure
 retf
 
 
 
-seg003_0272_28 proc near
+WaitForVRetrace_seg003_0272_28 proc near
 mov	dx, 3DAh
 
 seg003_0272_2B:		; Call Procedure
@@ -2455,12 +2455,12 @@ jz	short seg003_0272_2B
 
 seg003_0272_45:		; Return Near from Procedure
 retn
-seg003_0272_28 endp
+WaitForVRetrace_seg003_0272_28 endp
 
 
 
 
-seg003_0272_46 proc near
+SaveVRetraceTimestamp_seg003_0272_46 proc near
 call	seg021_22FD_C00	; Call Procedure
 
 seg003_0272_4B:
@@ -2468,7 +2468,7 @@ mov	dseg_67d6_652, ax
 
 seg003_0272_4E:		; Return Near from Procedure
 retn
-seg003_0272_46 endp
+SaveVRetraceTimestamp_seg003_0272_46 endp
 
 
 seg003_0272_4F:		; Return Near from Procedure
@@ -2496,7 +2496,7 @@ seg003_0272_92 dw 2Dh dup(0)
 
 
 
-seg003_0272_EC proc near
+InterpolateScrollForward_seg003_0272_EC proc near
 mov	bx, dseg_67d6_7B4
 
 seg003_0272_F0:
@@ -2557,7 +2557,7 @@ seg003_0272_131:	; Integer Subtraction
 sub	cx, ax
 
 seg003_0272_133:	; Jump if Zero (ZF=1)
-jz	short seg003_0272_EC
+jz	short InterpolateScrollForward_seg003_0272_EC
 
 seg003_0272_135:
 mov	ax, [bx]
@@ -2631,7 +2631,7 @@ add	word ptr cs:seg003_0272_52F+4, dx ; Add
 
 seg003_0272_17C:	; Logical Compare
 test	dseg_67d6_7D0, 0FFFFh
-seg003_0272_EC endp
+InterpolateScrollForward_seg003_0272_EC endp
 
 
 
@@ -2643,7 +2643,7 @@ nullsub_15 endp
 
 
 
-seg003_0272_183	proc near
+InterpolateScrollBackward_seg003_0272_183	proc near
 mov	bx, dseg_67d6_7B2
 mov	ax, [bx+6]
 
@@ -2681,7 +2681,7 @@ mov	cx, dseg_67d6_7CE
 sub	cx, ax		; Integer Subtraction
 
 seg003_0272_1BF:	; Jump if Zero (ZF=1)
-jz	short seg003_0272_183
+jz	short InterpolateScrollBackward_seg003_0272_183
 
 seg003_0272_1C1:
 mov	ax, [bx]
@@ -2754,7 +2754,7 @@ add	word ptr cs:seg003_0272_517+4, dx
 seg003_0272_208:	; Logical Compare
 test	dseg_67d6_7D0, 0FFFFh
 retn			; Return Near from Procedure
-seg003_0272_183	endp
+InterpolateScrollBackward_seg003_0272_183	endp
 
 mov	cs:seg003_0272_92+2, cx
 mov	ax, es
@@ -3177,7 +3177,7 @@ mov	al, bl
 rep stosb		; Store	String
 
 seg003_0272_48E:	; Call Procedure
-call	seg003_0272_183
+call	InterpolateScrollBackward_seg003_0272_183
 
 seg003_0272_491:	; Jump if Not Zero (ZF=0)
 jnz	short seg003_0272_496
@@ -3186,7 +3186,7 @@ seg003_0272_493:	; Jump
 jmp	seg003_0272_560
 
 seg003_0272_496:	; Call Procedure
-call	seg003_0272_EC
+call	InterpolateScrollForward_seg003_0272_EC
 jnz	short seg003_0272_49E ;	Jump if	Not Zero (ZF=0)
 jmp	seg003_0272_560	; Jump
 
@@ -3609,16 +3609,16 @@ align 2
 
 
 
-seg003_0272_6E2	proc near
+ClearFrameBufferBlack_seg003_0272_6E2	proc near
 xor	ax, ax		; Logical Exclusive OR
-seg003_0272_6E2	endp
+ClearFrameBufferBlack_seg003_0272_6E2	endp
 
 
 
 ; store	value of ax at es:di 13545d times
 ; es:di	= seg49:2
 
-seg003_0272_6E4	proc far
+FillFrameBuffer_seg003_0272_6E4	proc far
 mov	ah, al
 
 seg003_0272_6E6:
@@ -3638,7 +3638,7 @@ rep stosw		; store	value of ax at es:di 13545d times
 pop	es
 assume es:nothing
 retf			; Return Far from Procedure
-seg003_0272_6E4	endp
+FillFrameBuffer_seg003_0272_6E4	endp
 
 
 seg003_0272_6F8:
@@ -3748,7 +3748,7 @@ retn
 
 
 
-seg003_0272_764	proc far
+ApplyColorMapToBuffer_seg003_0272_764	proc far
 push	ds
 push	es
 mov	bx, seg	seg049_3EE2
@@ -3785,12 +3785,12 @@ seg003_0272_786:
 pop	ds
 assume ds:dseg_67d6
 retf			; Return Far from Procedure
-seg003_0272_764	endp
+ApplyColorMapToBuffer_seg003_0272_764	endp
 
 
 
 
-seg003_0272_788	proc far
+ApplyShadeTableToBuffer_seg003_0272_788	proc far
 push	ds
 mov	bx, seg	seg049_3EE2
 
@@ -3821,14 +3821,14 @@ jnz	short seg003_0272_78E ;	Jump if	Not Zero (ZF=0)
 pop	ds
 assume ds:dseg_67d6
 retf			; Return Far from Procedure
-seg003_0272_788	endp
+ApplyShadeTableToBuffer_seg003_0272_788	endp
 
 seg003_0272_7A4	dw 0
 seg003_0272_7A6	dw 0
 
 
 
-seg003_0272_7A8	proc far
+InitScanlineTable_seg003_0272_7A8	proc far
 add	bx, 2		; Add
 mov	di, 95Ch
 
@@ -3892,7 +3892,7 @@ mov	word ptr aBeq+3, bx
 
 seg003_0272_7F8:	; Return Far from Procedure
 retf
-seg003_0272_7A8	endp
+InitScanlineTable_seg003_0272_7A8	endp
 
 
 
@@ -3971,7 +3971,7 @@ seg003_0272_840:	; Add
 add	si, cx
 
 seg003_0272_842:	; Call Procedure
-call	seg003_0272_888
+call	UnrolledPlaneCopy_seg003_0272_888
 mov	al, 2
 out	dx, al
 
@@ -3983,7 +3983,7 @@ mov	si, 1
 add	si, cx		; Add
 
 seg003_0272_84F:	; Call Procedure
-call	seg003_0272_888
+call	UnrolledPlaneCopy_seg003_0272_888
 mov	al, 4
 out	dx, al
 mov	di, bx
@@ -3993,7 +3993,7 @@ mov	si, 2
 
 seg003_0272_85A:	; Add
 add	si, cx
-call	seg003_0272_888	; Call Procedure
+call	UnrolledPlaneCopy_seg003_0272_888	; Call Procedure
 
 seg003_0272_85F:
 mov	al, 1
@@ -4004,7 +4004,7 @@ seg003_0272_864:
 mov	si, cx
 
 seg003_0272_866:	; Call Procedure
-call	seg003_0272_888
+call	UnrolledPlaneCopy_seg003_0272_888
 add	bx, 50h	; 'P'   ; Add
 
 seg003_0272_86C:	; Shift	Logical	Right
@@ -4036,7 +4036,7 @@ DRAW_RELATED_seg003_0272_7F9 endp
 
 
 
-seg003_0272_888	proc near
+UnrolledPlaneCopy_seg003_0272_888	proc near
 movsb			; Move Byte(s) from String to String
 add	si, 3		; Add
 movsb			; Move Byte(s) from String to String
@@ -4336,12 +4336,12 @@ add	si, 3
 movsb			; Move Byte(s) from String to String
 add	si, 3		; Add
 retn			; Return Near from Procedure
-seg003_0272_888	endp
+UnrolledPlaneCopy_seg003_0272_888	endp
 
 
 
 
-seg003_0272_9C9	proc near
+RenderScanlineBlock_seg003_0272_9C9	proc near
 push	es
 
 seg003_0272_9CA:
@@ -4392,12 +4392,12 @@ rep stosb		; Store	String
 
 seg003_0272_9FA:	; Jump
 jmp	short seg003_0272_9D2
-seg003_0272_9C9	endp
+RenderScanlineBlock_seg003_0272_9C9	endp
 
 
 
 
-seg003_0272_9FC	proc near
+RenderScanlineBlockAlt_seg003_0272_9FC	proc near
 mov	dx, 3C5h
 
 seg003_0272_9FF:
@@ -4514,12 +4514,12 @@ assume ds:dseg_67d6
 
 seg003_0272_A7E:	; Return Near from Procedure
 retn
-seg003_0272_9FC	endp
+RenderScanlineBlockAlt_seg003_0272_9FC	endp
 
 
 
 
-seg003_0272_A7F	proc near
+RenderScanlineWithShading_seg003_0272_A7F	proc near
 push	ds
 push	es
 
@@ -4766,7 +4766,7 @@ seg003_0272_B94:
 pop	ds
 assume ds:dseg_67d6
 retn			; Return Near from Procedure
-seg003_0272_A7F	endp
+RenderScanlineWithShading_seg003_0272_A7F	endp
 
 
 seg003_0272_B96:	; Add
@@ -4775,7 +4775,7 @@ jmp	short seg003_0272_B8C ;	Jump
 
 
 
-seg003_0272_B9B	proc near
+LoadDisplayEntryParams_seg003_0272_B9B	proc near
 shl	ax, 1		; Shift	Logical	Left
 
 seg003_0272_B9D:	; Jump if Below	(CF=1)
@@ -4807,7 +4807,7 @@ mov	dseg_67d6_4112,	ax
 
 seg003_0272_BBF:	; Return Near from Procedure
 retn
-seg003_0272_B9B	endp
+LoadDisplayEntryParams_seg003_0272_B9B	endp
 
 
 
@@ -4843,13 +4843,13 @@ seg003_0272_BE4:	; Integer Subtraction
 sub	si, 0Ah
 
 seg003_0272_BE7:	; Call Procedure
-call	seg003_0272_9C9
+call	RenderScanlineBlock_seg003_0272_9C9
 pop	es
 pop	si
 
 seg003_0272_BEC:	; Logical AND
 and	byte ptr [si-3], 7Fh
-jmp	short seg003_0272_C13 ;	Jump
+jmp	short DrawShadedLineSegment_seg003_0272_C13 ;	Jump
 push	ds
 push	es
 
@@ -4883,7 +4883,7 @@ pop	ds
 
 
 
-seg003_0272_C13	proc near
+DrawShadedLineSegment_seg003_0272_C13	proc near
 lodsw			; Load String
 
 seg003_0272_C14:
@@ -5012,7 +5012,7 @@ mov	ds, word ptr ss:958h
 
 seg003_0272_C8E:	; Indirect Near	Jump
 jmp	word ptr cs:seg003_0272_BC1+4
-seg003_0272_C13	endp
+DrawShadedLineSegment_seg003_0272_C13	endp
 
 push	si
 
@@ -5092,7 +5092,7 @@ pop	si
 pop	ds
 
 seg003_0272_CD6:	; Jump
-jmp	seg003_0272_C13
+jmp	DrawShadedLineSegment_seg003_0272_C13
 push	si
 
 seg003_0272_CDA:
@@ -5182,11 +5182,11 @@ seg003_0272_D1A:
 pop	ds
 
 seg003_0272_D1B:	; Jump
-jmp	seg003_0272_C13
+jmp	DrawShadedLineSegment_seg003_0272_C13
 
 
 
-seg003_0272_D1E	proc far
+DrawShadedLineSegmentFar_seg003_0272_D1E	proc far
 push	es
 push	ds
 
@@ -5473,7 +5473,7 @@ seg003_0272_E71:
 pop	es
 assume es:nothing
 retf			; Return Far from Procedure
-seg003_0272_D1E	endp
+DrawShadedLineSegmentFar_seg003_0272_D1E	endp
 
 XFERDATA_seg003_0272_E73 dw 2425h
 db  1Eh
@@ -10733,7 +10733,7 @@ jnz	short seg003_0272_2492 ; Jump if Not Zero (ZF=0)
 retn			; Return Near from Procedure
 
 seg003_0272_249C:	; Call Procedure
-call	seg003_0272_34C2
+call	ClipPolygonToViewportAlt_seg003_0272_34C2
 mov	ax, cx
 shl	cx, 1		; Shift	Logical	Left
 shl	cx, 1		; Shift	Logical	Left
@@ -11267,7 +11267,7 @@ retn
 
 
 
-seg003_0272_283D proc near
+InitVideoDisplay_seg003_0272_283D proc near
 push	ds
 mov	ax, seg	dseg062_62a6
 mov	ds, ax
@@ -11276,7 +11276,7 @@ mov	ax, dseg062_62a6_110
 pop	ds
 assume ds:dseg_67d6
 mov	dseg_67d6_36A2,	ax
-call	seg003_0272_2B7A ; Call	Procedure
+call	DetectVGAAdapter_seg003_0272_2B7A ; Call	Procedure
 jnb	short seg003_0272_2850 ; Jump if Not Below (CF=0)
 retn			; Return Near from Procedure
 
@@ -11290,7 +11290,7 @@ out	dx, al		; Video: CRT cntrlr addr
 inc	dx		; Increment by 1
 in	al, dx		; Video: CRT controller	internal registers
 mov	dseg_67d6_2D35,	al
-call	seg003_0272_2B44 ; Call	Procedure
+call	InitPlaneMaskTables_seg003_0272_2B44 ; Call	Procedure
 jmp	short seg003_0272_286C ; Jump
 
 seg003_0272_2869:
@@ -11355,7 +11355,7 @@ mov	dseg_67d6_3DF8,	ax
 mov	ax, dseg_67d6_3DEE
 mov	dseg_67d6_3DF6,	ax
 mov	si, 3DF4h
-call	seg003_0272_31E7 ; Call	Procedure
+call	SetViewportAndSwapPages_seg003_0272_31E7 ; Call	Procedure
 mov	ax, dseg_67d6_3DEC
 inc	ax		; Increment by 1
 shr	ax, 1		; Shift	Logical	Right
@@ -11376,21 +11376,21 @@ add	ax, dseg_67d6_36A8 ; Add
 mov	dseg_67d6_4106,	ax
 mov	dseg_67d6_410A,	ax
 sub	ax, ax		; Integer Subtraction
-call	seg003_0272_2AED ; Call	Procedure
-call	seg003_0272_31BE ; Call	Procedure
-call	seg003_0272_2ABE ; Call	Procedure
+call	ClearVRAMPages_seg003_0272_2AED ; Call	Procedure
+call	ProcessAllDisplayEntries_seg003_0272_31BE ; Call	Procedure
+call	InitPlaneMasks_seg003_0272_2ABE ; Call	Procedure
 
 seg003_0272_290A:	; Call Procedure
 call	nullsub_2
 mov	ax, 0
-call	seg003_0272_3BE2 ; Call	Procedure
+call	BuildColorMultiplyTable_seg003_0272_3BE2 ; Call	Procedure
 retn			; Return Near from Procedure
-seg003_0272_283D endp
+InitVideoDisplay_seg003_0272_283D endp
 
 
 
 
-seg003_0272_2914 proc near
+FlushPaletteToVGA_seg003_0272_2914 proc near
 cmp	dseg_67d6_3DFE,	0 ; Compare Two	Operands
 jnz	short seg003_0272_291C ; Jump if Not Zero (ZF=0)
 retn			; Return Near from Procedure
@@ -11418,15 +11418,15 @@ mov	dx, 3C8h
 out	dx, al
 inc	dx		; Increment by 1
 mov	cx, 100h
-call	seg003_0272_2945 ; Call	Procedure
+call	WritePaletteRGBToDAC_seg003_0272_2945 ; Call	Procedure
 sti			; Set Interrupt	Flag
 retn			; Return Near from Procedure
-seg003_0272_2914 endp
+FlushPaletteToVGA_seg003_0272_2914 endp
 
 
 
 
-seg003_0272_2945 proc near
+WritePaletteRGBToDAC_seg003_0272_2945 proc near
 cmp	dseg_67d6_36A2,	0BAh ; '∫' ; Compare Two Operands
 jl	short seg003_0272_2956 ; Jump if Less (SF!=OF)
 mov	ax, cx
@@ -11444,12 +11444,12 @@ lodsb			; Load String
 out	dx, al
 loop	seg003_0272_2956 ; Loop	while CX != 0
 retn			; Return Near from Procedure
-seg003_0272_2945 endp
+WritePaletteRGBToDAC_seg003_0272_2945 endp
 
 
 
 
-seg003_0272_295F proc near
+SetVRAMDisplayStartAddr_seg003_0272_295F proc near
 mov	bx, dseg_67d6_3DEE
 shl	bx, 1		; Shift	Logical	Left
 mov	ax, [bx+36ACh]
@@ -11463,12 +11463,12 @@ inc	al		; Increment by 1
 out	dx, ax		; Video: CRT cntrlr addr
 			; horizontal total
 retn			; Return Near from Procedure
-seg003_0272_295F endp
+SetVRAMDisplayStartAddr_seg003_0272_295F endp
 
 
 
 
-seg003_0272_2977 proc near
+SetVRAMDisplayOffset_seg003_0272_2977 proc near
 shr	ax, 1		; Shift	Logical	Right
 shr	ax, 1		; Shift	Logical	Right
 mov	dseg_67d6_36A8,	ax
@@ -11512,7 +11512,7 @@ jge	short seg003_0272_29B6 ; Jump if Greater or Equal (SF=OF)
 mov	ax, 3FFh
 xor	bx, bx		; Logical Exclusive OR
 xor	cx, cx		; Logical Exclusive OR
-call	seg003_0272_2A8F ; Call	Procedure
+call	SetDisplayPage_seg003_0272_2A8F ; Call	Procedure
 jmp	short seg003_0272_29C8 ; Jump
 
 seg003_0272_29B6:
@@ -11523,7 +11523,7 @@ mov	ax, dseg_67d6_3DEE
 sub	ax, bx		; Integer Subtraction
 add	ax, ax		; Add
 dec	ax		; Decrement by 1
-call	seg003_0272_2A8F ; Call	Procedure
+call	SetDisplayPage_seg003_0272_2A8F ; Call	Procedure
 
 seg003_0272_29C8:
 mov	dx, 3DAh
@@ -11565,23 +11565,23 @@ mov	bx, dseg_67d6_3DEE
 or	si, si		; Logical Inclusive OR
 jz	short seg003_0272_2A09 ; Jump if Zero (ZF=1)
 add	ax, dseg_67d6_36A8 ; Add
-call	seg003_0272_2B2C ; Call	Procedure
+call	InitPlaneMaskAndScanline_seg003_0272_2B2C ; Call	Procedure
 xor	ax, ax		; Logical Exclusive OR
 mov	bx, di
 dec	bx		; Decrement by 1
 xor	cx, cx		; Logical Exclusive OR
-call	seg003_0272_2B2C ; Call	Procedure
+call	InitPlaneMaskAndScanline_seg003_0272_2B2C ; Call	Procedure
 retn			; Return Near from Procedure
 
 seg003_0272_2A09:	; Call Procedure
-call	seg003_0272_2B2C
+call	InitPlaneMaskAndScanline_seg003_0272_2B2C
 retn			; Return Near from Procedure
-seg003_0272_2977 endp
+SetVRAMDisplayOffset_seg003_0272_2977 endp
 
 
 
 
-seg003_0272_2A0D proc near
+ConfigureDisplayTiming_seg003_0272_2A0D proc near
 xchg	ax, bx		; Exchange Register/Memory with	Register
 inc	ax		; Increment by 1
 neg	ax		; Two's Complement Negation
@@ -11607,7 +11607,7 @@ inc	cx		; Increment by 1
 pop	ax
 add	ax, dseg_67d6_36A8 ; Add
 push	ax
-call	seg003_0272_2B2C ; Call	Procedure
+call	InitPlaneMaskAndScanline_seg003_0272_2B2C ; Call	Procedure
 mov	bx, dseg_67d6_2CDA
 xor	ax, ax		; Logical Exclusive OR
 jmp	short seg003_0272_2A4F ; Jump
@@ -11617,7 +11617,7 @@ mov	bx, dseg_67d6_3DEE
 
 seg003_0272_2A4F:	; Logical Exclusive OR
 xor	cx, cx
-call	seg003_0272_2B2C ; Call	Procedure
+call	InitPlaneMaskAndScanline_seg003_0272_2B2C ; Call	Procedure
 mov	dx, 3DAh
 
 seg003_0272_2A57:	; Video	status bits:
@@ -11685,12 +11685,12 @@ out	dx, al		; EGA: palette register: select	colors for attribute AL:
 			; 4: green
 			; 5: red
 retn			; Return Near from Procedure
-seg003_0272_2A0D endp
+ConfigureDisplayTiming_seg003_0272_2A0D endp
 
 
 
 
-seg003_0272_2A8F proc near
+SetDisplayPage_seg003_0272_2A8F proc near
 push	ax
 mov	dx, 3D4h
 mov	al, 18h
@@ -11740,13 +11740,13 @@ and	al, 0BFh
 seg003_0272_2ABC:	; Video: CRT controller	internal registers
 out	dx, al
 retn			; Return Near from Procedure
-seg003_0272_2A8F endp
+SetDisplayPage_seg003_0272_2A8F endp
 
 
 
 
-seg003_0272_2ABE proc near
-call	seg003_0272_295F ; Call	Procedure
+InitPlaneMasks_seg003_0272_2ABE proc near
+call	SetVRAMDisplayStartAddr_seg003_0272_295F ; Call	Procedure
 
 seg003_0272_2AC1:
 mov	si, 36ACh
@@ -11765,14 +11765,14 @@ shl	bx, 1		; Shift	Logical	Left
 neg	bx		; Two's Complement Negation
 add	bx, dseg_67d6_2CD4 ; Add
 mov	dseg_67d6_410C,	bx
-call	seg003_0272_2AED ; Call	Procedure
+call	ClearVRAMPages_seg003_0272_2AED ; Call	Procedure
 retn			; Return Near from Procedure
-seg003_0272_2ABE endp
+InitPlaneMasks_seg003_0272_2ABE endp
 
 
 
 
-seg003_0272_2AED proc near
+ClearVRAMPages_seg003_0272_2AED proc near
 mov	di, dseg_67d6_3DEE
 shl	di, 1		; Shift	Logical	Left
 add	di, 36ACh	; Add
@@ -11811,12 +11811,12 @@ ja	short seg003_0272_2B01 ; Jump if Above (CF=0 & ZF=0)
 cld			; Clear	Direction Flag
 mov	dseg_67d6_2D1C,	0FFFFh
 retn			; Return Near from Procedure
-seg003_0272_2AED endp
+ClearVRAMPages_seg003_0272_2AED endp
 
 
 
 
-seg003_0272_2B2C proc near
+InitPlaneMaskAndScanline_seg003_0272_2B2C proc near
 neg	cx		; Two's Complement Negation
 add	cx, bx		; Add
 
@@ -11832,23 +11832,23 @@ sub	bx, 2		; Integer Subtraction
 dec	cx		; Decrement by 1
 jnz	short seg003_0272_2B37 ; Jump if Not Zero (ZF=0)
 retn			; Return Near from Procedure
-seg003_0272_2B2C endp
+InitPlaneMaskAndScanline_seg003_0272_2B2C endp
 
 
 
 
-seg003_0272_2B44 proc near
+InitPlaneMaskTables_seg003_0272_2B44 proc near
 mov	si, 2D2Ch
 mov	di, 3B64h
-call	seg003_0272_2B53 ; Call	Procedure
+call	FillPlaneMaskPattern_seg003_0272_2B53 ; Call	Procedure
 mov	si, 2D31h
 mov	di, 3CA8h
-seg003_0272_2B44 endp
+InitPlaneMaskTables_seg003_0272_2B44 endp
 
 
 
 
-seg003_0272_2B53 proc near
+FillPlaneMaskPattern_seg003_0272_2B53 proc near
 mov	cx, 50h	; 'P'
 
 seg003_0272_2B56:
@@ -11864,12 +11864,12 @@ pop	cx
 seg003_0272_2B5F:	; Loop while CX	!= 0
 loop	seg003_0272_2B56
 retn			; Return Near from Procedure
-seg003_0272_2B53 endp
+FillPlaneMaskPattern_seg003_0272_2B53 endp
 
 
 
 
-seg003_0272_2B62 proc near
+BuildReverseScanlineTable_seg003_0272_2B62 proc near
 mov	dseg_67d6_39D0,	dx
 mov	di, 39D2h
 mov	dx, cx
@@ -11887,12 +11887,12 @@ add	ax, bx		; Add
 loop	seg003_0272_2B73 ; Loop	while CX != 0
 cld			; Clear	Direction Flag
 retn			; Return Near from Procedure
-seg003_0272_2B62 endp
+BuildReverseScanlineTable_seg003_0272_2B62 endp
 
 
 
 
-seg003_0272_2B7A proc near
+DetectVGAAdapter_seg003_0272_2B7A proc near
 mov	ax, 1A00h
 int	10h		; - VIDEO - DISPLAY COMBINATION	(PS,VGA/MCGA): read display combination	code
 cmp	al, 1Ah		; Compare Two Operands
@@ -11917,7 +11917,7 @@ retn			; Return Near from Procedure
 seg003_0272_2B99:	; Set Carry Flag
 stc
 retn			; Return Near from Procedure
-seg003_0272_2B7A endp
+DetectVGAAdapter_seg003_0272_2B7A endp
 
 
 
@@ -12029,7 +12029,7 @@ SetVideoMode_seg003_0272_2B9B endp
 
 
 
-seg003_0272_2BF9 proc near
+SwapDisplayPages_seg003_0272_2BF9 proc near
 mov	ax, dseg_67d6_3DF6
 shl	ax, 1		; Shift	Logical	Left
 add	ax, 36AEh	; Add
@@ -12075,12 +12075,12 @@ mov	al, [bx+2D30h]
 seg003_0272_2C40:
 mov	[bp+0],	al
 retn			; Return Near from Procedure
-seg003_0272_2BF9 endp
+SwapDisplayPages_seg003_0272_2BF9 endp
 
 
 
 
-seg003_0272_2C44 proc near
+UpdatePageMasksAndOffsets_seg003_0272_2C44 proc near
 mov	ax, 3B64h
 mov	bx, dseg_67d6_3DF4
 dec	bx		; Decrement by 1
@@ -12126,7 +12126,7 @@ mov	[bx+36AAh], ax
 
 seg003_0272_2C94:	; Return Near from Procedure
 retn
-seg003_0272_2C44 endp
+UpdatePageMasksAndOffsets_seg003_0272_2C44 endp
 
 
 seg003_0272_2C95:	; Return Near from Procedure
@@ -12869,7 +12869,7 @@ jmp	short seg003_0272_3053 ; Jump
 
 
 
-seg003_0272_3094 proc near
+PlotPixelClipped_seg003_0272_3094 proc near
 cmp	bx, ds:3DF6h	; Compare Two Operands
 
 seg003_0272_3098:	; Jump if Greater (ZF=0	& SF=OF)
@@ -12905,30 +12905,30 @@ pop	es
 
 seg003_0272_30CE:	; Return Near from Procedure
 retn
-seg003_0272_3094 endp
+PlotPixelClipped_seg003_0272_3094 endp
 
 
 seg003_0272_30CF:
 mov	ch, cl
-call	seg003_0272_30E3 ; Call	Procedure
+call	ReadPixelClipped_seg003_0272_30E3 ; Call	Procedure
 cmp	al, ch		; Compare Two Operands
 retn			; Return Near from Procedure
 
 seg003_0272_30D7:
 mov	ch, cl
-call	seg003_0272_30FB ; Call	Procedure
+call	ReadPixelFromVRAM_seg003_0272_30FB ; Call	Procedure
 cmp	al, ch		; Compare Two Operands
 retn			; Return Near from Procedure
-; START	OF FUNCTION CHUNK FOR seg003_0272_30E3
+; START	OF FUNCTION CHUNK FOR ReadPixelClipped_seg003_0272_30E3
 
 seg003_0272_30DF:
 mov	ax, 0FFFFh
 retn			; Return Near from Procedure
-; END OF FUNCTION CHUNK	FOR seg003_0272_30E3
+; END OF FUNCTION CHUNK	FOR ReadPixelClipped_seg003_0272_30E3
 
 
 
-seg003_0272_30E3 proc near
+ReadPixelClipped_seg003_0272_30E3 proc near
 
 ; FUNCTION CHUNK AT 30DF SIZE 00000004 BYTES
 
@@ -12942,12 +12942,12 @@ jg	short seg003_0272_30DF ; Jump if Greater (ZF=0 & SF=OF)
 seg003_0272_30F5:	; Compare Two Operands
 cmp	ax, ds:3DF4h
 jl	short seg003_0272_30DF ; Jump if Less (SF!=OF)
-seg003_0272_30E3 endp
+ReadPixelClipped_seg003_0272_30E3 endp
 
 
 
 
-seg003_0272_30FB proc near
+ReadPixelFromVRAM_seg003_0272_30FB proc near
 mov	di, ax
 mov	ah, al
 
@@ -12978,12 +12978,12 @@ out	dx, al		; EGA: graph 1 and 2 addr reg:
 			; Bits 0-7 select bits to be masked in all planes
 mov	al, ah
 retn			; Return Near from Procedure
-seg003_0272_30FB endp
+ReadPixelFromVRAM_seg003_0272_30FB endp
 
 
 
 
-seg003_0272_3121 proc near
+DrawVLineReadModify_seg003_0272_3121 proc near
 mov	di, ax
 mov	cx, bx
 sub	cx, dx		; Integer Subtraction
@@ -13021,12 +13021,12 @@ mov	ax, 0FFh
 mov	dx, 3CFh
 out	dx, al		; EGA port: graphics controller	data register
 retn			; Return Near from Procedure
-seg003_0272_3121 endp
+DrawVLineReadModify_seg003_0272_3121 endp
 
 
 
 
-seg003_0272_3164 proc near
+DrawVLineSolidColor_seg003_0272_3164 proc near
 mov	di, ax
 mov	cx, bx
 sub	cx, dx		; Integer Subtraction
@@ -13055,12 +13055,12 @@ add	di, bx		; Add
 loop	seg003_0272_318E ; Loop	while CX != 0
 pop	es
 retn			; Return Near from Procedure
-seg003_0272_3164 endp
+DrawVLineSolidColor_seg003_0272_3164 endp
 
 
 
 
-seg003_0272_3195 proc near
+LoadSpriteRenderPosition_seg003_0272_3195 proc near
 shl	ax, 1		; Shift	Logical	Left
 jb	short seg003_0272_31BD ; Jump if Below (CF=1)
 mov	bx, ax
@@ -13077,12 +13077,12 @@ mov	ds:4112h, ax
 
 seg003_0272_31BD:	; Return Near from Procedure
 retn
-seg003_0272_3195 endp
+LoadSpriteRenderPosition_seg003_0272_3195 endp
 
 
 
 
-seg003_0272_31BE proc near
+ProcessAllDisplayEntries_seg003_0272_31BE proc near
 mov	di, 0FFFFh
 call	nullsub_1	; Call Procedure
 mov	cx, 21Eh
@@ -13102,7 +13102,7 @@ inc	bp		; Increment by 1
 loop	seg003_0272_31CF ; Loop	while CX != 0
 mov	ds:4108h, di
 retn			; Return Near from Procedure
-seg003_0272_31BE endp
+ProcessAllDisplayEntries_seg003_0272_31BE endp
 
 
 
@@ -13115,8 +13115,8 @@ retn			; Return Near from Procedure
 
 
 
-seg003_0272_31E7 proc near
-call	seg003_0272_2C44 ; Call	Procedure
+SetViewportAndSwapPages_seg003_0272_31E7 proc near
+call	UpdatePageMasksAndOffsets_seg003_0272_2C44 ; Call	Procedure
 push	si
 mov	di, 3DF4h
 movsw			; Move Byte(s) from String to String
@@ -13124,7 +13124,7 @@ movsw			; Move Byte(s) from String to String
 movsw			; Move Byte(s) from String to String
 movsw			; Move Byte(s) from String to String
 pop	si
-call	seg003_0272_2BF9 ; Call	Procedure
+call	SwapDisplayPages_seg003_0272_2BF9 ; Call	Procedure
 push	es
 mov	ax, seg	dseg062_62a6
 mov	es, ax
@@ -13137,13 +13137,13 @@ movsw			; Move Byte(s) from String to String
 pop	es
 assume es:nothing
 retn			; Return Near from Procedure
-seg003_0272_31E7 endp
+SetViewportAndSwapPages_seg003_0272_31E7 endp
 
 align 2
 
 
 
-seg003_0272_3206 proc near
+AllocVRAMBlock_seg003_0272_3206 proc near
 mov	ax, ds:410Ah
 
 seg003_0272_3209:	; Add
@@ -13164,12 +13164,12 @@ retn			; Return Near from Procedure
 seg003_0272_3219:	; Set Carry Flag
 stc
 retn			; Return Near from Procedure
-seg003_0272_3206 endp
+AllocVRAMBlock_seg003_0272_3206 endp
 
 
 
 
-seg003_0272_321B proc near
+SetVRAMAllocBase_seg003_0272_321B proc near
 cmp	ax, ds:4106h	; Compare Two Operands
 jnb	short seg003_0272_3223 ; Jump if Not Below (CF=0)
 stc			; Set Carry Flag
@@ -13179,73 +13179,73 @@ seg003_0272_3223:
 mov	ds:410Ah, ax
 clc			; Clear	Carry Flag
 retn			; Return Near from Procedure
-seg003_0272_321B endp
+SetVRAMAllocBase_seg003_0272_321B endp
 
 push	word ptr ds:4112h
 mov	word ptr ds:4112h, 52CCh
-call	seg003_0272_368E ; Call	Procedure
+call	DrawLine_seg003_0272_368E ; Call	Procedure
 pop	word ptr ds:4112h
 retn			; Return Near from Procedure
 push	word ptr ds:4112h
 mov	word ptr ds:4112h, 52D2h
-call	seg003_0272_368E ; Call	Procedure
+call	DrawLine_seg003_0272_368E ; Call	Procedure
 pop	word ptr ds:4112h
 retn			; Return Near from Procedure
 push	word ptr ds:4112h
 mov	word ptr ds:4112h, 52CFh
-call	seg003_0272_375C ; Call	Procedure
+call	DrawHLineFilled_seg003_0272_375C ; Call	Procedure
 pop	word ptr ds:4112h
 retn			; Return Near from Procedure
 push	ax
-call	seg003_0272_5299 ; Call	Procedure
+call	Thunk_SetDisplayStartAddr_seg003_0272_5299 ; Call	Procedure
 pop	ax
-call	seg003_0272_326A ; Call	Procedure
-call	seg003_0272_5299 ; Call	Procedure
+call	ReloadSpriteRenderParams_seg003_0272_326A ; Call	Procedure
+call	Thunk_SetDisplayStartAddr_seg003_0272_5299 ; Call	Procedure
 retn			; Return Near from Procedure
 
 
 
-seg003_0272_326A proc near
-call	seg003_0272_52B7 ; Call	Procedure
-seg003_0272_326A endp
+ReloadSpriteRenderParams_seg003_0272_326A proc near
+call	Thunk_LoadSpriteRenderPos_seg003_0272_52B7 ; Call	Procedure
+ReloadSpriteRenderParams_seg003_0272_326A endp
 
 
 
 
-seg003_0272_326D proc near
+ClearViewport_seg003_0272_326D proc near
 sub	ax, ax		; Integer Subtraction
 
 seg003_0272_326F:
 mov	bx, ds:3DEEh
 mov	cx, ds:3DECh
 sub	dx, dx		; Integer Subtraction
-call	seg003_0272_342E ; Call	Procedure
+call	FillRect_seg003_0272_342E ; Call	Procedure
 retn			; Return Near from Procedure
-seg003_0272_326D endp
+ClearViewport_seg003_0272_326D endp
 
 
 
 
-seg003_0272_327D proc near
+ClearViewportShaded_seg003_0272_327D proc near
 push	word ptr ds:4112h
 mov	word ptr ds:4112h, 52CCh
-call	seg003_0272_326D ; Call	Procedure
+call	ClearViewport_seg003_0272_326D ; Call	Procedure
 pop	word ptr ds:4112h
 retn			; Return Near from Procedure
-seg003_0272_327D endp
+ClearViewportShaded_seg003_0272_327D endp
 
 
 
 
-seg003_0272_328F proc near
-call	seg003_0272_5299 ; Call	Procedure
-call	seg003_0272_327D ; Call	Procedure
-call	seg003_0272_5299 ; Call	Procedure
+ClearViewportWithRefresh_seg003_0272_328F proc near
+call	Thunk_SetDisplayStartAddr_seg003_0272_5299 ; Call	Procedure
+call	ClearViewportShaded_seg003_0272_327D ; Call	Procedure
+call	Thunk_SetDisplayStartAddr_seg003_0272_5299 ; Call	Procedure
 retn			; Return Near from Procedure
-seg003_0272_328F endp
+ClearViewportWithRefresh_seg003_0272_328F endp
 
 ; [00000001 BYTES: COLLAPSED FUNCTION nullsub_11. PRESS	KEYPAD "+" TO EXPAND]
-; START	OF FUNCTION CHUNK FOR seg003_0272_3B0D
+; START	OF FUNCTION CHUNK FOR RenderSprite_seg003_0272_3B0D
 
 seg003_0272_329A:	; Compare Two Operands
 cmp	word ptr ds:5046h, 0
@@ -13262,7 +13262,7 @@ seg003_0272_32AF:	; Shift	Logical	Right
 shr	bx, 1
 
 seg003_0272_32B1:	; Jump
-jmp	seg003_0272_52A8
+jmp	Thunk_PlotPixelDirect_seg003_0272_52A8
 
 seg003_0272_32B4:	; Compare Two Operands
 cmp	bx, ds:3DF6h
@@ -13287,11 +13287,11 @@ stosw			; Store	String
 
 seg003_0272_32DE:	; Indirect Near	Jump
 jmp	word ptr ds:4112h
-; END OF FUNCTION CHUNK	FOR seg003_0272_3B0D
+; END OF FUNCTION CHUNK	FOR RenderSprite_seg003_0272_3B0D
 
 
 
-seg003_0272_32E2 proc near
+ClipVSegmentToViewport_seg003_0272_32E2 proc near
 cmp	ax, ds:3DF8h	; Compare Two Operands
 jg	short seg003_0272_3311 ; Jump if Greater (ZF=0 & SF=OF)
 cmp	ax, ds:3DF4h	; Compare Two Operands
@@ -13322,44 +13322,44 @@ retn
 seg003_0272_3311:
 pop	ax
 retn			; Return Near from Procedure
-seg003_0272_32E2 endp ;	sp =  2
+ClipVSegmentToViewport_seg003_0272_32E2 endp ;	sp =  2
 
-call	seg003_0272_32E2 ; Call	Procedure
-call	seg003_0272_52B1 ; Call	Procedure
+call	ClipVSegmentToViewport_seg003_0272_32E2 ; Call	Procedure
+call	Thunk_DrawVLineSolid_seg003_0272_52B1 ; Call	Procedure
 retn			; Return Near from Procedure
 
 
 
-seg003_0272_331A proc near
-call	seg003_0272_32E2 ; Call	Procedure
-call	seg003_0272_52B4 ; Call	Procedure
+DrawClippedVLineReadModify_seg003_0272_331A proc near
+call	ClipVSegmentToViewport_seg003_0272_32E2 ; Call	Procedure
+call	Thunk_DrawVLineReadModify_seg003_0272_52B4 ; Call	Procedure
 retn			; Return Near from Procedure
-seg003_0272_331A endp
+DrawClippedVLineReadModify_seg003_0272_331A endp
 
 
 
 
-seg003_0272_3321 proc near
-call	seg003_0272_32E2 ; Call	Procedure
-seg003_0272_3321 endp
+DrawClippedVLine_seg003_0272_3321 proc near
+call	ClipVSegmentToViewport_seg003_0272_32E2 ; Call	Procedure
+DrawClippedVLine_seg003_0272_3321 endp
 
 
 
 
-seg003_0272_3324 proc near
+DrawVLineWithRenderMode_seg003_0272_3324 proc near
 cmp	word ptr ds:5046h, 0 ; Compare Two Operands
 jnz	short seg003_0272_3341 ; Jump if Not Zero (ZF=0)
 mov	si, ds:4112h
 cmp	si, 52C9h	; Compare Two Operands
 jnz	short seg003_0272_3338 ; Jump if Not Zero (ZF=0)
-jmp	seg003_0272_52B1 ; Jump
+jmp	Thunk_DrawVLineSolid_seg003_0272_52B1 ; Jump
 
 seg003_0272_3338:	; Compare Two Operands
 cmp	si, 52CCh
 
 seg003_0272_333C:	; Jump if Not Zero (ZF=0)
 jnz	short seg003_0272_3341
-jmp	seg003_0272_52B4 ; Jump
+jmp	Thunk_DrawVLineReadModify_seg003_0272_52B4 ; Jump
 
 seg003_0272_3341:	; Compare Two Operands
 cmp	bx, dx
@@ -13388,7 +13388,7 @@ loop	seg003_0272_3351 ; Loop	while CX != 0
 mov	word ptr [di], 0FFFFh
 mov	si, 2D42h
 jmp	word ptr ds:4112h ; Indirect Near Jump
-seg003_0272_3324 endp
+DrawVLineWithRenderMode_seg003_0272_3324 endp
 
 lodsw			; Load String
 xchg	ax, dx		; Exchange Register/Memory with	Register
@@ -13430,7 +13430,7 @@ mov	bx, ds:4154h
 mov	cx, ds:4156h
 
 seg003_0272_3386:	; Call Procedure
-call	seg003_0272_34AE
+call	SetupSpanRenderer_seg003_0272_34AE
 mov	ax, ds:4152h
 
 seg003_0272_338C:
@@ -13438,17 +13438,17 @@ mov	bx, ds:4158h
 
 seg003_0272_3390:
 mov	cx, ds:4156h
-call	seg003_0272_34AE ; Call	Procedure
+call	SetupSpanRenderer_seg003_0272_34AE ; Call	Procedure
 mov	ax, ds:4152h
 mov	bx, ds:4154h
 mov	dx, ds:4158h
-call	seg003_0272_3324 ; Call	Procedure
+call	DrawVLineWithRenderMode_seg003_0272_3324 ; Call	Procedure
 mov	ax, ds:4156h
 mov	bx, ds:4154h
 mov	dx, ds:4158h
 
 seg003_0272_33B0:	; Call Procedure
-call	seg003_0272_3324
+call	DrawVLineWithRenderMode_seg003_0272_3324
 retn			; Return Near from Procedure
 seg003_0272_3371 endp
 
@@ -13545,15 +13545,15 @@ xchg	ax, dx		; Exchange Register/Memory with	Register
 
 
 
-seg003_0272_341E proc near
+FillRectFromClipBounds_seg003_0272_341E proc near
 call	seg003_0272_33BE ; Call	Procedure
-jmp	short seg003_0272_342E ; Jump
-seg003_0272_341E endp
+jmp	short FillRect_seg003_0272_342E ; Jump
+FillRectFromClipBounds_seg003_0272_341E endp
 
 
 
 
-seg003_0272_3423 proc near
+FillViewportRect_seg003_0272_3423 proc near
 mov	si, 3DF4h
 lodsw			; Load String
 
@@ -13565,12 +13565,12 @@ lodsw			; Load String
 xchg	ax, cx		; Exchange Register/Memory with	Register
 lodsw			; Load String
 xchg	ax, dx		; Exchange Register/Memory with	Register
-seg003_0272_3423 endp
+FillViewportRect_seg003_0272_3423 endp
 
 
 
 
-seg003_0272_342E proc near
+FillRect_seg003_0272_342E proc near
 cmp	bx, dx		; Compare Two Operands
 
 seg003_0272_3430:	; Jump if Greater (ZF=0	& SF=OF)
@@ -13627,13 +13627,13 @@ pop	si
 
 seg003_0272_347A:	; Indirect Near	Jump
 jmp	word ptr ds:4112h
-seg003_0272_342E endp
+FillRect_seg003_0272_342E endp
 
 ; [00000001 BYTES: COLLAPSED FUNCTION nullsub_8. PRESS KEYPAD "+" TO EXPAND]
 
 
 
-seg003_0272_347F proc near
+DrawHLineClipped_seg003_0272_347F proc near
 cmp	bx, ds:3DF6h	; Compare Two Operands
 jg	short nullsub_8	; Jump if Greater (ZF=0	& SF=OF)
 
@@ -13662,12 +13662,12 @@ mov	cx, dx
 
 seg003_0272_34AC:	; Jump
 jmp	short seg003_0272_34B3
-seg003_0272_347F endp
+DrawHLineClipped_seg003_0272_347F endp
 
 
 
 
-seg003_0272_34AE proc near
+SetupSpanRenderer_seg003_0272_34AE proc near
 cmp	ax, cx		; Compare Two Operands
 jl	short seg003_0272_34B3 ; Jump if Less (SF!=OF)
 xchg	ax, cx		; Exchange Register/Memory with	Register
@@ -13688,20 +13688,20 @@ stosw			; Store	String
 xchg	ax, cx		; Exchange Register/Memory with	Register
 stosw			; Store	String
 jmp	word ptr ds:4112h ; Indirect Near Jump
-seg003_0272_34AE endp
+SetupSpanRenderer_seg003_0272_34AE endp
 
 
 
 
-seg003_0272_34C2 proc near
+ClipPolygonToViewportAlt_seg003_0272_34C2 proc near
 mov	si, 449Ah
 jmp	short seg003_0272_34CA ; Jump
-seg003_0272_34C2 endp
+ClipPolygonToViewportAlt_seg003_0272_34C2 endp
 
 
 
 
-seg003_0272_34C7 proc near
+ClipPolygonToViewport_seg003_0272_34C7 proc near
 mov	si, 4492h
 
 seg003_0272_34CA:
@@ -13819,7 +13819,7 @@ pop	ax
 seg003_0272_358D:
 pop	ax
 retn			; Return Near from Procedure
-seg003_0272_34C7 endp ;	sp =  4
+ClipPolygonToViewport_seg003_0272_34C7 endp ;	sp =  4
 
 
 seg003_0272_358F:	; Jump if CX is	0
@@ -13951,7 +13951,7 @@ rcr	cx, 1
 sar	dx, 1		; Shift	Arithmetic Right
 jmp	short seg003_0272_3664 ; Jump
 align 2
-; START	OF FUNCTION CHUNK FOR seg003_0272_3B0D
+; START	OF FUNCTION CHUNK FOR RenderSprite_seg003_0272_3B0D
 
 seg003_0272_3686:	; Load String
 lodsw
@@ -13962,22 +13962,22 @@ lodsw			; Load String
 xchg	ax, cx		; Exchange Register/Memory with	Register
 lodsw			; Load String
 xchg	ax, dx		; Exchange Register/Memory with	Register
-; END OF FUNCTION CHUNK	FOR seg003_0272_3B0D
+; END OF FUNCTION CHUNK	FOR RenderSprite_seg003_0272_3B0D
 
 
 
-seg003_0272_368E proc near
+DrawLine_seg003_0272_368E proc near
 mov	si, cx
 sub	si, ax		; Integer Subtraction
 jnz	short seg003_0272_3697 ; Jump if Not Zero (ZF=0)
-jmp	seg003_0272_3321 ; Jump
+jmp	DrawClippedVLine_seg003_0272_3321 ; Jump
 
 seg003_0272_3697:
 mov	ds:44A2h, si
 mov	si, dx
 sub	si, bx		; Integer Subtraction
 jnz	short seg003_0272_36A4 ; Jump if Not Zero (ZF=0)
-jmp	seg003_0272_347F ; Jump
+jmp	DrawHLineClipped_seg003_0272_347F ; Jump
 
 seg003_0272_36A4:
 mov	ds:44A4h, si
@@ -14036,7 +14036,7 @@ seg003_0272_36FC:
 mov	ax, di
 mov	bx, si
 mov	dx, bp
-jmp	seg003_0272_375C ; Jump
+jmp	DrawHLineFilled_seg003_0272_375C ; Jump
 
 seg003_0272_3705:	; Return Near from Procedure
 retn
@@ -14054,7 +14054,7 @@ seg003_0272_3714:
 mov	ds:44C6h, bh
 mov	bh, 0
 jmp	word ptr [bx+44A6h] ; Indirect Near Jump
-seg003_0272_368E endp
+DrawLine_seg003_0272_368E endp
 
 mov	ax, ds:3DF4h
 jmp	short seg003_0272_3726 ; Jump
@@ -14086,7 +14086,7 @@ align 2
 
 
 
-seg003_0272_375C proc near
+DrawHLineFilled_seg003_0272_375C proc near
 mov	si, ds:49ACh
 and	word ptr [si], 7FFFh ; Logical AND
 cmp	bx, dx		; Compare Two Operands
@@ -14101,7 +14101,7 @@ jle	short seg003_0272_3784 ; Jump if Less or Equal (ZF=1 | SF!=OF)
 mov	word ptr ds:49B0h, 2
 mov	di, 44D2h
 mov	bp, 0FFF6h
-call	seg003_0272_37BE ; Call	Procedure
+call	DrawLineSegment_seg003_0272_37BE ; Call	Procedure
 add	di, 0FFF8h	; Add
 jmp	short seg003_0272_3796 ; Jump
 
@@ -14109,7 +14109,7 @@ seg003_0272_3784:
 mov	word ptr ds:49B0h, 0
 mov	di, 44D0h
 mov	bp, 0FFFAh
-call	seg003_0272_37BE ; Call	Procedure
+call	DrawLineSegment_seg003_0272_37BE ; Call	Procedure
 add	di, 0FFFCh	; Add
 
 seg003_0272_3796:
@@ -14128,21 +14128,21 @@ sub	si, ds:49B0h
 
 seg003_0272_37B1:	; Indirect Near	Jump
 jmp	word ptr ds:4112h
-seg003_0272_375C endp
+DrawHLineFilled_seg003_0272_375C endp
 
-; START	OF FUNCTION CHUNK FOR seg003_0272_37BE
+; START	OF FUNCTION CHUNK FOR DrawLineSegment_seg003_0272_37BE
 
 seg003_0272_37B5:	; Integer Subtraction
 sub	bx, bx
 sub	cx, cx		; Integer Subtraction
 sub	dx, dx		; Integer Subtraction
 jmp	short seg003_0272_3800 ; Jump
-; END OF FUNCTION CHUNK	FOR seg003_0272_37BE
+; END OF FUNCTION CHUNK	FOR DrawLineSegment_seg003_0272_37BE
 ; [00000001 BYTES: COLLAPSED FUNCTION nullsub_9. PRESS KEYPAD "+" TO EXPAND]
 
 
 
-seg003_0272_37BE proc near
+DrawLineSegment_seg003_0272_37BE proc near
 
 ; FUNCTION CHUNK AT 37B5 SIZE 00000008 BYTES
 
@@ -14185,18 +14185,18 @@ shl	si, 1		; Shift	Logical	Left
 jmp	word ptr ds:dseg_67d6_498A[si] ; switch	jump
 
 seg003_0272_380B:	; default
-call	seg003_0272_381C
+call	DrawLineSteep_seg003_0272_381C
 sub	si, 0Fh		; switch 17 cases
 cmp	si, 10h		; Compare Two Operands
 ja	short seg003_0272_380B ; default
 shl	si, 1		; Shift	Logical	Left
 jmp	word ptr ds:dseg_67d6_498A[si] ; switch	jump
-seg003_0272_37BE endp
+DrawLineSegment_seg003_0272_37BE endp
 
 
 
 
-seg003_0272_381C proc near
+DrawLineSteep_seg003_0272_381C proc near
 add	dx, cx		; Add
 adc	ax, bx		; Add with Carry
 stosw			; Store	String
@@ -14277,13 +14277,13 @@ stosw			; Store	String
 mov	[bp+di], ax
 add	di, 4		; Add
 retn			; Return Near from Procedure
-seg003_0272_381C endp
+DrawLineSteep_seg003_0272_381C endp
 
 align 2
 
 
 
-seg003_0272_38B4 proc near
+RenderFilledPolygon_seg003_0272_38B4 proc near
 mov	si, ds:49ACh
 and	word ptr [si], 7FFFh ; Logical AND
 mov	ds:49B8h, cx
@@ -14321,10 +14321,10 @@ add	di, ax		; Add
 neg	di		; Two's Complement Negation
 add	di, 4978h	; Add
 mov	ds:49BEh, di
-call	seg003_0272_395C ; Call	Procedure
+call	ScanConvertEdge_seg003_0272_395C ; Call	Procedure
 mov	si, ds:49C0h
 mov	di, ds:49BEh
-call	seg003_0272_3989 ; Call	Procedure
+call	ScanConvertEdgeReverse_seg003_0272_3989 ; Call	Procedure
 sub	di, 4		; Integer Subtraction
 mov	bp, ds:49BEh
 mov	ax, ds:4A08h
@@ -14370,12 +14370,12 @@ stosw			; Store	String
 mov	ds:49ACh, di
 or	word ptr [di], 8000h ; Logical Inclusive OR
 jmp	word ptr ds:4112h ; Indirect Near Jump
-seg003_0272_38B4 endp
+RenderFilledPolygon_seg003_0272_38B4 endp
 
 
 
 
-seg003_0272_395C proc near
+ScanConvertEdge_seg003_0272_395C proc near
 inc	di		; Increment by 1
 inc	di		; Increment by 1
 inc	si		; Increment by 1
@@ -14401,18 +14401,18 @@ cld			; Clear	Direction Flag
 cmp	bx, dx		; Compare Two Operands
 jl	short seg003_0272_3988 ; Jump if Less (SF!=OF)
 mov	ds:4A08h, cx
-call	seg003_0272_39BB ; Call	Procedure
+call	InterpolateEdgeSpans_seg003_0272_39BB ; Call	Procedure
 dec	word ptr ds:49BAh ; Decrement by 1
 jg	short seg003_0272_3960 ; Jump if Greater (ZF=0 & SF=OF)
 
 seg003_0272_3988:	; Return Near from Procedure
 retn
-seg003_0272_395C endp
+ScanConvertEdge_seg003_0272_395C endp
 
 
 
 
-seg003_0272_3989 proc near
+ScanConvertEdgeReverse_seg003_0272_3989 proc near
 add	di, 4		; Add
 
 seg003_0272_398C:	; Load String
@@ -14433,27 +14433,27 @@ sub	si, 4		; Integer Subtraction
 cmp	bx, dx		; Compare Two Operands
 jl	short seg003_0272_39B1 ; Jump if Less (SF!=OF)
 mov	ds:4A0Ah, cx
-call	seg003_0272_39BB ; Call	Procedure
+call	InterpolateEdgeSpans_seg003_0272_39BB ; Call	Procedure
 dec	word ptr ds:49BCh ; Decrement by 1
 jg	short seg003_0272_398C ; Jump if Greater (ZF=0 & SF=OF)
 
 seg003_0272_39B1:	; Return Near from Procedure
 retn
-seg003_0272_3989 endp
+ScanConvertEdgeReverse_seg003_0272_3989 endp
 
-; START	OF FUNCTION CHUNK FOR seg003_0272_39BB
+; START	OF FUNCTION CHUNK FOR InterpolateEdgeSpans_seg003_0272_39BB
 
 seg003_0272_39B2:	; Integer Subtraction
 sub	bx, bx
 sub	cx, cx		; Integer Subtraction
 sub	dx, dx		; Integer Subtraction
 jmp	short seg003_0272_39E5 ; Jump
-; END OF FUNCTION CHUNK	FOR seg003_0272_39BB
+; END OF FUNCTION CHUNK	FOR InterpolateEdgeSpans_seg003_0272_39BB
 ; [00000001 BYTES: COLLAPSED FUNCTION nullsub_10. PRESS	KEYPAD "+" TO EXPAND]
 
 
 
-seg003_0272_39BB proc near
+InterpolateEdgeSpans_seg003_0272_39BB proc near
 
 ; FUNCTION CHUNK AT 39B2 SIZE 00000008 BYTES
 
@@ -14487,7 +14487,7 @@ shl	bp, 1		; Shift	Logical	Left
 jmp	word ptr [bp+49C4h] ; Indirect Near Jump
 
 seg003_0272_39F0:	; Call Procedure
-call	seg003_0272_3A02
+call	MergeSpanLists_seg003_0272_3A02
 sub	bp, 1Fh		; Integer Subtraction
 
 seg003_0272_39F6:	; Compare Two Operands
@@ -14495,13 +14495,13 @@ cmp	bp, 20h	; ' '
 ja	short seg003_0272_39F0 ; Jump if Above (CF=0 & ZF=0)
 shl	bp, 1		; Shift	Logical	Left
 jmp	word ptr [bp+49C4h] ; Indirect Near Jump
-seg003_0272_39BB endp
+InterpolateEdgeSpans_seg003_0272_39BB endp
 
 align 2
 
 
 
-seg003_0272_3A02 proc near
+MergeSpanLists_seg003_0272_3A02 proc near
 add	dx, cx		; Add
 adc	ax, bx		; Add with Carry
 stosw			; Store	String
@@ -14635,9 +14635,9 @@ adc	ax, bx		; Add with Carry
 stosw			; Store	String
 add	di, 4		; Add
 retn			; Return Near from Procedure
-seg003_0272_3A02 endp
+MergeSpanLists_seg003_0272_3A02 endp
 
-; START	OF FUNCTION CHUNK FOR seg003_0272_3B0D
+; START	OF FUNCTION CHUNK FOR RenderSprite_seg003_0272_3B0D
 
 seg003_0272_3AFB:	; Jump if Not Zero (ZF=0)
 jnz	short seg003_0272_3B03
@@ -14648,11 +14648,11 @@ seg003_0272_3B03:
 mov	ax, ds:415Eh
 mov	bx, ds:4160h
 jmp	seg003_0272_32B4 ; Jump
-; END OF FUNCTION CHUNK	FOR seg003_0272_3B0D
+; END OF FUNCTION CHUNK	FOR RenderSprite_seg003_0272_3B0D
 
 
 
-seg003_0272_3B0D proc near
+RenderSprite_seg003_0272_3B0D proc near
 
 ; FUNCTION CHUNK AT 329A SIZE 00000048 BYTES
 ; FUNCTION CHUNK AT 3686 SIZE 00000008 BYTES
@@ -14664,22 +14664,22 @@ seg003_0272_3B10:	; Jump if Above	(CF=0 &	ZF=0)
 ja	short seg003_0272_3B1D
 cmp	cx, 2		; Compare Two Operands
 jbe	short seg003_0272_3AFB ; Jump if Below or Equal	(CF=1 |	ZF=1)
-call	seg003_0272_34C7 ; Call	Procedure
-jmp	seg003_0272_38B4 ; Jump
+call	ClipPolygonToViewport_seg003_0272_34C7 ; Call	Procedure
+jmp	RenderFilledPolygon_seg003_0272_38B4 ; Jump
 
 seg003_0272_3B1D:	; Return Near from Procedure
 retn
-seg003_0272_3B0D endp
+RenderSprite_seg003_0272_3B0D endp
 
 
 
 
-seg003_0272_3B1E proc near
+RenderTexturedSpanSimple_seg003_0272_3B1E proc near
 mov	word ptr ds:4D16h, 4126h
 
 seg003_0272_3B24:	; Jump
 jmp	short seg003_0272_3B4A
-seg003_0272_3B1E endp
+RenderTexturedSpanSimple_seg003_0272_3B1E endp
 
 
 seg003_0272_3B26:
@@ -14692,7 +14692,7 @@ jmp	short seg003_0272_3B46 ; Jump
 
 
 
-seg003_0272_3B36 proc near
+RenderTexturedSpan_seg003_0272_3B36 proc near
 mov	word ptr ds:4D16h, 3C61h
 jmp	short seg003_0272_3B4A ; Jump
 
@@ -14733,12 +14733,12 @@ call	word ptr ds:4D16h ; Indirect Call Near Procedure
 
 seg003_0272_3B8E:	; Return Near from Procedure
 retn
-seg003_0272_3B36 endp
+RenderTexturedSpan_seg003_0272_3B36 endp
 
 
 
 
-seg003_0272_3B8F proc near
+RenderTexturedSpanWithBorder_seg003_0272_3B8F proc near
 mov	ds:4A0Eh, ax
 mov	ds:4A10h, bx
 mov	ax, ds:4A10h
@@ -14766,16 +14766,16 @@ inc	word ptr ds:4A0Eh
 dec	word ptr ds:4A10h ; Decrement by 1
 call	word ptr ds:4D14h ; Indirect Call Near Procedure
 mov	ax, ds:2D36h
-call	seg003_0272_3C61 ; Call	Procedure
-call	seg003_0272_4150 ; Call	Procedure
+call	RenderTexturedScanline_seg003_0272_3C61 ; Call	Procedure
+call	DrawBorderDecoration_seg003_0272_4150 ; Call	Procedure
 mov	ax, ds:2D3Ah
-jmp	short seg003_0272_3C61 ; Jump
-seg003_0272_3B8F endp
+jmp	short RenderTexturedScanline_seg003_0272_3C61 ; Jump
+RenderTexturedSpanWithBorder_seg003_0272_3B8F endp
 
 
 
 
-seg003_0272_3BE2 proc near
+BuildColorMultiplyTable_seg003_0272_3BE2 proc near
 mov	cx, 10h
 mov	si, 4A16h
 mov	di, 4A26h
@@ -14797,12 +14797,12 @@ pop	si
 pop	cx
 loop	seg003_0272_3BEB ; Loop	while CX != 0
 retn			; Return Near from Procedure
-seg003_0272_3BE2 endp
+BuildColorMultiplyTable_seg003_0272_3BE2 endp
 
 
 
 
-seg003_0272_3BFD proc near
+BuildTextureScanlineTable_seg003_0272_3BFD proc near
 mov	bx, ds:4D0Eh
 mov	cx, ds:4D10h
 dec	cl		; Decrement by 1
@@ -14824,7 +14824,7 @@ mov	ds:2D3Eh, ax
 mov	ax, ds:4D12h
 mov	ds:2D40h, ax
 retn			; Return Near from Procedure
-seg003_0272_3BFD endp
+BuildTextureScanlineTable_seg003_0272_3BFD endp
 
 db 0BBh
 dw 52CCh
@@ -14844,7 +14844,7 @@ db 44h,	2, 0C3h
 
 
 
-seg003_0272_3C61 proc near
+RenderTexturedScanline_seg003_0272_3C61 proc near
 mov	ds:4A0Ch, ax
 jmp	short seg003_0272_3C84 ; Jump
 db 88h,	26h, 11h, 41h, 0A1h, 4,	4Dh, 48h
@@ -14882,7 +14882,7 @@ mov	dx, 3C5h
 
 seg003_0272_3CBD:	; Indirect Near	Jump
 jmp	word ptr ds:4CFAh
-seg003_0272_3C61 endp
+RenderTexturedScanline_seg003_0272_3C61 endp
 
 align 2
 lodsb			; Load String
@@ -15621,22 +15621,22 @@ mov	bx, ds:4A10h
 mov	cx, ds:4D04h
 mov	dx, ds:4D0Eh
 jmp	seg003_0272_222B ; Jump
-; START	OF FUNCTION CHUNK FOR seg003_0272_4150
+; START	OF FUNCTION CHUNK FOR DrawBorderDecoration_seg003_0272_4150
 
 seg003_0272_4141:	; Pop Stack into Flags Register
 popf
-call	seg003_0272_4186 ; Call	Procedure
+call	DrawBorderDecorationAlt_seg003_0272_4186 ; Call	Procedure
 pushf			; Push Flags Register onto the Stack
 sub	bx, ax		; Integer Subtraction
 sub	si, ax		; Integer Subtraction
 cmp	bx, ax		; Compare Two Operands
 ja	short seg003_0272_4141 ; Jump if Above (CF=0 & ZF=0)
 jmp	short seg003_0272_417B ; Jump
-; END OF FUNCTION CHUNK	FOR seg003_0272_4150
+; END OF FUNCTION CHUNK	FOR DrawBorderDecoration_seg003_0272_4150
 
 
 
-seg003_0272_4150 proc near
+DrawBorderDecoration_seg003_0272_4150 proc near
 
 ; FUNCTION CHUNK AT 4141 SIZE 0000000F BYTES
 
@@ -15665,12 +15665,12 @@ sub	si, bx		; Integer Subtraction
 shl	bx, 1		; Shift	Logical	Left
 popf			; Pop Stack into Flags Register
 jmp	word ptr [bx+4C24h] ; Indirect Near Jump
-seg003_0272_4150 endp
+DrawBorderDecoration_seg003_0272_4150 endp
 
 
 
 
-seg003_0272_4186 proc near
+DrawBorderDecorationAlt_seg003_0272_4186 proc near
 rcl	byte ptr [si], 1 ; Rotate Through Carry	Left
 rcl	byte ptr [si-1], 1 ; Rotate Through Carry Left
 rcl	byte ptr [si-2], 1 ; Rotate Through Carry Left
@@ -15729,10 +15729,10 @@ rcl	byte ptr [si-32h], 1 ; Rotate Through Carry Left
 rcl	byte ptr [si-33h], 1 ; Rotate Through Carry Left
 rcl	byte ptr [si-34h], 1 ; Rotate Through Carry Left
 retn			; Return Near from Procedure
-seg003_0272_4186 endp
+DrawBorderDecorationAlt_seg003_0272_4186 endp
 
 mov	di, si
-call	seg003_0272_43C5 ; Call	Procedure
+call	StackSwitchSetup_seg003_0272_43C5 ; Call	Procedure
 mov	si, di
 mov	ax, ds:4A0Eh
 and	ax, 3		; Logical AND
@@ -15948,7 +15948,7 @@ db 42h
 
 
 
-seg003_0272_43C5 proc near
+StackSwitchSetup_seg003_0272_43C5 proc near
 mov	bx, ds:2D3Ch
 
 seg003_0272_43C9:
@@ -15977,7 +15977,7 @@ loop	seg003_0272_43D6 ; Loop	while CX != 0
 seg003_0272_43EC:
 mov	ax, dx
 retn			; Return Near from Procedure
-seg003_0272_43C5 endp
+StackSwitchSetup_seg003_0272_43C5 endp
 
 align 2
 seg003_0272_43F0 dw 0
@@ -16009,7 +16009,7 @@ mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
 
 seg003_0272_4418:	; Call Procedure
-call	seg003_0272_5278
+call	Thunk_BuildColorTable_seg003_0272_5278
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -16033,7 +16033,7 @@ retf
 
 ; Attributes: bp-based frame
 
-seg003_0272_4431 proc far
+InitFontTableFar_seg003_0272_4431 proc far
 push	bp
 mov	bp, sp
 push	di
@@ -16060,7 +16060,7 @@ mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
 
 seg003_0272_4454:	; Call Procedure
-call	seg003_0272_527B
+call	Thunk_BuildTexScanlineTable_seg003_0272_527B
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -16076,7 +16076,7 @@ pop	si
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_4431 endp
+InitFontTableFar_seg003_0272_4431 endp
 
 
 
@@ -16135,7 +16135,7 @@ mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
 mov	dx, si
 mov	si, 4FA8h
-call	seg003_0272_527E ; Call	Procedure
+call	Thunk_RenderTexturedSpan_seg003_0272_527E ; Call	Procedure
 cli			; Clear	Interrupt Flag
 
 seg003_0272_44C7:
@@ -16200,7 +16200,7 @@ mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
 mov	dx, si
 mov	si, 4FA8h
-call	seg003_0272_5287 ; Call	Procedure
+call	Thunk_RenderTexSpanBorder_seg003_0272_5287 ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -16273,7 +16273,7 @@ mov	dx, si
 mov	si, 4FA8h
 
 seg003_0272_45A1:	; Call Procedure
-call	seg003_0272_43C5
+call	StackSwitchSetup_seg003_0272_43C5
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -16354,7 +16354,7 @@ mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
 mov	dx, si
 mov	si, 4FA8h
-call	seg003_0272_528D ; Call	Procedure
+call	Thunk_RenderTexSpanSimple_seg003_0272_528D ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -16380,7 +16380,7 @@ retf			; Return Far from Procedure
 
 ; Attributes: bp-based frame
 
-seg003_0272_4629 proc far
+DrawSpriteFar_seg003_0272_4629 proc far
 push	bp
 mov	bp, sp
 push	di
@@ -16403,7 +16403,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_52BD ; Call	Procedure
+call	Thunk_InitVideoDisplay_seg003_0272_52BD ; Call	Procedure
 cli			; Clear	Interrupt Flag
 
 seg003_0272_4650:
@@ -16421,7 +16421,7 @@ pop	si
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_4629 endp
+DrawSpriteFar_seg003_0272_4629 endp
 
 push	bp
 mov	bp, sp
@@ -16448,7 +16448,7 @@ assume ss:seg048MaybeGraphics
 seg003_0272_468D:
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_5293 ; Call	Procedure
+call	Thunk_FlushPalette_seg003_0272_5293 ; Call	Procedure
 cli			; Clear	Interrupt Flag
 
 seg003_0272_4695:
@@ -16501,7 +16501,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_5296 ; Call	Procedure
+call	Thunk_InitPlaneMasks_seg003_0272_5296 ; Call	Procedure
 
 seg003_0272_46D0:	; Clear	Interrupt Flag
 cli
@@ -16554,7 +16554,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_5299 ; Call	Procedure
+call	Thunk_SetDisplayStartAddr_seg003_0272_5299 ; Call	Procedure
 
 seg003_0272_470C:	; Clear	Interrupt Flag
 cli
@@ -16602,7 +16602,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_529C ; Call	Procedure
+call	Thunk_SetVRAMDisplayStart_seg003_0272_529C ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -16624,7 +16624,7 @@ retf			; Return Far from Procedure
 
 ; Attributes: bp-based frame
 
-seg003_0272_475E proc far
+DrawFilledRectFar_seg003_0272_475E proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -16661,7 +16661,7 @@ mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
 
 seg003_0272_4787:	; Call Procedure
-call	seg003_0272_529F
+call	Thunk_ReadPixelFromVRAM_seg003_0272_529F
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -16679,7 +16679,7 @@ pop	si
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_475E endp
+DrawFilledRectFar_seg003_0272_475E endp
 
 
 seg003_0272_47A0:
@@ -16713,7 +16713,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_52A2 ; Call	Procedure
+call	Thunk_ReadPixelClipped_seg003_0272_52A2 ; Call	Procedure
 cli			; Clear	Interrupt Flag
 
 seg003_0272_47CD:
@@ -16735,7 +16735,7 @@ retf			; Return Far from Procedure
 
 ; Attributes: bp-based frame
 
-seg003_0272_47E2 proc far
+DrawLineFar_seg003_0272_47E2 proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -16768,7 +16768,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_52A5 ; Call	Procedure
+call	Thunk_PlotPixelClipped_seg003_0272_52A5 ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -16786,7 +16786,7 @@ pop	si
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_47E2 endp
+DrawLineFar_seg003_0272_47E2 endp
 
 push	bp
 mov	bp, sp
@@ -16810,7 +16810,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_52A8 ; Call	Procedure
+call	Thunk_PlotPixelDirect_seg003_0272_52A8 ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -16854,7 +16854,7 @@ assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
 xchg	cx, dx		; Exchange Register/Memory with	Register
-call	seg003_0272_52B1 ; Call	Procedure
+call	Thunk_DrawVLineSolid_seg003_0272_52B1 ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -16914,7 +16914,7 @@ assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
 xchg	cx, dx		; Exchange Register/Memory with	Register
-call	seg003_0272_52B4 ; Call	Procedure
+call	Thunk_DrawVLineReadModify_seg003_0272_52B4 ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -16934,7 +16934,7 @@ retf			; Return Far from Procedure
 
 ; Attributes: bp-based frame
 
-seg003_0272_48F4 proc far
+ClearScreenFar_seg003_0272_48F4 proc far
 
 arg_0= word ptr	 6
 
@@ -16963,7 +16963,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_52B7 ; Call	Procedure
+call	Thunk_LoadSpriteRenderPos_seg003_0272_52B7 ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -16981,13 +16981,13 @@ seg003_0272_4930:
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_48F4 endp
+ClearScreenFar_seg003_0272_48F4 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg003_0272_4933 proc far
+SetPaletteFar_seg003_0272_4933 proc far
 push	bp
 mov	bp, sp
 push	di
@@ -17018,7 +17018,7 @@ seg003_0272_4955:	; Set Interrupt	Flag
 sti
 
 seg003_0272_4956:	; Call Procedure
-call	seg003_0272_52BA
+call	Thunk_ProcessAllDisplayEntries_seg003_0272_52BA
 cli			; Clear	Interrupt Flag
 
 seg003_0272_495A:
@@ -17038,7 +17038,7 @@ pop	si
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_4933 endp
+SetPaletteFar_seg003_0272_4933 endp
 
 push	bp
 mov	bp, sp
@@ -17063,7 +17063,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_52C0 ; Call	Procedure
+call	Thunk_SwitchDetailLevel_seg003_0272_52C0 ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -17085,7 +17085,7 @@ retf			; Return Far from Procedure
 
 ; Attributes: bp-based frame
 
-seg003_0272_49AE proc far
+GetPixelFar_seg003_0272_49AE proc far
 
 arg_0= word ptr	 6
 
@@ -17113,7 +17113,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_3206 ; Call	Procedure
+call	AllocVRAMBlock_seg003_0272_3206 ; Call	Procedure
 
 seg003_0272_49D9:	; Jump if Not Below (CF=0)
 jnb	short seg003_0272_49DE
@@ -17135,7 +17135,7 @@ pop	si
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_49AE endp
+GetPixelFar_seg003_0272_49AE endp
 
 push	bp
 mov	bp, sp
@@ -17159,7 +17159,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_321B ; Call	Procedure
+call	SetVRAMAllocBase_seg003_0272_321B ; Call	Procedure
 jnb	short seg003_0272_4A24 ; Jump if Not Below (CF=0)
 mov	ax, 0
 
@@ -17183,7 +17183,7 @@ retf			; Return Far from Procedure
 
 ; Attributes: bp-based frame
 
-seg003_0272_4A3A proc far
+SetPixelFar_seg003_0272_4A3A proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -17212,7 +17212,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_2977 ; Call	Procedure
+call	SetVRAMDisplayOffset_seg003_0272_2977 ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -17228,13 +17228,13 @@ pop	si
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_4A3A endp
+SetPixelFar_seg003_0272_4A3A endp
 
 
 
 ; Attributes: bp-based frame
 
-seg003_0272_4A7F proc far
+SetViewportFar_seg003_0272_4A7F proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -17261,7 +17261,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_2A0D ; Call	Procedure
+call	ConfigureDisplayTiming_seg003_0272_2A0D ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -17277,7 +17277,7 @@ pop	si
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_4A7F endp
+SetViewportFar_seg003_0272_4A7F endp
 
 
 
@@ -17321,7 +17321,7 @@ mov	seg048MaybeGraphics_MaybeY_503E, ax
 mov	seg048MaybeGraphics_MaybeX_5044, di
 mov	seg048MaybeGraphics_Width_5042,	cx
 mov	si, 503Eh
-call	seg003_0272_52E4 ; Call	Procedure
+call	Thunk_SetViewport_seg003_0272_52E4 ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -17343,7 +17343,7 @@ DrawBitmapScreen_seg003_0272_4AC1 endp
 
 ; Attributes: bp-based frame
 
-seg003_0272_4B1B proc far
+FlushPaletteFar_seg003_0272_4B1B proc far
 push	bp
 mov	bp, sp
 push	di
@@ -17366,7 +17366,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_328F ; Call	Procedure
+call	ClearViewportWithRefresh_seg003_0272_328F ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -17382,7 +17382,7 @@ pop	si
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_4B1B endp
+FlushPaletteFar_seg003_0272_4B1B endp
 
 
 
@@ -17409,7 +17409,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_327D ; Call	Procedure
+call	ClearViewportShaded_seg003_0272_327D ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -17451,7 +17451,7 @@ assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
 xchg	cx, dx		; Exchange Register/Memory with	Register
-call	seg003_0272_331A ; Call	Procedure
+call	DrawClippedVLineReadModify_seg003_0272_331A ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -17490,7 +17490,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_347F ; Call	Procedure
+call	DrawHLineClipped_seg003_0272_347F ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -17510,7 +17510,7 @@ retf			; Return Far from Procedure
 
 ; Attributes: bp-based frame
 
-seg003_0272_4C1F proc far
+DrawVLineFar_seg003_0272_4C1F proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -17541,7 +17541,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_34AE ; Call	Procedure
+call	SetupSpanRenderer_seg003_0272_34AE ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -17557,7 +17557,7 @@ pop	si
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_4C1F endp
+DrawVLineFar_seg003_0272_4C1F endp
 
 push	bp
 mov	bp, sp
@@ -17587,7 +17587,7 @@ sti			; Set Interrupt	Flag
 
 seg003_0272_4C90:	; Exchange Register/Memory with	Register
 xchg	cx, dx
-call	seg003_0272_3321 ; Call	Procedure
+call	DrawClippedVLine_seg003_0272_3321 ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -17607,7 +17607,7 @@ retf			; Return Far from Procedure
 
 ; Attributes: bp-based frame
 
-seg003_0272_4CAB proc far
+AllocVRAMFar_seg003_0272_4CAB proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -17641,7 +17641,7 @@ assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
 xchg	cx, dx		; Exchange Register/Memory with	Register
-call	seg003_0272_3324 ; Call	Procedure
+call	DrawVLineWithRenderMode_seg003_0272_3324 ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -17657,13 +17657,13 @@ pop	si
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_4CAB endp
+AllocVRAMFar_seg003_0272_4CAB endp
 
 
 
 ; Attributes: bp-based frame
 
-seg003_0272_4CF2 proc far
+SetDisplayPageFar_seg003_0272_4CF2 proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -17697,7 +17697,7 @@ assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
 mov	dx, si
-call	seg003_0272_341E ; Call	Procedure
+call	FillRectFromClipBounds_seg003_0272_341E ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -17715,13 +17715,13 @@ pop	si
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_4CF2 endp
+SetDisplayPageFar_seg003_0272_4CF2 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg003_0272_4D3C proc far
+InitDisplayFar_seg003_0272_4D3C proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -17753,7 +17753,7 @@ assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
 mov	dx, si
-call	seg003_0272_342E ; Call	Procedure
+call	FillRect_seg003_0272_342E ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -17771,13 +17771,13 @@ pop	si
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_4D3C endp
+InitDisplayFar_seg003_0272_4D3C endp
 
 
 
 ; Attributes: bp-based frame
 
-seg003_0272_4D86 proc far
+UpdateDisplayFar_seg003_0272_4D86 proc far
 push	bp
 mov	bp, sp
 push	di
@@ -17800,7 +17800,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_3423 ; Call	Procedure
+call	FillViewportRect_seg003_0272_3423 ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -17816,13 +17816,13 @@ pop	si
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_4D86 endp
+UpdateDisplayFar_seg003_0272_4D86 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg003_0272_4DC2 proc far
+DrawPolygonFar_seg003_0272_4DC2 proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -17870,7 +17870,7 @@ pop	si
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_4DC2 endp
+DrawPolygonFar_seg003_0272_4DC2 endp
 
 push	bp
 mov	bp, sp
@@ -17945,7 +17945,7 @@ sti			; Set Interrupt	Flag
 mov	dx, bp
 push	seg048MaybeGraphics_4112
 mov	seg048MaybeGraphics_4112, 52CCh
-call	seg003_0272_342E ; Call	Procedure
+call	FillRect_seg003_0272_342E ; Call	Procedure
 pop	seg048MaybeGraphics_4112
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
@@ -17989,7 +17989,7 @@ assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
 mov	dx, si
-call	seg003_0272_368E ; Call	Procedure
+call	DrawLine_seg003_0272_368E ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -18028,7 +18028,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_3B0D ; Call	Procedure
+call	RenderSprite_seg003_0272_3B0D ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -18067,7 +18067,7 @@ mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
 
 seg003_0272_4F5F:	; Call Procedure
-call	seg003_0272_38B4
+call	RenderFilledPolygon_seg003_0272_38B4
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -18112,7 +18112,7 @@ sti			; Set Interrupt	Flag
 
 seg003_0272_4FA7:
 mov	dx, si
-call	seg003_0272_375C ; Call	Procedure
+call	DrawHLineFilled_seg003_0272_375C ; Call	Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -18273,7 +18273,7 @@ DRAW_RELATED_seg003_0272_5025 endp
 
 ; Attributes: bp-based frame
 
-seg003_0272_5088 proc far
+BlitToVRAMFar_seg003_0272_5088 proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -18334,7 +18334,7 @@ seg003_0272_50E4:
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_5088 endp
+BlitToVRAMFar_seg003_0272_5088 endp
 
 push	bp
 mov	bp, sp
@@ -18363,7 +18363,7 @@ assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
 mov	dx, di
-call	seg003_0272_2B62 ; Call	Procedure
+call	BuildReverseScanlineTable_seg003_0272_2B62 ; Call	Procedure
 retf			; Return Far from Procedure
 push	bp
 mov	bp, sp
@@ -18418,7 +18418,7 @@ retf			; Return Far from Procedure
 
 ; Attributes: bp-based frame
 
-seg003_0272_517B proc far
+ApplyColorMapFar_seg003_0272_517B proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -18476,13 +18476,13 @@ pop	si
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_517B endp
+ApplyColorMapFar_seg003_0272_517B endp
 
 
 
 ; Attributes: bp-based frame
 
-seg003_0272_51C8 proc far
+ApplyShadeMapFar_seg003_0272_51C8 proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -18540,7 +18540,7 @@ pop	si
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_51C8 endp
+ApplyShadeMapFar_seg003_0272_51C8 endp
 
 
 seg003_0272_5218:	; Load String
@@ -18553,7 +18553,7 @@ retf			; Return Far from Procedure
 
 
 
-seg003_0272_5220 proc near
+StringLength_seg003_0272_5220 proc near
 mov	di, si
 xor	al, al		; Logical Exclusive OR
 mov	cx, 0FFFFh
@@ -18564,13 +18564,13 @@ mov	cx, di
 sub	cx, si		; Integer Subtraction
 dec	cx		; Decrement by 1
 retn			; Return Near from Procedure
-seg003_0272_5220 endp
+StringLength_seg003_0272_5220 endp
 
 push	si
 push	di
 
 seg003_0272_5231:	; Call Procedure
-call	seg003_0272_5220
+call	StringLength_seg003_0272_5220
 pop	di
 repe cmpsb		; Compare Strings
 pop	si
@@ -18579,7 +18579,7 @@ retf			; Return Far from Procedure
 
 ; Attributes: bp-based frame
 
-seg003_0272_5239 proc far
+ProcessDisplayEntryFar_seg003_0272_5239 proc far
 
 arg_0= word ptr	 6
 
@@ -18606,7 +18606,7 @@ mov	ss, dx
 assume ss:seg048MaybeGraphics
 mov	sp, 4FA8h
 sti			; Set Interrupt	Flag
-call	seg003_0272_B9B	; Call Procedure
+call	LoadDisplayEntryParams_seg003_0272_B9B	; Call Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg003_0272_43F0
 mov	ss, dx
@@ -18622,31 +18622,31 @@ pop	si
 pop	di
 pop	bp
 retf			; Return Far from Procedure
-seg003_0272_5239 endp
+ProcessDisplayEntryFar_seg003_0272_5239 endp
 
 
 
 ; Attributes: thunk
 
-seg003_0272_5278 proc near
-jmp	seg003_0272_3BE2 ; Jump
-seg003_0272_5278 endp
+Thunk_BuildColorTable_seg003_0272_5278 proc near
+jmp	BuildColorMultiplyTable_seg003_0272_3BE2 ; Jump
+Thunk_BuildColorTable_seg003_0272_5278 endp
 
 
 
 ; Attributes: thunk
 
-seg003_0272_527B proc near
-jmp	seg003_0272_3BFD ; Jump
-seg003_0272_527B endp
+Thunk_BuildTexScanlineTable_seg003_0272_527B proc near
+jmp	BuildTextureScanlineTable_seg003_0272_3BFD ; Jump
+Thunk_BuildTexScanlineTable_seg003_0272_527B endp
 
 
 
 ; Attributes: thunk
 
-seg003_0272_527E proc near
-jmp	seg003_0272_3B36 ; Jump
-seg003_0272_527E endp
+Thunk_RenderTexturedSpan_seg003_0272_527E proc near
+jmp	RenderTexturedSpan_seg003_0272_3B36 ; Jump
+Thunk_RenderTexturedSpan_seg003_0272_527E endp
 
 jmp	seg003_0272_3B3E ; Jump
 jmp	seg003_0272_3B2E ; Jump
@@ -18654,83 +18654,83 @@ jmp	seg003_0272_3B2E ; Jump
 
 ; Attributes: thunk
 
-seg003_0272_5287 proc near
-jmp	seg003_0272_3B8F ; Jump
-seg003_0272_5287 endp
+Thunk_RenderTexSpanBorder_seg003_0272_5287 proc near
+jmp	RenderTexturedSpanWithBorder_seg003_0272_3B8F ; Jump
+Thunk_RenderTexSpanBorder_seg003_0272_5287 endp
 
 jmp	seg003_0272_3BC8 ; Jump
 
 
 ; Attributes: thunk
 
-seg003_0272_528D proc near
-jmp	seg003_0272_3B1E ; Jump
-seg003_0272_528D endp
+Thunk_RenderTexSpanSimple_seg003_0272_528D proc near
+jmp	RenderTexturedSpanSimple_seg003_0272_3B1E ; Jump
+Thunk_RenderTexSpanSimple_seg003_0272_528D endp
 
 jmp	seg003_0272_3B26 ; Jump
 
 
 ; Attributes: thunk
 
-seg003_0272_5293 proc near
-jmp	seg003_0272_2914 ; Jump
-seg003_0272_5293 endp
+Thunk_FlushPalette_seg003_0272_5293 proc near
+jmp	FlushPaletteToVGA_seg003_0272_2914 ; Jump
+Thunk_FlushPalette_seg003_0272_5293 endp
 
 
 
 ; Attributes: thunk
 
-seg003_0272_5296 proc near
-jmp	seg003_0272_2ABE ; Jump
-seg003_0272_5296 endp
+Thunk_InitPlaneMasks_seg003_0272_5296 proc near
+jmp	InitPlaneMasks_seg003_0272_2ABE ; Jump
+Thunk_InitPlaneMasks_seg003_0272_5296 endp
 
 
 
 ; Attributes: thunk
 
-seg003_0272_5299 proc near
+Thunk_SetDisplayStartAddr_seg003_0272_5299 proc near
 jmp	seg003_0272_2AC1 ; Jump
-seg003_0272_5299 endp
+Thunk_SetDisplayStartAddr_seg003_0272_5299 endp
 
 
 
 ; Attributes: thunk
 
-seg003_0272_529C proc near
-jmp	seg003_0272_295F ; Jump
-seg003_0272_529C endp
+Thunk_SetVRAMDisplayStart_seg003_0272_529C proc near
+jmp	SetVRAMDisplayStartAddr_seg003_0272_295F ; Jump
+Thunk_SetVRAMDisplayStart_seg003_0272_529C endp
 
 
 
 ; Attributes: thunk
 
-seg003_0272_529F proc near
-jmp	seg003_0272_30FB ; Jump
-seg003_0272_529F endp
+Thunk_ReadPixelFromVRAM_seg003_0272_529F proc near
+jmp	ReadPixelFromVRAM_seg003_0272_30FB ; Jump
+Thunk_ReadPixelFromVRAM_seg003_0272_529F endp
 
 
 
 ; Attributes: thunk
 
-seg003_0272_52A2 proc near
-jmp	seg003_0272_30E3 ; Jump
-seg003_0272_52A2 endp
+Thunk_ReadPixelClipped_seg003_0272_52A2 proc near
+jmp	ReadPixelClipped_seg003_0272_30E3 ; Jump
+Thunk_ReadPixelClipped_seg003_0272_52A2 endp
 
 
 
 ; Attributes: thunk
 
-seg003_0272_52A5 proc near
-jmp	seg003_0272_3094 ; Jump
-seg003_0272_52A5 endp
+Thunk_PlotPixelClipped_seg003_0272_52A5 proc near
+jmp	PlotPixelClipped_seg003_0272_3094 ; Jump
+Thunk_PlotPixelClipped_seg003_0272_52A5 endp
 
 
 
 ; Attributes: thunk
 
-seg003_0272_52A8 proc near
+Thunk_PlotPixelDirect_seg003_0272_52A8 proc near
 jmp	seg003_0272_30AC ; Jump
-seg003_0272_52A8 endp
+Thunk_PlotPixelDirect_seg003_0272_52A8 endp
 
 jmp	seg003_0272_30D7 ; Jump
 jmp	seg003_0272_30CF ; Jump
@@ -18738,49 +18738,49 @@ jmp	seg003_0272_30CF ; Jump
 
 ; Attributes: thunk
 
-seg003_0272_52B1 proc near
-jmp	seg003_0272_3164 ; Jump
-seg003_0272_52B1 endp
+Thunk_DrawVLineSolid_seg003_0272_52B1 proc near
+jmp	DrawVLineSolidColor_seg003_0272_3164 ; Jump
+Thunk_DrawVLineSolid_seg003_0272_52B1 endp
 
 
 
 ; Attributes: thunk
 
-seg003_0272_52B4 proc near
-jmp	seg003_0272_3121 ; Jump
-seg003_0272_52B4 endp
+Thunk_DrawVLineReadModify_seg003_0272_52B4 proc near
+jmp	DrawVLineReadModify_seg003_0272_3121 ; Jump
+Thunk_DrawVLineReadModify_seg003_0272_52B4 endp
 
 
 
 ; Attributes: thunk
 
-seg003_0272_52B7 proc near
-jmp	seg003_0272_3195 ; Jump
-seg003_0272_52B7 endp
+Thunk_LoadSpriteRenderPos_seg003_0272_52B7 proc near
+jmp	LoadSpriteRenderPosition_seg003_0272_3195 ; Jump
+Thunk_LoadSpriteRenderPos_seg003_0272_52B7 endp
 
 
 
 ; Attributes: thunk
 
-seg003_0272_52BA proc near
-jmp	seg003_0272_31BE ; Jump
-seg003_0272_52BA endp
+Thunk_ProcessAllDisplayEntries_seg003_0272_52BA proc near
+jmp	ProcessAllDisplayEntries_seg003_0272_31BE ; Jump
+Thunk_ProcessAllDisplayEntries_seg003_0272_52BA endp
 
 
 
 ; Attributes: thunk
 
-seg003_0272_52BD proc near
-jmp	seg003_0272_283D ; Jump
-seg003_0272_52BD endp
+Thunk_InitVideoDisplay_seg003_0272_52BD proc near
+jmp	InitVideoDisplay_seg003_0272_283D ; Jump
+Thunk_InitVideoDisplay_seg003_0272_52BD endp
 
 
 
 ; Attributes: thunk
 
-seg003_0272_52C0 proc near
+Thunk_SwitchDetailLevel_seg003_0272_52C0 proc near
 jmp	seg003_0272_286C ; Jump
-seg003_0272_52C0 endp
+Thunk_SwitchDetailLevel_seg003_0272_52C0 endp
 
 jmp	seg003_0272_2869 ; Jump
 jmp	seg003_0272_292D ; Jump
@@ -18799,14 +18799,14 @@ jmp	seg003_0272_2DF3 ; Jump
 
 ; Attributes: thunk
 
-seg003_0272_52E4 proc near
-jmp	seg003_0272_31E7 ; Jump
-seg003_0272_52E4 endp
+Thunk_SetViewport_seg003_0272_52E4 proc near
+jmp	SetViewportAndSwapPages_seg003_0272_31E7 ; Jump
+Thunk_SetViewport_seg003_0272_52E4 endp
 
 jmp	seg003_0272_2C9A ; Jump
 jmp	seg003_0272_283C ; Jump
 align 2
-; START	OF FUNCTION CHUNK FOR seg003_0272_5363
+; START	OF FUNCTION CHUNK FOR CopyViewportBoundsAndSet_seg003_0272_5363
 
 seg003_0272_52EE:
 mov	di, 558Eh
@@ -18820,8 +18820,8 @@ pop	es
 assume es:nothing
 pop	ax
 mov	si, 558Eh
-; END OF FUNCTION CHUNK	FOR seg003_0272_5363
-; START	OF FUNCTION CHUNK FOR seg003_0272_18
+; END OF FUNCTION CHUNK	FOR CopyViewportBoundsAndSet_seg003_0272_5363
+; START	OF FUNCTION CHUNK FOR DispatchWithStackCheck_seg003_0272_18
 
 seg003_0272_52FF:
 push	ax
@@ -18836,11 +18836,11 @@ int	2		; - external hardware -	NMI (NON-MASKABLE INTERRUPT)
 			; Generated by NMI signal in hardware.
 call	bp		; Indirect Call	Near Procedure
 retf			; Return Far from Procedure
-; END OF FUNCTION CHUNK	FOR seg003_0272_18
+; END OF FUNCTION CHUNK	FOR DispatchWithStackCheck_seg003_0272_18
 
 
 
-seg003_0272_5311 proc far
+GfxDriverDispatch_seg003_0272_5311 proc far
 push	ds
 push	es
 push	ax
@@ -18868,9 +18868,9 @@ assume es:nothing
 pop	ds
 assume ds:dseg_67d6
 retf			; Return Far from Procedure
-seg003_0272_5311 endp
+GfxDriverDispatch_seg003_0272_5311 endp
 
-; START	OF FUNCTION CHUNK FOR seg003_0272_18
+; START	OF FUNCTION CHUNK FOR DispatchWithStackCheck_seg003_0272_18
 
 seg003_0272_533A:
 push	ax
@@ -18886,7 +18886,7 @@ mov	ss, seg048MaybeGraphics_558C
 assume ss:seg048MaybeGraphics
 mov	sp, seg048MaybeGraphics_5588
 sti			; Set Interrupt	Flag
-call	bp ; seg003_0272_5869 ;	Indirect Call Near Procedure
+call	bp ; EnableAllVGAPlanes_seg003_0272_5869 ;	Indirect Call Near Procedure
 mov	bp, seg	dseg062_62a6
 cli			; Clear	Interrupt Flag
 mov	ss, bp
@@ -18898,26 +18898,26 @@ assume ds:dseg062_62a6
 mov	es, bp
 assume es:dseg062_62a6
 retf			; Return Far from Procedure
-; END OF FUNCTION CHUNK	FOR seg003_0272_18
+; END OF FUNCTION CHUNK	FOR DispatchWithStackCheck_seg003_0272_18
 
 
 
-seg003_0272_5363 proc near
+CopyViewportBoundsAndSet_seg003_0272_5363 proc near
 
 ; FUNCTION CHUNK AT 52EE SIZE 00000011 BYTES
 
 mov	cx, 4
 mov	bp, 52E4h
 jmp	short seg003_0272_52EE ; Jump
-seg003_0272_5363 endp
+CopyViewportBoundsAndSet_seg003_0272_5363 endp
 
 
 
 
-seg003_0272_536B proc far
-call	seg003_0272_52B7 ; Call	Procedure
+LoadSpriteRenderPosFar_seg003_0272_536B proc far
+call	Thunk_LoadSpriteRenderPos_seg003_0272_52B7 ; Call	Procedure
 retf			; Return Far from Procedure
-seg003_0272_536B endp
+LoadSpriteRenderPosFar_seg003_0272_536B endp
 
 align 2
 
@@ -19636,11 +19636,11 @@ mov	dx, 3CFh
 
 
 
-seg003_0272_5869 proc near
+EnableAllVGAPlanes_seg003_0272_5869 proc near
 mov	al, 0FFh
 out	dx, al		; EGA port: sequencer data register
 retn			; Return Near from Procedure
-seg003_0272_5869 endp
+EnableAllVGAPlanes_seg003_0272_5869 endp
 
 mov	dx, 3CFh
 xor	al, al		; Logical Exclusive OR
@@ -19794,14 +19794,14 @@ cmp	cx, 63h	; 'c'   ; Compare Two Operands
 ja	short seg003_0272_5955 ; Jump if Above (CF=0 & ZF=0)
 cmp	cx, 2		; Compare Two Operands
 jbe	short seg003_0272_5934 ; Jump if Below or Equal	(CF=1 |	ZF=1)
-call	seg003_0272_5B50 ; Call	Procedure
+call	ClipAndRenderPolygon3D_seg003_0272_5B50 ; Call	Procedure
 
 seg003_0272_5953:	; Jump
 jmp	short seg003_0272_5959
 
 seg003_0272_5955:	; Return Near from Procedure
 retn
-call	seg003_0272_5D47 ; Call	Procedure
+call	SortVerticesByDepth_seg003_0272_5D47 ; Call	Procedure
 
 seg003_0272_5959:	; Jump
 jmp	$+3
@@ -20008,7 +20008,7 @@ add	di, 0Ah		; Add
 or	byte ptr [di+1], 80h ; Logical Inclusive OR
 mov	si, 5692h
 push	di
-call	seg003_0272_C13	; Call Procedure
+call	DrawShadedLineSegment_seg003_0272_C13	; Call Procedure
 pop	di
 and	byte ptr [di+1], 7Fh ; Logical AND
 retn			; Return Near from Procedure
@@ -20052,8 +20052,8 @@ align 2
 
 
 
-seg003_0272_5B50 proc near
-call	seg003_0272_5D47 ; Call	Procedure
+ClipAndRenderPolygon3D_seg003_0272_5B50 proc near
+call	SortVerticesByDepth_seg003_0272_5D47 ; Call	Procedure
 mov	si, 415Eh
 mov	di, cx
 shl	di, 1		; Shift	Logical	Left
@@ -20147,7 +20147,7 @@ pop	ax
 seg003_0272_5C14:
 pop	ax
 retn			; Return Near from Procedure
-seg003_0272_5B50 endp ;	sp =  4
+ClipAndRenderPolygon3D_seg003_0272_5B50 endp ;	sp =  4
 
 
 seg003_0272_5C16:	; Jump if CX is	0
@@ -20317,7 +20317,7 @@ jmp	short seg003_0272_5D0F ; Jump
 
 
 
-seg003_0272_5D47 proc near
+SortVerticesByDepth_seg003_0272_5D47 proc near
 mov	si, 415Eh
 mov	bx, 55EEh
 mov	di, 42EEh
@@ -20344,7 +20344,7 @@ seg003_0272_5D69:	; Move Byte(s) from String to String
 rep movsw
 pop	cx
 retn			; Return Near from Procedure
-seg003_0272_5D47 endp
+SortVerticesByDepth_seg003_0272_5D47 endp
 
 seg003_0272 ends
 
@@ -20403,7 +20403,7 @@ seg004_0849_1E:		; Logical Inclusive OR
 or	cl, [bp+si]
 
 seg004_0849_20:		; Call Procedure
-call	seg004_0849_CB
+call	SetupTranslationTablePtr_seg004_0849_CB
 
 seg004_0849_23:
 mov	si, bp
@@ -20446,7 +20446,7 @@ seg004_0849_39:
 mov	cx, 1
 
 seg004_0849_3C:		; Call Procedure
-call	seg004_0849_63
+call	SetupPaletteRemapTable_seg004_0849_63
 
 seg004_0849_3F:
 mov	si, bp
@@ -20503,7 +20503,7 @@ retn
 
 
 
-seg004_0849_63 proc near
+SetupPaletteRemapTable_seg004_0849_63 proc near
 mov	di, 0
 
 seg004_0849_66:
@@ -20676,12 +20676,12 @@ mov	bx, 0
 seg004_0849_C8:
 mov	ds, dx
 retn			; Return Near from Procedure
-seg004_0849_63 endp
+SetupPaletteRemapTable_seg004_0849_63 endp
 
 
 
 
-seg004_0849_CB proc near
+SetupTranslationTablePtr_seg004_0849_CB proc near
 cmp	dh, 0FFh	; Compare Two Operands
 
 seg004_0849_CE:
@@ -20696,14 +20696,14 @@ add	bx, 6D3Eh
 seg004_0849_D6:
 mov	ds, ax
 retn			; Return Near from Procedure
-seg004_0849_CB endp
+SetupTranslationTablePtr_seg004_0849_CB endp
 
 
 seg004_0849_D9:
 mov	cx, 1
 
 seg004_0849_DC:		; Call Procedure
-call	seg004_0849_63
+call	SetupPaletteRemapTable_seg004_0849_63
 
 seg004_0849_DF:
 mov	si, bp
@@ -20781,7 +20781,7 @@ seg004_0849_110:
 mov	di, 5400h
 
 seg004_0849_113:	; Call Procedure
-call	seg004_0849_18D
+call	RunLengthDecodeSetup_seg004_0849_18D
 mov	ax, es
 
 seg004_0849_118:	; Add
@@ -20790,7 +20790,7 @@ retn			; Return Near from Procedure
 mov	cx, 2
 
 seg004_0849_11F:	; Call Procedure
-call	seg004_0849_63
+call	SetupPaletteRemapTable_seg004_0849_63
 mov	si, bp
 
 seg004_0849_124:
@@ -20898,7 +20898,7 @@ seg004_0849_17F:
 mov	di, 5400h
 
 seg004_0849_182:	; Call Procedure
-call	seg004_0849_18D
+call	RunLengthDecodeSetup_seg004_0849_18D
 mov	ax, es
 add	ax, 540h	; Add
 retn			; Return Near from Procedure
@@ -20909,18 +20909,18 @@ retn
 
 
 
-seg004_0849_18D	proc near
+RunLengthDecodeSetup_seg004_0849_18D	proc near
 mov	bp, cx
 
 seg004_0849_18F:	; Add
 add	bp, si
 mov	dx, 3
-seg004_0849_18D	endp
+RunLengthDecodeSetup_seg004_0849_18D	endp
 
 
 
 
-seg004_0849_194	proc near
+RunLengthDecodeLoop_seg004_0849_194	proc near
 cmp	si, bp		; Compare Two Operands
 jnb	short nullsub_13 ; Jump	if Not Below (CF=0)
 sub	ax, ax		; Integer Subtraction
@@ -20949,7 +20949,7 @@ lodsb
 xlat	byte ptr cs:[bx] ; Table Lookup	Translation
 stosb			; Store	String
 loop	seg004_0849_1AD	; Loop while CX	!= 0
-jmp	short seg004_0849_194 ;	Jump
+jmp	short RunLengthDecodeLoop_seg004_0849_194 ;	Jump
 
 seg004_0849_1B5:
 mov	cl, 4
@@ -21052,7 +21052,7 @@ jcxz	short seg004_0849_247
 
 seg004_0849_220:
 push	cx
-call	seg004_0849_194	; Call Procedure
+call	RunLengthDecodeLoop_seg004_0849_194	; Call Procedure
 pop	cx
 loop	seg004_0849_220	; Loop while CX	!= 0
 
@@ -21088,14 +21088,14 @@ lodsb			; Load String
 seg004_0849_252:	; Logical Inclusive OR
 or	cx, ax
 jmp	short seg004_0849_220 ;	Jump
-seg004_0849_194	endp
+RunLengthDecodeLoop_seg004_0849_194	endp
 
 seg004_0849_256:
 align 10h
 
 
 
-seg004_0849_260	proc near
+TransformAndClipVertex3D_seg004_0849_260	proc near
 mov	seg050_10, cx
 shl	si, cl		; Shift	Logical	Left
 
@@ -21438,7 +21438,7 @@ retn			; Return Near from Procedure
 seg004_0849_40D:	; Set Carry Flag
 stc
 retn			; Return Near from Procedure
-seg004_0849_260	endp
+TransformAndClipVertex3D_seg004_0849_260	endp
 
 push	si
 mov	bx, seg050_16
@@ -21778,13 +21778,13 @@ mov	bp, seg050_25EA
 mov	ax, seg050_25E8
 
 seg004_0849_5CC:	; Call Procedure
-call	seg004_0849_260
+call	TransformAndClipVertex3D_seg004_0849_260
 pop	di
 jb	short seg004_0849_5F2 ;	Jump if	Below (CF=1)
 mov	seg050_25FA, ax
 
 seg004_0849_5D5:	; Call Procedure
-call	seg004_0849_34C5
+call	PatchPositionOffsets_seg004_0849_34C5
 xchg	ax, si		; Exchange Register/Memory with	Register
 
 seg004_0849_5D9:	; Call Procedure
@@ -21881,7 +21881,7 @@ shr	cx, 1		; Shift	Logical	Right
 shr	cx, 1		; Shift	Logical	Right
 inc	seg050_25E4	; Increment by 1
 mov	bp, seg050_14A6
-call	seg003_0272_5311 ; Call	Procedure
+call	GfxDriverDispatch_seg003_0272_5311 ; Call	Procedure
 mov	ax, ds
 
 seg004_0849_6FA:
@@ -21917,7 +21917,7 @@ mov	ax, ds
 mov	es, ax
 test	seg050_14CA, 2	; Logical Compare
 jz	short seg004_0849_7B8 ;	Jump if	Zero (ZF=1)
-call	seg004_0849_A64	; Call Procedure
+call	ClipPolygonLeft_seg004_0849_A64	; Call Procedure
 
 seg004_0849_7B1:	; Logical Compare
 test	seg050_14CB, 0FFh
@@ -21926,21 +21926,21 @@ jnz	short seg004_0849_7EE ;	Jump if	Not Zero (ZF=0)
 seg004_0849_7B8:	; Logical Compare
 test	seg050_14CA, 1
 jz	short seg004_0849_7C9 ;	Jump if	Zero (ZF=1)
-call	seg004_0849_B98	; Call Procedure
+call	ClipPolygonTop_seg004_0849_B98	; Call Procedure
 test	seg050_14CB, 0FFh ; Logical Compare
 jnz	short seg004_0849_7EE ;	Jump if	Not Zero (ZF=0)
 
 seg004_0849_7C9:	; Logical Compare
 test	seg050_14CA, 4
 jz	short seg004_0849_7DA ;	Jump if	Zero (ZF=1)
-call	seg004_0849_7FC	; Call Procedure
+call	ClipPolygonRight_seg004_0849_7FC	; Call Procedure
 test	seg050_14CB, 0FFh ; Logical Compare
 jnz	short seg004_0849_7EE ;	Jump if	Not Zero (ZF=0)
 
 seg004_0849_7DA:	; Logical Compare
 test	seg050_14CA, 8
 jz	short seg004_0849_7EB ;	Jump if	Zero (ZF=1)
-call	seg004_0849_92E	; Call Procedure
+call	ClipPolygonBottom_seg004_0849_92E	; Call Procedure
 
 seg004_0849_7E4:	; Logical Compare
 test	seg050_14CB, 0FFh
@@ -21966,7 +21966,7 @@ jmp	seg052_519C_24F4[bx]
 
 
 
-seg004_0849_7FC	proc near
+ClipPolygonRight_seg004_0849_7FC	proc near
 mov	seg052_519C_14CA, 0
 
 seg004_0849_801:
@@ -22072,7 +22072,7 @@ stosw			; Store	String
 stosw			; Store	String
 mov	cx, ax
 mov	bp, ax
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 stosb			; Store	String
 
 seg004_0849_8B0:	; Increment by 1
@@ -22158,7 +22158,7 @@ mov	cx, ax
 
 seg004_0849_917:
 mov	bp, ax
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 stosb			; Store	String
 inc	di		; Increment by 1
 or	seg052_519C_14CA, al ; Logical Inclusive OR
@@ -22170,12 +22170,12 @@ jmp	seg004_0849_82C	; Jump
 seg004_0849_929:
 mov	seg052_519C_1B6, di
 retn			; Return Near from Procedure
-seg004_0849_7FC	endp
+ClipPolygonRight_seg004_0849_7FC	endp
 
 
 
 
-seg004_0849_92E	proc near
+ClipPolygonBottom_seg004_0849_92E	proc near
 mov	seg052_519C_14CA, 0
 
 seg004_0849_933:
@@ -22296,7 +22296,7 @@ stosw			; Store	String
 
 seg004_0849_9DE:
 mov	bp, ax
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 stosb			; Store	String
 
 seg004_0849_9E4:	; Increment by 1
@@ -22365,7 +22365,7 @@ mov	cx, ax
 neg	ax		; Two's Complement Negation
 stosw			; Store	String
 mov	bp, ax
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 stosb			; Store	String
 inc	di		; Increment by 1
 or	seg052_519C_14CA, al ; Logical Inclusive OR
@@ -22375,12 +22375,12 @@ jmp	seg004_0849_95E	; Jump
 seg004_0849_A5F:
 mov	seg052_519C_1B6, di
 retn			; Return Near from Procedure
-seg004_0849_92E	endp
+ClipPolygonBottom_seg004_0849_92E	endp
 
 
 
 
-seg004_0849_A64	proc near
+ClipPolygonLeft_seg004_0849_A64	proc near
 mov	seg052_519C_14CA, 0
 mov	seg052_519C_14CB, 0FFh
 mov	si, seg052_519C_1B8
@@ -22475,7 +22475,7 @@ mov	ax, bx
 seg004_0849_B12:	; Store	String
 stosw
 mov	bp, ax
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 stosb			; Store	String
 inc	di		; Increment by 1
 
@@ -22544,7 +22544,7 @@ mov	cx, ax
 mov	ax, bx
 stosw			; Store	String
 mov	bp, ax
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 stosb			; Store	String
 inc	di		; Increment by 1
 or	seg052_519C_14CA, al ; Logical Inclusive OR
@@ -22556,12 +22556,12 @@ jmp	seg004_0849_A94
 seg004_0849_B93:
 mov	seg052_519C_1B6, di
 retn			; Return Near from Procedure
-seg004_0849_A64	endp
+ClipPolygonLeft_seg004_0849_A64	endp
 
 
 
 
-seg004_0849_B98	proc near
+ClipPolygonTop_seg004_0849_B98	proc near
 mov	seg052_519C_14CA, 0
 
 seg004_0849_B9D:
@@ -22681,7 +22681,7 @@ stosw			; Store	String
 mov	bp, ax
 
 seg004_0849_C4B:	; Call Procedure
-call	seg004_0849_3A88
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88
 
 seg004_0849_C4E:	; Store	String
 stosb
@@ -22777,7 +22777,7 @@ seg004_0849_CB6:	; Two's Complement Negation
 neg	ax
 stosw			; Store	String
 mov	bp, ax
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 stosb			; Store	String
 inc	di		; Increment by 1
 
@@ -22791,7 +22791,7 @@ jmp	seg004_0849_BC8	; Jump
 seg004_0849_CCB:
 mov	seg052_519C_1B6, di
 retn			; Return Near from Procedure
-seg004_0849_B98	endp
+ClipPolygonTop_seg004_0849_B98	endp
 
 mov	ax, seg	seg048MaybeGraphics
 
@@ -22926,7 +22926,7 @@ assume ds:seg052_519C
 mov	cx, seg052_519C_C7FC
 
 seg004_0849_D79:	; Call Procedure
-call	seg003_0272_5311
+call	GfxDriverDispatch_seg003_0272_5311
 retn			; Return Near from Procedure
 seg004_0849_D7F	dw 0
 db    0
@@ -23023,7 +23023,7 @@ db 0CDh, 2, 0EBh, 3Ch
 
 
 
-seg004_0849_E15	proc near
+InitRenderFrame_seg004_0849_E15	proc near
 mov	ax, 0FFFFh
 mov	dseg_67d6_168, ax
 mov	si, dseg_67d6_158
@@ -23056,7 +23056,7 @@ stosw			; Store	String
 mov	ax, dseg_67d6_24E6
 stosw			; Store	String
 retn			; Return Near from Procedure
-seg004_0849_E15	endp
+InitRenderFrame_seg004_0849_E15	endp
 
 lodsw			; Load String
 
@@ -23090,7 +23090,7 @@ seg004_0849_E7D:	; Add
 add	si, 8
 mov	di, si
 add	di, 4		; Add
-call	seg004_0849_1006 ; Call	Procedure
+call	BuildRotationMatrix2Axis_seg004_0849_1006 ; Call	Procedure
 pop	bp
 
 seg004_0849_E89:
@@ -23098,14 +23098,14 @@ pop	si
 mov	di, [si+1Eh]
 or	di, di		; Logical Inclusive OR
 jz	short seg004_0849_E94 ;	Jump if	Zero (ZF=1)
-call	seg004_0849_EDD	; Call Procedure
+call	ScaleVertexByDI_seg004_0849_EDD	; Call Procedure
 
 seg004_0849_E94:	; Add
 add	bp, 12h
 test	word ptr [bp-12h], 0FFFFh ; Logical Compare
 jz	short seg004_0849_EA3 ;	Jump if	Zero (ZF=1)
 push	si
-call	seg004_0849_F0C	; Call Procedure
+call	BuildRotationMatrix3x3_seg004_0849_F0C	; Call Procedure
 pop	si
 
 seg004_0849_EA3:	; Call Procedure
@@ -23139,12 +23139,12 @@ mov	dseg_67d6_2482,	ax
 seg004_0849_ED2:
 mov	dseg_67d6_2484,	dx
 add	si, 0Ch		; Add
-call	seg004_0849_3B04 ; Call	Procedure
+call	TransformMatrixRow_seg004_0849_3B04 ; Call	Procedure
 retn			; Return Near from Procedure
 
 
 
-seg004_0849_EDD	proc near
+ScaleVertexByDI_seg004_0849_EDD	proc near
 mov	ax, di
 imul	word ptr [si+10h] ; Signed Multiply
 
@@ -23178,17 +23178,17 @@ neg	dx		; Two's Complement Negation
 seg004_0849_F03:
 mov	[si+4],	dx
 retn			; Return Near from Procedure
-seg004_0849_EDD	endp
+ScaleVertexByDI_seg004_0849_EDD	endp
 
 
 seg004_0849_F07:	; Return Near from Procedure
 retn
-call	seg004_0849_F0C	; Call Procedure
+call	BuildRotationMatrix3x3_seg004_0849_F0C	; Call Procedure
 retf			; Return Far from Procedure
 
 
 
-seg004_0849_F0C	proc near
+BuildRotationMatrix3x3_seg004_0849_F0C	proc near
 mov	ax, ss
 
 seg004_0849_F0E:
@@ -23345,12 +23345,12 @@ rcl	dx, 1
 seg004_0849_1002:
 mov	[bp+10h], dx
 retn			; Return Near from Procedure
-seg004_0849_F0C	endp
+BuildRotationMatrix3x3_seg004_0849_F0C	endp
 
 
 
 
-seg004_0849_1006 proc near
+BuildRotationMatrix2Axis_seg004_0849_1006 proc near
 mov	ax, ss
 
 seg004_0849_1008:
@@ -23436,7 +23436,7 @@ shl	ax, 1		; Shift	Logical	Left
 rcl	dx, 1		; Rotate Through Carry Left
 mov	[di+10h], dx
 retn			; Return Near from Procedure
-seg004_0849_1006 endp
+BuildRotationMatrix2Axis_seg004_0849_1006 endp
 
 db 0CDh, 2, 0ADh, 93h, 0FFh, 0A7h, 0F4h
 db 24h
@@ -23444,7 +23444,7 @@ db 24h
 
 
 
-seg004_0849_1099 proc near
+VMOp_ProjectAndPlotVertex_seg004_0849_1099 proc near
 lodsw			; Load String
 mov	di, ax
 add	di, 14D0h	; Add
@@ -23465,14 +23465,14 @@ imul	seg052_519C_2472 ; Signed Multiply
 idiv	cx		; Signed Divide
 add	ax, seg052_519C_2474 ; Add
 push	si
-call	seg003_0272_0	; case 0x0
+call	DispatchPlotPixel_seg003_0272_0	; case 0x0
 pop	si
 
 seg004_0849_10D2:	; Load String
 lodsw
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
-seg004_0849_1099 endp
+VMOp_ProjectAndPlotVertex_seg004_0849_1099 endp
 
 lodsw			; Load String
 mov	di, ax
@@ -23521,7 +23521,7 @@ idiv	bp		; Signed Divide
 seg004_0849_1133:	; Add
 add	ax, seg052_519C_2474
 mov	dx, si
-call	seg003_0272_8	; Call Procedure
+call	DispatchDrawHLine_seg003_0272_8	; Call Procedure
 
 seg004_0849_113E:
 pop	si
@@ -23576,7 +23576,7 @@ imul	seg052_519C_2472 ; Signed Multiply
 idiv	bp		; Signed Divide
 add	ax, seg052_519C_2474 ; Add
 mov	dx, si
-call	seg003_0272_10	; Call Procedure
+call	DispatchDrawLine_seg003_0272_10	; Call Procedure
 pop	si
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
@@ -23922,19 +23922,19 @@ jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
 
 
 
-seg004_0849_13D6 proc near
+VMOp_CopyWord_seg004_0849_13D6 proc near
 lodsw			; Load String
 mov	di, ax
 movsw			; Move Byte(s) from String to String
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
-seg004_0849_13D6 endp
+VMOp_CopyWord_seg004_0849_13D6 endp
 
 
 
 
-seg004_0849_13E0 proc near
+VMOp_IndirectStoreWord_seg004_0849_13E0 proc near
 lodsw			; Load String
 
 seg004_0849_13E1:
@@ -23948,12 +23948,12 @@ mov	[bx], ax
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
-seg004_0849_13E0 endp
+VMOp_IndirectStoreWord_seg004_0849_13E0 endp
 
 
 
 
-seg004_0849_13EF proc near
+VMOp_StoreBPIndexedWord_seg004_0849_13EF proc near
 lodsw			; Load String
 xchg	ax, di		; Exchange Register/Memory with	Register
 mov	bx, [bp+di]
@@ -23967,7 +23967,7 @@ xchg	ax, bx		; Exchange Register/Memory with	Register
 
 seg004_0849_13F9:	; Indirect Near	Jump
 jmp	seg052_519C_24F4[bx]
-seg004_0849_13EF endp
+VMOp_StoreBPIndexedWord_seg004_0849_13EF endp
 
 
 seg004_0849_13FD:	; Load String
@@ -23980,7 +23980,7 @@ mov	seg052_519C_24DE, di
 
 seg004_0849_140C:	; Call Procedure
 call	near ptr seg004_0849_351A
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 mov	di, seg052_519C_24DE
 mov	[di], bx
 mov	[di+2],	cx
@@ -24012,7 +24012,7 @@ mov	seg052_519C_24DE, di
 
 seg004_0849_1448:	; Call Procedure
 call	near ptr seg004_0849_34F2
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 mov	di, seg052_519C_24DE
 mov	[di], bx
 mov	[di+2],	cx
@@ -24098,7 +24098,7 @@ mov	[di+14D2h], cx
 mov	[di+14D4h], bp
 
 seg004_0849_14D0:	; Call Procedure
-call	seg004_0849_3A88
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88
 mov	[di+14D6h], al
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
@@ -24117,7 +24117,7 @@ seg004_0849_14F0:
 mov	[di+14D4h], bp
 
 seg004_0849_14F4:	; Call Procedure
-call	seg004_0849_3A88
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88
 mov	[di+14D6h], al
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
@@ -24243,7 +24243,7 @@ mov	bp, ax
 
 seg004_0849_15A3:	; Store	String
 stosw
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 
 seg004_0849_15A7:	; Logical Inclusive OR
 or	seg052_519C_14CA, al
@@ -24272,7 +24272,7 @@ mov	bp, ax
 stosw			; Store	String
 
 seg004_0849_15C4:	; Call Procedure
-call	seg004_0849_3A88
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88
 
 seg004_0849_15C7:	; Logical Inclusive OR
 or	seg052_519C_14CA, al
@@ -24336,7 +24336,7 @@ mov	bp, ax
 
 seg004_0849_161A:	; Store	String
 stosw
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 
 seg004_0849_161E:	; Logical Inclusive OR
 or	seg052_519C_14CA, al
@@ -24367,7 +24367,7 @@ stosw			; Store	String
 lodsw			; Load String
 mov	bp, ax
 stosw			; Store	String
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 or	seg052_519C_14CA, al ; Logical Inclusive OR
 and	seg052_519C_14CB, al ; Logical AND
 
@@ -24421,7 +24421,7 @@ stosw			; Store	String
 lodsw			; Load String
 mov	bp, ax
 stosw			; Store	String
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 or	seg052_519C_14CA, al ; Logical Inclusive OR
 and	seg052_519C_14CB, al ; Logical AND
 stosw			; Store	String
@@ -24475,7 +24475,7 @@ stosw			; Store	String
 lodsw			; Load String
 mov	bp, ax
 stosw			; Store	String
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 or	seg052_519C_14CA, al ; Logical Inclusive OR
 and	seg052_519C_14CB, al ; Logical AND
 stosw			; Store	String
@@ -24492,7 +24492,7 @@ stosw			; Store	String
 lodsw			; Load String
 mov	bp, ax
 stosw			; Store	String
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 or	seg052_519C_14CA, al ; Logical Inclusive OR
 
 seg004_0849_1727:	; Logical AND
@@ -24604,7 +24604,7 @@ seg004_0849_17D9:
 mov	bp, seg052_519C_14A6
 
 seg004_0849_17DD:	; Call Procedure
-call	seg003_0272_5311
+call	GfxDriverDispatch_seg003_0272_5311
 
 seg004_0849_17E2:
 mov	ax, ds
@@ -24687,7 +24687,7 @@ seg004_0849_1844:
 mov	bp, seg052_519C_14A6
 
 seg004_0849_1848:	; Call Procedure
-call	seg003_0272_5311
+call	GfxDriverDispatch_seg003_0272_5311
 mov	ax, ds
 mov	es, ax
 assume es:seg052_519C
@@ -24703,7 +24703,7 @@ mov	word ptr ss:5A5h, 3C91h
 test	seg052_519C_14CA, 4 ; Logical Compare
 jz	short seg004_0849_1881 ; Jump if Zero (ZF=1)
 push	si
-call	seg004_0849_26E1 ; Call	Procedure
+call	ClipPolygonFrustumPlane1_seg004_0849_26E1 ; Call	Procedure
 pop	si
 
 seg004_0849_186B:	; Logical Compare
@@ -24725,7 +24725,7 @@ seg004_0849_1881:	; Logical Compare
 test	seg052_519C_14CA, 8
 jz	short seg004_0849_18A3 ; Jump if Zero (ZF=1)
 push	si
-call	seg004_0849_27EA ; Call	Procedure
+call	ClipPolygonFrustumPlane2_seg004_0849_27EA ; Call	Procedure
 pop	si
 test	seg052_519C_14CB, 0FFh ; Logical Compare
 jnz	short seg004_0849_18E7 ; Jump if Not Zero (ZF=0)
@@ -24745,7 +24745,7 @@ jz	short seg004_0849_18C5 ; Jump if Zero (ZF=1)
 push	si
 
 seg004_0849_18AB:	; Call Procedure
-call	seg004_0849_2A08
+call	ClipPolygonFrustumPlane4_seg004_0849_2A08
 pop	si
 test	seg052_519C_14CB, 0FFh ; Logical Compare
 jnz	short seg004_0849_18E7 ; Jump if Not Zero (ZF=0)
@@ -24763,7 +24763,7 @@ seg004_0849_18C5:	; Logical Compare
 test	seg052_519C_14CA, 2
 jz	short seg004_0849_18E7 ; Jump if Zero (ZF=1)
 push	si
-call	seg004_0849_28FA ; Call	Procedure
+call	ClipPolygonFrustumPlane3_seg004_0849_28FA ; Call	Procedure
 pop	si
 
 seg004_0849_18D1:	; Logical Compare
@@ -24784,7 +24784,7 @@ jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
 
 
 
-seg004_0849_18ED proc near
+VMOp_CallNearIndirect_seg004_0849_18ED proc near
 lodsw			; Load String
 call	ax		; Indirect Call	Near Procedure
 
@@ -24794,12 +24794,12 @@ xchg	ax, bx		; Exchange Register/Memory with	Register
 
 seg004_0849_18F2:	; Indirect Near	Jump
 jmp	seg052_519C_24F4[bx]
-seg004_0849_18ED endp
+VMOp_CallNearIndirect_seg004_0849_18ED endp
 
 
 
 
-seg004_0849_18F6 proc near
+VMOp_CallSubroutine_seg004_0849_18F6 proc near
 lodsw			; Load String
 push	si
 
@@ -24816,12 +24816,12 @@ seg004_0849_1901:	; Load String
 lodsw
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
-seg004_0849_18F6 endp
+VMOp_CallSubroutine_seg004_0849_18F6 endp
 
 
 
 
-seg004_0849_1907 proc near
+VMOp_SkipIfLessThan_seg004_0849_1907 proc near
 lodsw			; Load String
 mov	cx, ax
 lodsw			; Load String
@@ -24835,12 +24835,12 @@ xchg	ax, bx		; Exchange Register/Memory with	Register
 
 seg004_0849_1916:	; Indirect Near	Jump
 jmp	seg052_519C_24F4[bx]
-seg004_0849_1907 endp
+VMOp_SkipIfLessThan_seg004_0849_1907 endp
 
 
 
 
-seg004_0849_191A proc near
+VMOp_SkipIfGreaterThan_seg004_0849_191A proc near
 lodsw			; Load String
 mov	cx, ax
 lodsw			; Load String
@@ -24852,7 +24852,7 @@ add	si, cx		; Add
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
-seg004_0849_191A endp
+VMOp_SkipIfGreaterThan_seg004_0849_191A endp
 
 
 seg004_0849_192D:	; Load String
@@ -24884,7 +24884,7 @@ pop	si
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
-; START	OF FUNCTION CHUNK FOR seg004_0849_196E
+; START	OF FUNCTION CHUNK FOR VMOp_DotProduct3BranchNeg_seg004_0849_196E
 
 seg004_0849_1950:	; Load String
 lodsw
@@ -24913,11 +24913,11 @@ pop	si
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
-; END OF FUNCTION CHUNK	FOR seg004_0849_196E
+; END OF FUNCTION CHUNK	FOR VMOp_DotProduct3BranchNeg_seg004_0849_196E
 
 
 
-seg004_0849_196E proc near
+VMOp_DotProduct3BranchNeg_seg004_0849_196E proc near
 
 ; FUNCTION CHUNK AT 1950 SIZE 0000001E BYTES
 
@@ -24974,12 +24974,12 @@ pop	si
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
-seg004_0849_196E endp
+VMOp_DotProduct3BranchNeg_seg004_0849_196E endp
 
 
 
 
-seg004_0849_19B6 proc near
+VMOp_DotProduct2BranchNeg_YZ_seg004_0849_19B6 proc near
 lodsw			; Load String
 
 seg004_0849_19B7:
@@ -25025,12 +25025,12 @@ pop	si
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
-seg004_0849_19B6 endp
+VMOp_DotProduct2BranchNeg_YZ_seg004_0849_19B6 endp
 
 
 
 
-seg004_0849_19F3 proc near
+VMOp_DotProduct2BranchNeg_XZ_seg004_0849_19F3 proc near
 lodsw			; Load String
 mov	di, ax
 lodsw			; Load String
@@ -25066,12 +25066,12 @@ pop	si
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
-seg004_0849_19F3 endp
+VMOp_DotProduct2BranchNeg_XZ_seg004_0849_19F3 endp
 
 
 
 
-seg004_0849_1A30 proc near
+VMOp_DotProduct2BranchNeg_XY_seg004_0849_1A30 proc near
 lodsw			; Load String
 mov	di, ax
 lodsw			; Load String
@@ -25125,12 +25125,12 @@ xchg	ax, bx		; Exchange Register/Memory with	Register
 
 seg004_0849_1A69:	; Indirect Near	Jump
 jmp	seg052_519C_24F4[bx]
-seg004_0849_1A30 endp
+VMOp_DotProduct2BranchNeg_XY_seg004_0849_1A30 endp
 
 
 
 
-seg004_0849_1A6D proc near
+VMOp_ComputeViewerDelta_seg004_0849_1A6D proc near
 mov	seg052_519C_25E2, 0
 
 seg004_0849_1A73:	; Load String
@@ -25175,7 +25175,7 @@ neg	ax		; Two's Complement Negation
 
 seg004_0849_1AB5:
 mov	seg052_519C_25EA, ax
-call	seg004_0849_34C5 ; Call	Procedure
+call	PatchPositionOffsets_seg004_0849_34C5 ; Call	Procedure
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 
@@ -25189,7 +25189,7 @@ xchg	ax, bx		; Exchange Register/Memory with	Register
 
 seg004_0849_1AC9:	; Indirect Near	Jump
 jmp	seg052_519C_24F4[bx]
-seg004_0849_1A6D endp
+VMOp_ComputeViewerDelta_seg004_0849_1A6D endp
 
 lodsw			; Load String
 mov	cx, ax
@@ -25294,7 +25294,7 @@ jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
 
 
 
-seg004_0849_1B4B proc near
+VMOp_TranslateVertexAlongAxis_seg004_0849_1B4B proc near
 lodsw			; Load String
 
 seg004_0849_1B4C:
@@ -25333,7 +25333,7 @@ mov	[di+14D2h], cx
 
 seg004_0849_1B82:
 mov	[di+14D4h], bp
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 
 seg004_0849_1B89:
 mov	[di+14D6h], al
@@ -25344,7 +25344,7 @@ xchg	ax, bx		; Exchange Register/Memory with	Register
 
 seg004_0849_1B8F:	; Indirect Near	Jump
 jmp	seg052_519C_24F4[bx]
-seg004_0849_1B4B endp
+VMOp_TranslateVertexAlongAxis_seg004_0849_1B4B endp
 
 
 seg004_0849_1B93:
@@ -25432,9 +25432,9 @@ seg004_0849_1C1F:
 push	seg052_519C_14C2
 call	bp		; Indirect Call	Near Procedure
 push	si
-call	seg004_0849_340E ; Call	Procedure
+call	SelectRenderPrecisionMode_seg004_0849_340E ; Call	Procedure
 pop	si
-call	seg004_0849_34C5 ; Call	Procedure
+call	PatchPositionOffsets_seg004_0849_34C5 ; Call	Procedure
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 
@@ -25461,13 +25461,13 @@ pop	si
 pop	seg052_519C_25EA
 pop	seg052_519C_25E8
 pop	seg052_519C_25E6
-call	seg004_0849_34C5 ; Call	Procedure
+call	PatchPositionOffsets_seg004_0849_34C5 ; Call	Procedure
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
 
 seg004_0849_1C6D:	; Call Procedure
-call	seg004_0849_34C5
+call	PatchPositionOffsets_seg004_0849_34C5
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 call	seg052_519C_24F4[bx] ; Indirect	Call Near Procedure
@@ -25477,7 +25477,7 @@ pop	seg052_519C_25E8
 pop	seg052_519C_25E6
 
 seg004_0849_1C83:	; Call Procedure
-call	seg004_0849_34C5
+call	PatchPositionOffsets_seg004_0849_34C5
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
@@ -25576,7 +25576,7 @@ mov	di, ax
 mov	[di+14D0h], bx
 mov	[di+14D2h], cx
 mov	[di+14D4h], bp
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 
 seg004_0849_1D3F:
 mov	[di+14D6h], al
@@ -25658,7 +25658,7 @@ mov	di, ax
 mov	[di+14D0h], bx
 mov	[di+14D2h], cx
 mov	[di+14D4h], bp
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 mov	[di+14D6h], al
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
@@ -25706,7 +25706,7 @@ seg004_0849_1E34:
 mov	[di+14D0h], bx
 mov	[di+14D2h], cx
 mov	[di+14D4h], bp
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 
 seg004_0849_1E43:
 mov	[di+14D6h], al
@@ -25756,7 +25756,7 @@ seg004_0849_1E95:
 mov	[di+14D0h], bx
 mov	[di+14D2h], cx
 mov	[di+14D4h], bp
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 mov	[di+14D6h], al
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
@@ -25802,7 +25802,7 @@ mov	di, ax
 mov	[di+14D0h], bx
 mov	[di+14D2h], cx
 mov	[di+14D4h], bp
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 mov	[di+14D6h], al
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
@@ -25846,7 +25846,7 @@ mov	di, ax
 mov	[di+14D0h], bx
 mov	[di+14D2h], cx
 mov	[di+14D4h], bp
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 mov	[di+14D6h], al
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
@@ -25890,7 +25890,7 @@ mov	[di+14D2h], cx
 
 seg004_0849_1F99:
 mov	[di+14D4h], bp
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 mov	[di+14D6h], al
 lodsw			; Load String
 
@@ -25922,7 +25922,7 @@ mov	di, ax
 mov	[di+14D0h], bx
 mov	[di+14D2h], cx
 mov	[di+14D4h], bp
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 
 seg004_0849_1FE8:
 mov	[di+14D6h], al
@@ -25947,7 +25947,7 @@ mov	ds, bx
 assume ds:seg048MaybeGraphics
 
 seg004_0849_2006:	; Call Procedure
-call	seg003_0272_536B
+call	LoadSpriteRenderPosFar_seg003_0272_536B
 
 seg004_0849_200B:
 mov	bp, seg	seg052_519C
@@ -26077,7 +26077,7 @@ lodsw			; Load String
 mov	cx, ax
 lodsw			; Load String
 mov	bp, ax
-call	seg004_0849_3534 ; Call	Procedure
+call	TransformVertexToViewSpace_seg004_0849_3534 ; Call	Procedure
 mov	di, seg052_519C_24B8
 mov	[di], bx
 mov	[di+4],	cx
@@ -26141,7 +26141,7 @@ lodsw			; Load String
 sar	ax, cl		; Shift	Arithmetic Right
 mov	cx, ax
 add	cx, seg052_519C_14AE ; Add
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 mov	[di], bx
 mov	[di+2],	cx
 mov	[di+4],	bp
@@ -26162,7 +26162,7 @@ lodsw			; Load String
 sar	ax, cl		; Shift	Arithmetic Right
 mov	cx, ax
 add	cx, seg052_519C_14AE ; Add
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 mov	[di], bx
 mov	[di+2],	cx
 mov	[di+4],	bp
@@ -26182,7 +26182,7 @@ lodsw			; Load String
 sar	ax, cl		; Shift	Arithmetic Right
 mov	cx, ax
 add	cx, seg052_519C_14AE ; Add
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 mov	[di+8],	bx
 mov	[di+0Ah], cx
 mov	[di+0Ch], bp
@@ -26229,7 +26229,7 @@ seg004_0849_222D:
 mov	cx, ax
 
 seg004_0849_222F:	; Call Procedure
-call	seg004_0849_3534
+call	TransformVertexToViewSpace_seg004_0849_3534
 mov	seg052_519C_14AC, bx
 
 seg004_0849_2236:
@@ -26266,7 +26266,7 @@ lodsw			; Load String
 sar	ax, cl		; Shift	Arithmetic Right
 mov	cx, ax
 add	cx, seg052_519C_14AE ; Add
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 mov	[di], bx
 mov	[di+2],	cx
 mov	[di+4],	bp
@@ -26297,7 +26297,7 @@ seg004_0849_229B:	; Shift	Arithmetic Right
 sar	ax, cl
 mov	cx, ax
 add	cx, seg052_519C_14AE ; Add
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 mov	[di], bx
 mov	[di+2],	cx
 mov	[di+4],	bp
@@ -26317,7 +26317,7 @@ mov	cx, ax
 add	cx, seg052_519C_14AE ; Add
 
 seg004_0849_22CE:	; Call Procedure
-call	seg004_0849_3A88
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88
 mov	[di+8],	bx
 mov	[di+0Ah], cx
 mov	[di+0Ch], bp
@@ -26348,7 +26348,7 @@ lodsw			; Load String
 sub	seg052_519C_25E8, ax ; Integer Subtraction
 lodsw			; Load String
 sub	seg052_519C_25EA, ax ; Integer Subtraction
-call	seg004_0849_34C5 ; Call	Procedure
+call	PatchPositionOffsets_seg004_0849_34C5 ; Call	Procedure
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 
@@ -26366,7 +26366,7 @@ shl	ax, cl		; Shift	Logical	Left
 
 seg004_0849_2328:
 mov	cx, ax
-call	seg004_0849_3534 ; Call	Procedure
+call	TransformVertexToViewSpace_seg004_0849_3534 ; Call	Procedure
 lodsw			; Load String
 mov	di, ax
 mov	[di+14D0h], bx
@@ -26387,7 +26387,7 @@ mov	bp, ds:[bp+14D4h]
 add	bp, [di+14D4h]	; Add
 lodsw			; Load String
 mov	di, ax
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 mov	[di+14D0h], bx
 mov	[di+14D2h], cx
 mov	[di+14D4h], bp
@@ -26411,7 +26411,7 @@ mov	bp, ds:[bp+14D4h]
 sub	bp, [di+14D4h]	; Integer Subtraction
 lodsw			; Load String
 mov	di, ax
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 mov	[di+14D0h], bx
 mov	[di+14D2h], cx
 mov	[di+14D4h], bp
@@ -26445,11 +26445,11 @@ push	seg052_519C_25E8
 push	seg052_519C_25EA
 
 seg004_0849_23F6:	; Call Procedure
-call	seg004_0849_368D
+call	ApplyYawRotationToViewMatrix_seg004_0849_368D
 push	si
-call	seg004_0849_340E ; Call	Procedure
+call	SelectRenderPrecisionMode_seg004_0849_340E ; Call	Procedure
 pop	si
-call	seg004_0849_34C5 ; Call	Procedure
+call	PatchPositionOffsets_seg004_0849_34C5 ; Call	Procedure
 lodsw			; Load String
 push	si
 add	si, ax		; Add
@@ -26483,7 +26483,7 @@ pop	seg052_519C_14B4
 pop	seg052_519C_14BE
 pop	seg052_519C_14B8
 pop	seg052_519C_14B2
-call	seg004_0849_34C5 ; Call	Procedure
+call	PatchPositionOffsets_seg004_0849_34C5 ; Call	Procedure
 lodsw			; Load String
 
 seg004_0849_2440:	; Exchange Register/Memory with	Register
@@ -26519,11 +26519,11 @@ push	seg052_519C_25E6
 seg004_0849_2477:
 push	seg052_519C_25E8
 push	seg052_519C_25EA
-call	seg004_0849_395D ; Call	Procedure
+call	ApplyRollRotationToViewMatrix_seg004_0849_395D ; Call	Procedure
 push	si
-call	seg004_0849_340E ; Call	Procedure
+call	SelectRenderPrecisionMode_seg004_0849_340E ; Call	Procedure
 pop	si
-call	seg004_0849_34C5 ; Call	Procedure
+call	PatchPositionOffsets_seg004_0849_34C5 ; Call	Procedure
 lodsw			; Load String
 push	si
 add	si, ax		; Add
@@ -26549,7 +26549,7 @@ pop	seg052_519C_14B4
 pop	seg052_519C_14BE
 pop	seg052_519C_14B8
 pop	seg052_519C_14B2
-call	seg004_0849_34C5 ; Call	Procedure
+call	PatchPositionOffsets_seg004_0849_34C5 ; Call	Procedure
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 
@@ -26581,11 +26581,11 @@ push	seg052_519C_14C2
 push	seg052_519C_25E6
 push	seg052_519C_25E8
 push	seg052_519C_25EA
-call	seg004_0849_37F5 ; Call	Procedure
+call	ApplyPitchRotationToViewMatrix_seg004_0849_37F5 ; Call	Procedure
 push	si
-call	seg004_0849_340E ; Call	Procedure
+call	SelectRenderPrecisionMode_seg004_0849_340E ; Call	Procedure
 pop	si
-call	seg004_0849_34C5 ; Call	Procedure
+call	PatchPositionOffsets_seg004_0849_34C5 ; Call	Procedure
 lodsw			; Load String
 push	si
 add	si, ax		; Add
@@ -26617,7 +26617,7 @@ pop	seg052_519C_14B8
 pop	seg052_519C_14B2
 
 seg004_0849_254E:	; Call Procedure
-call	seg004_0849_34C5
+call	PatchPositionOffsets_seg004_0849_34C5
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
@@ -26640,7 +26640,7 @@ pop	seg052_519C_25E8
 
 seg004_0849_2579:
 pop	seg052_519C_25E6
-call	seg004_0849_34C5 ; Call	Procedure
+call	PatchPositionOffsets_seg004_0849_34C5 ; Call	Procedure
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
@@ -26819,14 +26819,14 @@ mov	es, ax
 assume es:seg052_519C
 test	seg052_519C_14CA, 2 ; Logical Compare
 jz	short seg004_0849_269D ; Jump if Zero (ZF=1)
-call	seg004_0849_28FA ; Call	Procedure
+call	ClipPolygonFrustumPlane3_seg004_0849_28FA ; Call	Procedure
 test	seg052_519C_14CB, 0FFh ; Logical Compare
 jnz	short seg004_0849_26D3 ; Jump if Not Zero (ZF=0)
 
 seg004_0849_269D:	; Logical Compare
 test	seg052_519C_14CA, 1
 jz	short seg004_0849_26AE ; Jump if Zero (ZF=1)
-call	seg004_0849_2A08 ; Call	Procedure
+call	ClipPolygonFrustumPlane4_seg004_0849_2A08 ; Call	Procedure
 
 seg004_0849_26A7:	; Logical Compare
 test	seg052_519C_14CB, 0FFh
@@ -26835,7 +26835,7 @@ jnz	short seg004_0849_26D3 ; Jump if Not Zero (ZF=0)
 seg004_0849_26AE:	; Logical Compare
 test	seg052_519C_14CA, 4
 jz	short seg004_0849_26BF ; Jump if Zero (ZF=1)
-call	seg004_0849_26E1 ; Call	Procedure
+call	ClipPolygonFrustumPlane1_seg004_0849_26E1 ; Call	Procedure
 
 seg004_0849_26B8:	; Logical Compare
 test	seg052_519C_14CB, 0FFh
@@ -26846,7 +26846,7 @@ test	seg052_519C_14CA, 8
 jz	short seg004_0849_26D0 ; Jump if Zero (ZF=1)
 
 seg004_0849_26C6:	; Call Procedure
-call	seg004_0849_27EA
+call	ClipPolygonFrustumPlane2_seg004_0849_27EA
 test	seg052_519C_14CB, 0FFh ; Logical Compare
 jnz	short seg004_0849_26D3 ; Jump if Not Zero (ZF=0)
 
@@ -26866,7 +26866,7 @@ jmp	seg052_519C_24F4[bx]
 
 
 
-seg004_0849_26E1 proc near
+ClipPolygonFrustumPlane1_seg004_0849_26E1 proc near
 mov	seg052_519C_14CA, 0
 mov	seg052_519C_14CB, 0FFh
 
@@ -26947,7 +26947,7 @@ stosw			; Store	String
 stosw			; Store	String
 mov	cx, ax
 mov	bp, ax
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 stosw			; Store	String
 or	seg052_519C_14CA, al ; Logical Inclusive OR
 and	seg052_519C_14CB, al ; Logical AND
@@ -26992,7 +26992,7 @@ stosw			; Store	String
 stosw			; Store	String
 mov	cx, ax
 mov	bp, ax
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 stosw			; Store	String
 or	seg052_519C_14CA, al ; Logical Inclusive OR
 and	seg052_519C_14CB, al ; Logical AND
@@ -27001,12 +27001,12 @@ jmp	seg004_0849_2711 ; Jump
 seg004_0849_27E5:
 mov	seg052_519C_1B6, di
 retn			; Return Near from Procedure
-seg004_0849_26E1 endp
+ClipPolygonFrustumPlane1_seg004_0849_26E1 endp
 
 
 
 
-seg004_0849_27EA proc near
+ClipPolygonFrustumPlane2_seg004_0849_27EA proc near
 mov	seg052_519C_14CA, 0
 mov	seg052_519C_14CB, 0FFh
 mov	si, seg052_519C_1B8
@@ -27086,7 +27086,7 @@ mov	cx, ax
 neg	ax		; Two's Complement Negation
 stosw			; Store	String
 mov	bp, ax
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 stosw			; Store	String
 
 seg004_0849_288E:	; Logical Inclusive OR
@@ -27143,7 +27143,7 @@ mov	cx, ax
 neg	ax		; Two's Complement Negation
 stosw			; Store	String
 mov	bp, ax
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 stosw			; Store	String
 
 seg004_0849_28EA:	; Logical Inclusive OR
@@ -27154,12 +27154,12 @@ jmp	seg004_0849_281A ; Jump
 seg004_0849_28F5:
 mov	seg052_519C_1B6, di
 retn			; Return Near from Procedure
-seg004_0849_27EA endp
+ClipPolygonFrustumPlane2_seg004_0849_27EA endp
 
 
 
 
-seg004_0849_28FA proc near
+ClipPolygonFrustumPlane3_seg004_0849_28FA proc near
 mov	seg052_519C_14CA, 0
 mov	seg052_519C_14CB, 0FFh
 mov	si, seg052_519C_1B8
@@ -27241,7 +27241,7 @@ mov	cx, ax
 mov	ax, bx
 stosw			; Store	String
 mov	bp, ax
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 stosw			; Store	String
 or	seg052_519C_14CA, al ; Logical Inclusive OR
 and	seg052_519C_14CB, al ; Logical AND
@@ -27290,7 +27290,7 @@ mov	cx, ax
 mov	ax, bx
 stosw			; Store	String
 mov	bp, ax
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 stosw			; Store	String
 
 seg004_0849_29F8:	; Logical Inclusive OR
@@ -27301,12 +27301,12 @@ jmp	seg004_0849_292A ; Jump
 seg004_0849_2A03:
 mov	seg052_519C_1B6, di
 retn			; Return Near from Procedure
-seg004_0849_28FA endp
+ClipPolygonFrustumPlane3_seg004_0849_28FA endp
 
 
 
 
-seg004_0849_2A08 proc near
+ClipPolygonFrustumPlane4_seg004_0849_2A08 proc near
 mov	seg052_519C_14CA, 0
 mov	seg052_519C_14CB, 0FFh
 mov	si, seg052_519C_1B8
@@ -27385,7 +27385,7 @@ mov	ax, bx
 neg	ax		; Two's Complement Negation
 stosw			; Store	String
 mov	bp, ax
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 stosw			; Store	String
 or	seg052_519C_14CA, al ; Logical Inclusive OR
 and	seg052_519C_14CB, al ; Logical AND
@@ -27435,7 +27435,7 @@ mov	ax, bx
 neg	ax		; Two's Complement Negation
 stosw			; Store	String
 mov	bp, ax
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 stosw			; Store	String
 or	seg052_519C_14CA, al ; Logical Inclusive OR
 and	seg052_519C_14CB, al ; Logical AND
@@ -27444,7 +27444,7 @@ jmp	seg004_0849_2A38 ; Jump
 seg004_0849_2B15:
 mov	seg052_519C_1B6, di
 retn			; Return Near from Procedure
-seg004_0849_2A08 endp
+ClipPolygonFrustumPlane4_seg004_0849_2A08 endp
 
 lodsw			; Load String
 mov	di, ax
@@ -27799,7 +27799,7 @@ add	bp, seg052_519C_1494 ; Add
 add	bx, seg052_519C_1496 ; Add
 add	cx, seg052_519C_1498 ; Add
 add	bp, seg052_519C_149A ; Add
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 and	dl, al		; Logical AND
 jz	short seg004_0849_2E18 ; Jump if Zero (ZF=1)
 mov	bx, [di+14D0h]
@@ -27816,7 +27816,7 @@ seg004_0849_2E7E:	; Add
 add	bx, seg052_519C_1496
 add	cx, seg052_519C_1498 ; Add
 add	bp, seg052_519C_149A ; Add
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 and	dl, al		; Logical AND
 jz	short seg004_0849_2E18 ; Jump if Zero (ZF=1)
 mov	bx, [di+14D0h]
@@ -27831,7 +27831,7 @@ sub	bp, seg052_519C_1494 ; Integer Subtraction
 add	bx, seg052_519C_1496 ; Add
 add	cx, seg052_519C_1498 ; Add
 add	bp, seg052_519C_149A ; Add
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 and	dl, al		; Logical AND
 jnz	short seg004_0849_2ECB ; Jump if Not Zero (ZF=0)
 jmp	seg004_0849_2E18 ; Jump
@@ -27849,7 +27849,7 @@ sub	bp, seg052_519C_1494 ; Integer Subtraction
 add	bx, seg052_519C_1496 ; Add
 add	cx, seg052_519C_1498 ; Add
 add	bp, seg052_519C_149A ; Add
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 and	dl, al		; Logical AND
 jnz	short seg004_0849_2F05 ; Jump if Not Zero (ZF=0)
 
@@ -27871,7 +27871,7 @@ add	bp, seg052_519C_1494 ; Add
 sub	bx, seg052_519C_1496 ; Integer Subtraction
 sub	cx, seg052_519C_1498 ; Integer Subtraction
 sub	bp, seg052_519C_149A ; Integer Subtraction
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 and	dl, al		; Logical AND
 jnz	short seg004_0849_2F3F ; Jump if Not Zero (ZF=0)
 jmp	seg004_0849_2E18 ; Jump
@@ -27889,7 +27889,7 @@ add	bp, seg052_519C_1494 ; Add
 sub	bx, seg052_519C_1496 ; Integer Subtraction
 sub	cx, seg052_519C_1498 ; Integer Subtraction
 sub	bp, seg052_519C_149A ; Integer Subtraction
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 and	dl, al		; Logical AND
 jnz	short seg004_0849_2F79 ; Jump if Not Zero (ZF=0)
 jmp	seg004_0849_2E18 ; Jump
@@ -27911,7 +27911,7 @@ sub	bp, seg052_519C_1494
 sub	bx, seg052_519C_1496 ; Integer Subtraction
 sub	cx, seg052_519C_1498 ; Integer Subtraction
 sub	bp, seg052_519C_149A ; Integer Subtraction
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 and	dl, al		; Logical AND
 
 seg004_0849_2FAE:	; Jump if Not Zero (ZF=0)
@@ -27933,7 +27933,7 @@ sub	bp, seg052_519C_1494 ; Integer Subtraction
 sub	bx, seg052_519C_1496 ; Integer Subtraction
 sub	cx, seg052_519C_1498 ; Integer Subtraction
 sub	bp, seg052_519C_149A ; Integer Subtraction
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 and	dl, al		; Logical AND
 jnz	short seg004_0849_2FED ; Jump if Not Zero (ZF=0)
 jmp	seg004_0849_2E18 ; Jump
@@ -27954,7 +27954,7 @@ db 0F4h, 24h
 
 
 
-seg004_0849_3007 proc far
+RenderModelFrame_seg004_0849_3007 proc far
 mov	ax, seg	seg052_519C
 
 seg004_0849_300A:
@@ -27999,10 +27999,10 @@ mov	cs:seg004_0849_17BF, ax
 mov	cs:seg004_0849_1825, ax
 inc	seg052_519C_14AA ; Increment by	1
 mov	byte ptr seg052_519C_25E0, 0
-call	seg004_0849_E15	; Call Procedure
-call	seg004_0849_35FF ; Call	Procedure
-call	seg004_0849_30DC ; Call	Procedure
-call	seg004_0849_340E ; Call	Procedure
+call	InitRenderFrame_seg004_0849_E15	; Call Procedure
+call	DetermineViewDominantAxis_seg004_0849_35FF ; Call	Procedure
+call	ComputeViewProjectionScaling_seg004_0849_30DC ; Call	Procedure
+call	SelectRenderPrecisionMode_seg004_0849_340E ; Call	Procedure
 mov	ax, ss
 mov	seg052_519C_14A2, ax
 mov	seg052_519C_14A0, sp
@@ -28048,13 +28048,13 @@ assume ds:dseg_67d6
 mov	es, ax
 assume es:nothing
 retf			; Return Far from Procedure
-seg004_0849_3007 endp
+RenderModelFrame_seg004_0849_3007 endp
 
 seg004_0849_30DA dw 0
 
 
 
-seg004_0849_30DC proc near
+ComputeViewProjectionScaling_seg004_0849_30DC proc near
 mov	word ptr CodeToRunAfterPrompt_dseg_67d6_24E8, 7FFFh
 mov	word ptr CodeToRunAfterPrompt_dseg_67d6_24E8+2,	7FFFh
 mov	ax, word ptr Crit_CR_0x_dseg_67d6_14B7+1
@@ -28417,12 +28417,12 @@ seg004_0849_3406:	; Add with Carry
 adc	dx, 0
 mov	dseg_67d6_2492,	dx
 retn			; Return Near from Procedure
-seg004_0849_30DC endp
+ComputeViewProjectionScaling_seg004_0849_30DC endp
 
 
 
 
-seg004_0849_340E proc near
+SelectRenderPrecisionMode_seg004_0849_340E proc near
 test	word ptr Crit_CR_0x_dseg_67d6_14B7+1, 0FFFFh ; Logical Compare
 jnz	short seg004_0849_3436 ; Jump if Not Zero (ZF=0)
 test	word ptr Crit_PG_MP_dseg_67d6_14AC+8, 0FFFFh ; Logical Compare
@@ -28499,13 +28499,13 @@ rep movs byte ptr es:[di], byte	ptr cs:[si] ; Move Byte(s) from	String to String
 pop	es
 assume es:nothing
 retn			; Return Near from Procedure
-seg004_0849_340E endp
+SelectRenderPrecisionMode_seg004_0849_340E endp
 
 ; [00000001 BYTES: COLLAPSED FUNCTION nullsub_14. PRESS	KEYPAD "+" TO EXPAND]
 
 
 
-seg004_0849_34C5 proc near
+PatchPositionOffsets_seg004_0849_34C5 proc near
 mov	ax, Jump_Related_Examine_dseg_25E6
 mov	cs:seg004_0849_351E, ax
 mov	cs:seg004_0849_34FA, ax
@@ -28521,7 +28521,7 @@ seg004_0849_34E9:
 mov	cs:seg004_0849_351B, al
 mov	cs:seg004_0849_34F3, al
 retn			; Return Near from Procedure
-seg004_0849_34C5 endp
+PatchPositionOffsets_seg004_0849_34C5 endp
 
 seg004_0849_34F2 db 0B1h
 seg004_0849_34F3 db 5
@@ -28535,7 +28535,7 @@ db 0E0h, 5, 2Dh
 seg004_0849_3512 dw 1234h
 shl	ax, cl		; Shift	Logical	Left
 mov	cx, ax
-jmp	short seg004_0849_3534 ; Jump
+jmp	short TransformVertexToViewSpace_seg004_0849_3534 ; Jump
 seg004_0849_351A db 0B1h
 seg004_0849_351B db 5
 db 0ADh, 2Dh
@@ -28549,7 +28549,7 @@ mov	cx, ax
 
 
 
-seg004_0849_3534 proc near
+TransformVertexToViewSpace_seg004_0849_3534 proc near
 mov	ax, bx
 imul	word ptr Crit_PG_MP_dseg_67d6_14AC+6 ; Signed Multiply
 mov	di, dx
@@ -28585,7 +28585,7 @@ add	bp, dx		; Add
 mov	cx, di
 mov	bx, index_of_defending_object_dseg_24C8
 retn			; Return Near from Procedure
-seg004_0849_3534 endp
+TransformVertexToViewSpace_seg004_0849_3534 endp
 
 mov	ax, bx
 imul	word ptr Crit_PG_MP_dseg_67d6_14AC+6 ; Signed Multiply
@@ -28638,7 +28638,7 @@ retn			; Return Near from Procedure
 
 
 
-seg004_0849_35FF proc near
+DetermineViewDominantAxis_seg004_0849_35FF proc near
 mov	ax, word ptr Crit_CR_0x_dseg_67d6_14B7+5
 cwd			; AX ->	DX:AX (with sign)
 xor	ax, dx		; Logical Exclusive OR
@@ -28681,12 +28681,12 @@ sub	ax, 8		; Integer Subtraction
 add	ax, 25E6h	; Add
 mov	word ptr cs:seg004_0849_58C+2, ax
 retn			; Return Near from Procedure
-seg004_0849_35FF endp
+DetermineViewDominantAxis_seg004_0849_35FF endp
 
 
 
 
-seg004_0849_3650 proc near
+RotatePositionByYaw_seg004_0849_3650 proc near
 mov	ax, Jump_Related_Examine_dseg_25E6
 imul	EnchantmentProtectionSlots_0_1_dseg_67d6_24CA ;	Signed Multiply
 mov	cx, dx
@@ -28710,12 +28710,12 @@ shl	ax, 1		; Shift	Logical	Left
 rcl	dx, 1		; Rotate Through Carry Left
 mov	dseg_67d6_25EA,	dx
 retn			; Return Near from Procedure
-seg004_0849_3650 endp
+RotatePositionByYaw_seg004_0849_3650 endp
 
 
 
 
-seg004_0849_368D proc near
+ApplyYawRotationToViewMatrix_seg004_0849_368D proc near
 mov	ax, ss
 mov	ds, ax
 call	seg021_22FD_A34	; Call Procedure
@@ -28725,7 +28725,7 @@ mov	EnchantmentProtectionSlots_2_3_dseg_67d6_24CC, ax
 mov	EnchantmentProtectionSlots_0_1_dseg_67d6_24CA, bx
 neg	ax		; Two's Complement Negation
 mov	AttackHitZ_dseg_67d6_24CE, ax
-call	seg004_0849_3650 ; Call	Procedure
+call	RotatePositionByYaw_seg004_0849_3650 ; Call	Procedure
 mov	ax, EnchantmentProtectionSlots_0_1_dseg_67d6_24CA
 
 seg004_0849_36AC:	; Signed Multiply
@@ -28855,12 +28855,12 @@ mov	word ptr Crit_PG_MP_dseg_67d6_14AC+8, ax
 mov	ax, dseg_67d6_2498
 mov	word ptr Crit_PG_MP_dseg_67d6_14AC+0Ah,	ax
 retn			; Return Near from Procedure
-seg004_0849_368D endp
+ApplyYawRotationToViewMatrix_seg004_0849_368D endp
 
 
 
 
-seg004_0849_37B8 proc near
+RotatePositionByPitch_seg004_0849_37B8 proc near
 mov	ax, dseg_67d6_25E8
 imul	word ptr MaybeWeaponSoundCategory_dseg_24D6 ; Signed Multiply
 mov	cx, dx
@@ -28884,12 +28884,12 @@ shl	ax, 1		; Shift	Logical	Left
 rcl	dx, 1		; Rotate Through Carry Left
 mov	dseg_67d6_25EA,	dx
 retn			; Return Near from Procedure
-seg004_0849_37B8 endp
+RotatePositionByPitch_seg004_0849_37B8 endp
 
 
 
 
-seg004_0849_37F5 proc near
+ApplyPitchRotationToViewMatrix_seg004_0849_37F5 proc near
 mov	ax, ss
 mov	ds, ax
 call	seg021_22FD_A34	; Call Procedure
@@ -28899,7 +28899,7 @@ mov	CurrentAttacker_dseg_24D8, ax
 mov	word ptr MaybeWeaponSoundCategory_dseg_24D6, bx
 neg	ax		; Two's Complement Negation
 mov	word ptr WeaponInUse_dseg_24DA,	ax
-call	seg004_0849_37B8 ; Call	Procedure
+call	RotatePositionByPitch_seg004_0849_37B8 ; Call	Procedure
 mov	ax, word ptr MaybeWeaponSoundCategory_dseg_24D6
 imul	word ptr Crit_CR_0x_dseg_67d6_14B7+1 ; Signed Multiply
 mov	bx, ax
@@ -29027,12 +29027,12 @@ mov	word ptr Crit_CR_0x_dseg_67d6_14B7+3, ax
 mov	ax, dseg_67d6_2498
 mov	word ptr Crit_CR_0x_dseg_67d6_14B7+5, ax
 retn			; Return Near from Procedure
-seg004_0849_37F5 endp
+ApplyPitchRotationToViewMatrix_seg004_0849_37F5 endp
 
 
 
 
-seg004_0849_3920 proc near
+RotatePositionByRoll_seg004_0849_3920 proc near
 mov	ax, dseg_67d6_25E8
 imul	AttackDamage_dseg_24D0 ; Signed	Multiply
 mov	bx, ax
@@ -29056,12 +29056,12 @@ shl	bx, 1		; Shift	Logical	Left
 rcl	cx, 1		; Rotate Through Carry Left
 mov	Jump_Related_Examine_dseg_25E6,	cx
 retn			; Return Near from Procedure
-seg004_0849_3920 endp
+RotatePositionByRoll_seg004_0849_3920 endp
 
 
 
 
-seg004_0849_395D proc near
+ApplyRollRotationToViewMatrix_seg004_0849_395D proc near
 mov	ax, ss
 mov	ds, ax
 call	seg021_22FD_A34	; Call Procedure
@@ -29071,7 +29071,7 @@ mov	BodyPartHit_dseg_67d6_24D2, ax
 mov	AttackDamage_dseg_24D0,	bx
 neg	ax		; Two's Complement Negation
 mov	word ptr CategoryOfWeaponUsed_dseg_24D4, ax
-call	seg004_0849_3920 ; Call	Procedure
+call	RotatePositionByRoll_seg004_0849_3920 ; Call	Procedure
 mov	ax, AttackDamage_dseg_24D0
 imul	word ptr Crit_PG_MP_dseg_67d6_14AC+6 ; Signed Multiply
 mov	bx, ax
@@ -29201,12 +29201,12 @@ mov	word ptr Crit_PG_MP_dseg_67d6_14AC+8, ax
 mov	ax, dseg_67d6_2498
 mov	word ptr Crit_PG_MP_dseg_67d6_14AC+0Ah,	ax
 retn			; Return Near from Procedure
-seg004_0849_395D endp
+ApplyRollRotationToViewMatrix_seg004_0849_395D endp
 
 
 
 
-seg004_0849_3A88 proc near
+ClassifyPointAgainstFrustum_seg004_0849_3A88 proc near
 mov	ax, bp
 neg	ax		; Two's Complement Negation
 jge	short seg004_0849_3AC9 ; Jump if Greater or Equal (SF=OF)
@@ -29312,35 +29312,35 @@ retn			; Return Near from Procedure
 seg004_0849_3B01:
 mov	al, 8Eh	; 'é'
 retn			; Return Near from Procedure
-seg004_0849_3A88 endp
+ClassifyPointAgainstFrustum_seg004_0849_3A88 endp
 
 
 
 
-seg004_0849_3B04 proc near
-call	seg004_0849_3B41 ; Call	Procedure
+TransformMatrixRow_seg004_0849_3B04 proc near
+call	DotProductRow3x3_seg004_0849_3B41 ; Call	Procedure
 mov	es:14B2h, bx
 
 seg004_0849_3B0C:
 mov	es:14B4h, cx
 mov	es:14B6h, di
 add	bp, 6		; Add
-call	seg004_0849_3B41 ; Call	Procedure
+call	DotProductRow3x3_seg004_0849_3B41 ; Call	Procedure
 mov	es:14B8h, bx
 mov	es:14BAh, cx
 mov	es:14BCh, di
 add	bp, 6		; Add
-call	seg004_0849_3B41 ; Call	Procedure
+call	DotProductRow3x3_seg004_0849_3B41 ; Call	Procedure
 mov	es:14BEh, bx
 mov	es:14C0h, cx
 mov	es:14C2h, di
 retn			; Return Near from Procedure
-seg004_0849_3B04 endp
+TransformMatrixRow_seg004_0849_3B04 endp
 
 
 
 
-seg004_0849_3B41 proc near
+DotProductRow3x3_seg004_0849_3B41 proc near
 mov	ax, [bp+0]
 imul	word ptr [si]	; Signed Multiply
 mov	bx, ax
@@ -29427,7 +29427,7 @@ mov	di, 8001h
 seg004_0849_3BE6:
 pop	bx
 retn			; Return Near from Procedure
-seg004_0849_3B41 endp
+DotProductRow3x3_seg004_0849_3B41 endp
 
 
 seg004_0849_3BE8:
@@ -29814,7 +29814,7 @@ seg004_0849_3F2E:
 mov	dseg_67d6_1B6, di
 test	dseg_67d6_2690,	0FFFFh ; Logical Compare
 jnz	short seg004_0849_3F43 ; Jump if Not Zero (ZF=0)
-call	seg004_0849_3F77 ; Call	Procedure
+call	FlushFaceVertexBuffer_seg004_0849_3F77 ; Call	Procedure
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jmp	word ptr [bx+24F4h] ; Indirect Near Jump
@@ -29844,7 +29844,7 @@ jmp	seg004_0849_177E ; Jump
 
 
 
-seg004_0849_3F77 proc near
+FlushFaceVertexBuffer_seg004_0849_3F77 proc near
 test	byte ptr aFont????_sys+6, 0FFh ; Logical Compare
 jnz	short seg004_0849_3F9E ; Jump if Not Zero (ZF=0)
 pusha			; Push all General Registers
@@ -29867,7 +29867,7 @@ popa			; Pop all General Registers
 
 seg004_0849_3F9E:	; Return Near from Procedure
 retn
-seg004_0849_3F77 endp
+FlushFaceVertexBuffer_seg004_0849_3F77 endp
 
 lodsw			; Load String
 mov	di, ax
@@ -29913,7 +29913,7 @@ assume es:seg048MaybeGraphics
 mov	bx, [di]
 mov	cx, [di+2]
 mov	bp, [di+4]
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 test	al, 82h		; Logical Compare
 jnz	short seg004_0849_4080 ; Jump if Not Zero (ZF=0)
 mov	ax, bx
@@ -29928,7 +29928,7 @@ add	ax, dseg_67d6_2476 ; Add
 mov	es:seg048MaybeGraphics_B22, ax
 add	bx, word ptr Crit_PG_MP_dseg_67d6_14AC ; "CRIT\\pg.mp"
 add	cx, word ptr Crit_PG_MP_dseg_67d6_14AC+2 ; Add
-call	seg004_0849_3A88 ; Call	Procedure
+call	ClassifyPointAgainstFrustum_seg004_0849_3A88 ; Call	Procedure
 test	al, 89h		; Logical Compare
 
 seg004_0849_4040:	; Jump if Not Zero (ZF=0)
@@ -29951,7 +29951,7 @@ movsw			; Move Byte(s) from String to String
 movsw			; Move Byte(s) from String to String
 test	word ptr cs:seg004_0849_3C8F, 0FFFFh ; Logical Compare
 jnz	short seg004_0849_4080 ; Jump if Not Zero (ZF=0)
-call	seg003_0272_D1E	; Call Procedure
+call	DrawShadedLineSegmentFar_seg003_0272_D1E	; Call Procedure
 
 seg004_0849_4080:
 pop	es
@@ -30060,7 +30060,7 @@ retn			; Return Near from Procedure
 
 
 
-seg004_0849_4166 proc near
+ClipEdgeNegY_seg004_0849_4166 proc near
 push	cx
 mov	ecx, [bx+4]
 sub	ecx, [si+4]	; Integer Subtraction
@@ -30136,12 +30136,12 @@ pop	cx
 seg004_0849_421E:
 pop	cx
 retn			; Return Near from Procedure
-seg004_0849_4166 endp ;	sp =  8
+ClipEdgeNegY_seg004_0849_4166 endp ;	sp =  8
 
 
 
 
-seg004_0849_4220 proc near
+ClipEdgePosX_seg004_0849_4220 proc near
 push	cx
 mov	ecx, [bx]
 sub	ecx, [si]	; Integer Subtraction
@@ -30216,12 +30216,12 @@ pop	cx
 seg004_0849_42D1:
 pop	cx
 retn			; Return Near from Procedure
-seg004_0849_4220 endp ;	sp =  8
+ClipEdgePosX_seg004_0849_4220 endp ;	sp =  8
 
 
 
 
-seg004_0849_42D3 proc near
+ClipEdgePosY_seg004_0849_42D3 proc near
 push	cx
 mov	ecx, [bx+4]
 sub	ecx, [si+4]	; Integer Subtraction
@@ -30296,12 +30296,12 @@ pop	cx
 seg004_0849_4388:
 pop	cx
 retn			; Return Near from Procedure
-seg004_0849_42D3 endp ;	sp =  8
+ClipEdgePosY_seg004_0849_42D3 endp ;	sp =  8
 
 
 
 
-seg004_0849_438A proc near
+ClipPolygonNegX_seg004_0849_438A proc near
 mov	word ptr ds:0C88Ah, 0
 mov	ds:0C888h, si
 mov	byte ptr ds:0C88Ch, 0FFh
@@ -30393,12 +30393,12 @@ inc	word ptr ds:0C88Ah ; Increment by 1
 seg004_0849_4447:
 mov	cx, ds:0C88Ah
 retn			; Return Near from Procedure
-seg004_0849_438A endp
+ClipPolygonNegX_seg004_0849_438A endp
 
 
 
 
-seg004_0849_444C proc near
+ClipPolygonNegY_seg004_0849_444C proc near
 mov	word ptr ds:0C88Ah, 0
 mov	ds:0C888h, si
 mov	byte ptr ds:0C88Ch, 0FFh
@@ -30413,7 +30413,7 @@ nop			; No Operation
 test	byte ptr ds:0C88Ch, 0FFh ; Logical Compare
 jnz	short seg004_0849_447E ; Jump if Not Zero (ZF=0)
 lea	bx, [si-20h]	; Load Effective Address
-call	seg004_0849_4166 ; Call	Procedure
+call	ClipEdgeNegY_seg004_0849_4166 ; Call	Procedure
 add	di, 20h	; ' '   ; Add
 inc	word ptr ds:0C88Ah ; Increment by 1
 
@@ -30444,7 +30444,7 @@ jnz	short seg004_0849_44B4 ; Jump if Not Zero (ZF=0)
 lea	bx, [si-20h]	; Load Effective Address
 push	si
 xchg	bx, si		; Exchange Register/Memory with	Register
-call	seg004_0849_4166 ; Call	Procedure
+call	ClipEdgeNegY_seg004_0849_4166 ; Call	Procedure
 pop	si
 add	di, 20h	; ' '   ; Add
 inc	word ptr ds:0C88Ah ; Increment by 1
@@ -30467,7 +30467,7 @@ nop			; No Operation
 push	si
 sub	si, 20h	; ' '   ; Integer Subtraction
 xchg	bx, si		; Exchange Register/Memory with	Register
-call	seg004_0849_4166 ; Call	Procedure
+call	ClipEdgeNegY_seg004_0849_4166 ; Call	Procedure
 pop	si
 add	di, 20h	; ' '   ; Add
 inc	word ptr ds:0C88Ah ; Increment by 1
@@ -30482,7 +30482,7 @@ cmp	eax, [bx+8]	; Compare Two Operands
 jl	short seg004_0849_450C ; Jump if Less (SF!=OF)
 push	si
 sub	si, 20h	; ' '   ; Integer Subtraction
-call	seg004_0849_4166 ; Call	Procedure
+call	ClipEdgeNegY_seg004_0849_4166 ; Call	Procedure
 pop	si
 add	di, 20h	; ' '   ; Add
 inc	word ptr ds:0C88Ah ; Increment by 1
@@ -30490,12 +30490,12 @@ inc	word ptr ds:0C88Ah ; Increment by 1
 seg004_0849_450C:
 mov	cx, ds:0C88Ah
 retn			; Return Near from Procedure
-seg004_0849_444C endp
+ClipPolygonNegY_seg004_0849_444C endp
 
 
 
 
-seg004_0849_4511 proc near
+ClipPolygonPosX_seg004_0849_4511 proc near
 mov	word ptr ds:0C88Ah, 0
 mov	ds:0C888h, si
 mov	byte ptr ds:0C88Ch, 0FFh
@@ -30509,7 +30509,7 @@ nop			; No Operation
 test	byte ptr ds:0C88Ch, 0FFh ; Logical Compare
 jnz	short seg004_0849_453F ; Jump if Not Zero (ZF=0)
 lea	bx, [si-20h]	; Load Effective Address
-call	seg004_0849_4220 ; Call	Procedure
+call	ClipEdgePosX_seg004_0849_4220 ; Call	Procedure
 add	di, 20h	; ' '   ; Add
 inc	word ptr ds:0C88Ah ; Increment by 1
 
@@ -30540,7 +30540,7 @@ jnz	short seg004_0849_4575 ; Jump if Not Zero (ZF=0)
 lea	bx, [si-20h]	; Load Effective Address
 push	si
 xchg	bx, si		; Exchange Register/Memory with	Register
-call	seg004_0849_4220 ; Call	Procedure
+call	ClipEdgePosX_seg004_0849_4220 ; Call	Procedure
 pop	si
 add	di, 20h	; ' '   ; Add
 inc	word ptr ds:0C88Ah ; Increment by 1
@@ -30562,7 +30562,7 @@ nop			; No Operation
 push	si
 sub	si, 20h	; ' '   ; Integer Subtraction
 xchg	bx, si		; Exchange Register/Memory with	Register
-call	seg004_0849_4220 ; Call	Procedure
+call	ClipEdgePosX_seg004_0849_4220 ; Call	Procedure
 pop	si
 add	di, 20h	; ' '   ; Add
 inc	word ptr ds:0C88Ah ; Increment by 1
@@ -30576,7 +30576,7 @@ cmp	eax, [bx+8]	; Compare Two Operands
 jl	short seg004_0849_45C5 ; Jump if Less (SF!=OF)
 push	si
 sub	si, 20h	; ' '   ; Integer Subtraction
-call	seg004_0849_4220 ; Call	Procedure
+call	ClipEdgePosX_seg004_0849_4220 ; Call	Procedure
 pop	si
 add	di, 20h	; ' '   ; Add
 inc	word ptr ds:0C88Ah ; Increment by 1
@@ -30584,12 +30584,12 @@ inc	word ptr ds:0C88Ah ; Increment by 1
 seg004_0849_45C5:
 mov	cx, ds:0C88Ah
 retn			; Return Near from Procedure
-seg004_0849_4511 endp
+ClipPolygonPosX_seg004_0849_4511 endp
 
 
 
 
-seg004_0849_45CA proc near
+ClipPolygonPosY_seg004_0849_45CA proc near
 mov	word ptr ds:0C88Ah, 0
 mov	ds:0C888h, si
 mov	byte ptr ds:0C88Ch, 0FFh
@@ -30603,7 +30603,7 @@ nop			; No Operation
 test	byte ptr ds:0C88Ch, 0FFh ; Logical Compare
 jnz	short seg004_0849_45F9 ; Jump if Not Zero (ZF=0)
 lea	bx, [si-20h]	; Load Effective Address
-call	seg004_0849_42D3 ; Call	Procedure
+call	ClipEdgePosY_seg004_0849_42D3 ; Call	Procedure
 add	di, 20h	; ' '   ; Add
 inc	word ptr ds:0C88Ah ; Increment by 1
 
@@ -30634,7 +30634,7 @@ jnz	short seg004_0849_462F ; Jump if Not Zero (ZF=0)
 lea	bx, [si-20h]	; Load Effective Address
 push	si
 xchg	bx, si		; Exchange Register/Memory with	Register
-call	seg004_0849_42D3 ; Call	Procedure
+call	ClipEdgePosY_seg004_0849_42D3 ; Call	Procedure
 pop	si
 add	di, 20h	; ' '   ; Add
 inc	word ptr ds:0C88Ah ; Increment by 1
@@ -30658,7 +30658,7 @@ seg004_0849_4650:
 push	si
 sub	si, 20h	; ' '   ; Integer Subtraction
 xchg	bx, si		; Exchange Register/Memory with	Register
-call	seg004_0849_42D3 ; Call	Procedure
+call	ClipEdgePosY_seg004_0849_42D3 ; Call	Procedure
 pop	si
 add	di, 20h	; ' '   ; Add
 inc	word ptr ds:0C88Ah ; Increment by 1
@@ -30672,7 +30672,7 @@ cmp	eax, [bx+8]	; Compare Two Operands
 jl	short seg004_0849_4681 ; Jump if Less (SF!=OF)
 push	si
 sub	si, 20h	; ' '   ; Integer Subtraction
-call	seg004_0849_42D3 ; Call	Procedure
+call	ClipEdgePosY_seg004_0849_42D3 ; Call	Procedure
 pop	si
 add	di, 20h	; ' '   ; Add
 inc	word ptr ds:0C88Ah ; Increment by 1
@@ -30680,12 +30680,12 @@ inc	word ptr ds:0C88Ah ; Increment by 1
 seg004_0849_4681:
 mov	cx, ds:0C88Ah
 retn			; Return Near from Procedure
-seg004_0849_45CA endp
+ClipPolygonPosY_seg004_0849_45CA endp
 
 
 
 
-seg004_0849_4686 proc near
+ClipPolygonToFrustum_seg004_0849_4686 proc near
 mov	ds:0C890h, cx
 mov	ds:0C888h, si
 
@@ -30712,7 +30712,7 @@ mov	ds:0C880h, sp
 mov	si, 0C892h
 mov	di, 0CA92h
 mov	cx, ds:0C890h
-call	seg004_0849_438A ; Call	Procedure
+call	ClipPolygonNegX_seg004_0849_438A ; Call	Procedure
 jcxz	short seg004_0849_46DF ; Jump if CX is 0
 
 seg004_0849_46C0:
@@ -30720,22 +30720,22 @@ mov	si, 0CA92h
 
 seg004_0849_46C3:
 mov	di, 0C892h
-call	seg004_0849_4511 ; Call	Procedure
+call	ClipPolygonPosX_seg004_0849_4511 ; Call	Procedure
 jcxz	short seg004_0849_46DF ; Jump if CX is 0
 mov	si, 0C892h
 mov	di, 0CA92h
-call	seg004_0849_45CA ; Call	Procedure
+call	ClipPolygonPosY_seg004_0849_45CA ; Call	Procedure
 jcxz	short seg004_0849_46DF ; Jump if CX is 0
 mov	si, 0CA92h
 mov	di, 0C892h
-call	seg004_0849_444C ; Call	Procedure
+call	ClipPolygonNegY_seg004_0849_444C ; Call	Procedure
 
 seg004_0849_46DF:
 pop	si
 pop	di
 mov	si, 0C892h
 retn			; Return Near from Procedure
-seg004_0849_4686 endp
+ClipPolygonToFrustum_seg004_0849_4686 endp
 
 
 seg004_0849_46E5:
@@ -31300,7 +31300,7 @@ align 10h
 
 
 
-seg004_0849_4E10 proc near
+ProjectVerticesToScreen_seg004_0849_4E10 proc near
 push	cx
 push	si
 push	ebx
@@ -31337,7 +31337,7 @@ sub	eax, eax	; Integer Subtraction
 
 seg004_0849_4E71:
 mov	[si+10h], eax
-call	seg004_0849_50E0 ; Call	Procedure
+call	ComputeVertexLighting_seg004_0849_50E0 ; Call	Procedure
 mov	[si+1Ch], eax
 add	si, 20h	; ' '   ; Add
 loop	seg004_0849_4E37 ; Loop	while CX != 0
@@ -31347,13 +31347,13 @@ pop	ebx
 pop	si
 pop	cx
 retn			; Return Near from Procedure
-seg004_0849_4E10 endp
+ProjectVerticesToScreen_seg004_0849_4E10 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg004_0849_4E8A proc near
+RenderClippedPolygon_seg004_0849_4E8A proc near
 
 arg_0= word ptr	 4
 arg_2= word ptr	 6
@@ -31387,7 +31387,7 @@ test	Basedseg_67d6_25D3, 0FFh
 jnz	short seg004_0849_4EBA ; Jump if Not Zero (ZF=0)
 mov	si, [bp+arg_2]
 mov	cx, [bp+arg_4]
-call	seg004_0849_4686 ; Call	Procedure
+call	ClipPolygonToFrustum_seg004_0849_4686 ; Call	Procedure
 or	cx, cx		; Logical Inclusive OR
 jz	short seg004_0849_4EF4 ; Jump if Zero (ZF=1)
 nop			; No Operation
@@ -31396,7 +31396,7 @@ nop			; No Operation
 seg004_0849_4EBA:	; Logical Compare
 test	cs:seg004_0849_4EFE, 0FFh
 jnz	short seg004_0849_4EF1 ; Jump if Not Zero (ZF=0)
-call	seg004_0849_4E10 ; Call	Procedure
+call	ProjectVerticesToScreen_seg004_0849_4E10 ; Call	Procedure
 test	cs:seg004_0849_4EFE, 0FFh ; Logical Compare
 jnz	short seg004_0849_4EF1 ; Jump if Not Zero (ZF=0)
 push	[bp+arg_C]
@@ -31409,12 +31409,12 @@ test	word ptr ds:0CCEEh, 0FFFFh ; Logical Compare
 jz	short seg004_0849_4EEB ; Jump if Zero (ZF=1)
 nop			; No Operation
 nop			; No Operation
-call	seg004_0849_6720 ; Call	Procedure
+call	RasterizeTexturedPolygonX_seg004_0849_6720 ; Call	Procedure
 jmp	short seg004_0849_4EEE ; Jump
 db 90h
 
 seg004_0849_4EEB:	; Call Procedure
-call	seg004_0849_5A54
+call	RasterizeTexturedPolygonY_seg004_0849_5A54
 
 seg004_0849_4EEE:	; Add
 add	sp, 0Ch
@@ -31429,15 +31429,15 @@ pop	di
 pop	si
 pop	bp
 retn			; Return Near from Procedure
-seg004_0849_4E8A endp ;	sp = -8
+RenderClippedPolygon_seg004_0849_4E8A endp ;	sp = -8
 
-; START	OF FUNCTION CHUNK FOR seg004_0849_4E8A
+; START	OF FUNCTION CHUNK FOR RenderClippedPolygon_seg004_0849_4E8A
 
 seg004_0849_4EF9:	; - external hardware -	NMI (NON-MASKABLE INTERRUPT)
 int	2		; Generated by NMI signal in hardware.
 nop			; No Operation
 jmp	short seg004_0849_4EF4 ; Jump
-; END OF FUNCTION CHUNK	FOR seg004_0849_4E8A
+; END OF FUNCTION CHUNK	FOR RenderClippedPolygon_seg004_0849_4E8A
 seg004_0849_4EFE db 0
 push	bp
 mov	bp, sp
@@ -31565,7 +31565,7 @@ db 0C9h, 0C3h
 
 
 
-seg004_0849_50E0 proc near
+ComputeVertexLighting_seg004_0849_50E0 proc near
 push	ecx
 push	ebx
 push	esi
@@ -31585,7 +31585,7 @@ mov	eax, [si+8]
 imul	eax		; Signed Multiply
 add	eax, ecx	; Add
 adc	edx, ebx	; Add with Carry
-call	seg004_0849_515A ; Call	Procedure
+call	IntegerSquareRoot32_seg004_0849_515A ; Call	Procedure
 shr	eax, 5		; Shift	Logical	Right
 movzx	ecx, es:seg048MaybeGraphics_64C_NearDist ; Move	with Zero-Extend
 mul	ecx		; Unsigned Multiplication of AL	or AX
@@ -31611,12 +31611,12 @@ pop	esi
 pop	ebx
 pop	ecx
 retn			; Return Near from Procedure
-seg004_0849_50E0 endp
+ComputeVertexLighting_seg004_0849_50E0 endp
 
 
 
 
-seg004_0849_515A proc near
+IntegerSquareRoot32_seg004_0849_515A proc near
 push	edx
 mov	esi, eax
 mov	ebx, edx
@@ -31645,13 +31645,13 @@ mov	eax, ecx
 seg004_0849_519F:
 pop	edx
 retn			; Return Near from Procedure
-seg004_0849_515A endp
+IntegerSquareRoot32_seg004_0849_515A endp
 
 align 10h
 
 
 
-seg004_0849_51B0 proc near
+DrawTexturedSpan_seg004_0849_51B0 proc near
 mov	eax, ds:0CFE8h
 mov	ds:0CF10h, eax
 mov	eax, ds:0CFF0h
@@ -31929,13 +31929,13 @@ add	si, ds:0CF2Ch	; Add
 mov	al, gs:[si]
 mov	es:[di], al
 retn			; Return Near from Procedure
-seg004_0849_51B0 endp
+DrawTexturedSpan_seg004_0849_51B0 endp
 
 align 10h
 
 
 
-seg004_0849_54C0 proc near
+CalcLeftEdgeGradients_seg004_0849_54C0 proc near
 mov	ax, ds:0CF52h
 dec	ax		; Decrement by 1
 jns	short seg004_0849_54CA ; Jump if Not Sign (SF=0)
@@ -32134,12 +32134,12 @@ mov	ds:0CF9Ch, eax
 
 seg004_0849_5711:	; Return Near from Procedure
 retn
-seg004_0849_54C0 endp
+CalcLeftEdgeGradients_seg004_0849_54C0 endp
 
 
 
 
-seg004_0849_5712 proc near
+CalcRightEdgeGradients_seg004_0849_5712 proc near
 mov	ax, ds:0CF54h
 inc	ax		; Increment by 1
 cmp	ax, [bp+8]	; Compare Two Operands
@@ -32341,12 +32341,12 @@ mov	ds:0CFA0h, eax
 
 seg004_0849_5965:	; Return Near from Procedure
 retn
-seg004_0849_5712 endp
+CalcRightEdgeGradients_seg004_0849_5712 endp
 
 
 
 
-seg004_0849_5966 proc near
+FindTopBottomVerticesY_seg004_0849_5966 proc near
 mov	dword ptr ds:0CFCCh, 7FFFFFFFh
 mov	dword ptr ds:0CFD0h, 80000001h
 mov	bx, [bp+6]
@@ -32453,13 +32453,13 @@ lea	ax, [bx-1]
 seg004_0849_5A50:
 mov	ds:0CF58h, ax
 retn			; Return Near from Procedure
-seg004_0849_5966 endp
+FindTopBottomVerticesY_seg004_0849_5966 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg004_0849_5A54 proc near
+RasterizeTexturedPolygonY_seg004_0849_5A54 proc near
 
 arg_0= word ptr	 4
 arg_2= word ptr	 6
@@ -32476,7 +32476,7 @@ assume es:seg048MaybeGraphics
 mov	es, es:seg048MaybeGraphics_958
 assume es:seg049_3EE2
 push	gs
-call	seg004_0849_5D2E ; Call	Procedure
+call	SelectScanlineDrawer_seg004_0849_5D2E ; Call	Procedure
 mov	bx, [bp+arg_0]
 mov	ax, [bx+4]
 mov	ds:0CF3Ch, ax
@@ -32493,8 +32493,8 @@ mov	ds:0CF3Ah, ax
 mov	word ptr ds:0CF38h, 0
 mov	al, [bx+8]
 mov	ds:0CF46h, al
-call	seg004_0849_5966 ; Call	Procedure
-call	seg004_0849_5D66 ; Call	Procedure
+call	FindTopBottomVerticesY_seg004_0849_5966 ; Call	Procedure
+call	CalcInitialEdgeGradientsY_seg004_0849_5D66 ; Call	Procedure
 mov	ax, ds:0CF56h
 mov	ds:0CF5Ah, ax
 mov	eax, ds:0CF60h
@@ -32520,7 +32520,7 @@ add	eax, 41h ; 'A'  ; Add
 sar	eax, 10h	; Shift	Arithmetic Right
 cmp	ax, ds:0CF5Ah	; Compare Two Operands
 jg	short seg004_0849_5B06 ; Jump if Greater (ZF=0 & SF=OF)
-call	seg004_0849_54C0 ; Call	Procedure
+call	CalcLeftEdgeGradients_seg004_0849_54C0 ; Call	Procedure
 dec	word ptr ds:0CF52h ; Decrement by 1
 jns	short seg004_0849_5AF6 ; Jump if Not Sign (SF=0)
 mov	ax, [bp+arg_4]
@@ -32547,7 +32547,7 @@ add	eax, 41h ; 'A'  ; Add
 sar	eax, 10h	; Shift	Arithmetic Right
 cmp	ax, ds:0CF5Ah	; Compare Two Operands
 jg	short seg004_0849_5B4F ; Jump if Greater (ZF=0 & SF=OF)
-call	seg004_0849_5712 ; Call	Procedure
+call	CalcRightEdgeGradients_seg004_0849_5712 ; Call	Procedure
 inc	word ptr ds:0CF54h ; Increment by 1
 mov	ax, ds:0CF54h
 cmp	ax, [bp+arg_4]	; Compare Two Operands
@@ -32594,7 +32594,7 @@ mov	ds:0CF64h, eax
 seg004_0849_5BBE:	; Compare Two Operands
 cmp	word ptr ds:0CF44h, 1
 jz	seg004_0849_5CD2 ; Jump	if Zero	(ZF=1)
-call	seg004_0849_5CDF ; Call	Procedure
+call	ClampScanlineParams_seg004_0849_5CDF ; Call	Procedure
 push	bp
 call	word ptr ds:0CF42h ; Indirect Call Near	Procedure
 pop	bp
@@ -32665,7 +32665,7 @@ idiv	dword ptr ds:0CF74h ; Signed Divide
 mov	ds:0CF64h, eax
 
 seg004_0849_5CCB:	; Call Procedure
-call	seg004_0849_5CDF
+call	ClampScanlineParams_seg004_0849_5CDF
 call	word ptr ds:0CF42h ; Indirect Call Near	Procedure
 
 seg004_0849_5CD2:
@@ -32677,12 +32677,12 @@ pop	di
 pop	si
 pop	bp
 retn			; Return Near from Procedure
-seg004_0849_5A54 endp
+RasterizeTexturedPolygonY_seg004_0849_5A54 endp
 
 
 
 
-seg004_0849_5CDF proc near
+ClampScanlineParams_seg004_0849_5CDF proc near
 test	word ptr ds:0CF5Eh, 0FFFFh ; Logical Compare
 jns	short seg004_0849_5CF0 ; Jump if Not Sign (SF=0)
 mov	dword ptr ds:0CF5Ch, 0
@@ -32717,12 +32717,12 @@ seg004_0849_5D29:	; Decrement by 1
 dec	ax
 mov	ds:0CF5Ah, ax
 retn			; Return Near from Procedure
-seg004_0849_5CDF endp
+ClampScanlineParams_seg004_0849_5CDF endp
 
 
 
 
-seg004_0849_5D2E proc near
+SelectScanlineDrawer_seg004_0849_5D2E proc near
 test	word ptr ds:0CCF0h, 0FFFFh ; Logical Compare
 jnz	short seg004_0849_5D3E ; Jump if Not Zero (ZF=0)
 nop			; No Operation
@@ -32756,12 +32756,12 @@ jmp	short $+2	; Jump
 seg004_0849_5D62:
 mov	ds:0CF42h, ax
 retn			; Return Near from Procedure
-seg004_0849_5D2E endp
+SelectScanlineDrawer_seg004_0849_5D2E endp
 
 
 
 
-seg004_0849_5D66 proc near
+CalcInitialEdgeGradientsY_seg004_0849_5D66 proc near
 mov	ax, 20h	; ' '
 
 seg004_0849_5D69:	; Signed Multiply
@@ -33141,7 +33141,7 @@ mov	ds:0CF98h, eax
 
 seg004_0849_6227:	; Return Near from Procedure
 retn
-seg004_0849_5D66 endp
+CalcInitialEdgeGradientsY_seg004_0849_5D66 endp
 
 neg	ax		; Two's Complement Negation
 jz	short seg004_0849_622F ; Jump if Zero (ZF=1)
@@ -33155,7 +33155,7 @@ align 10h
 
 
 
-seg004_0849_6240 proc near
+CalcLeftEdgeGradientsX_seg004_0849_6240 proc near
 mov	ax, ds:0CF52h
 dec	ax		; Decrement by 1
 jns	short seg004_0849_624A ; Jump if Not Sign (SF=0)
@@ -33322,12 +33322,12 @@ mov	ds:0CF9Ch, eax
 
 seg004_0849_6436:	; Return Near from Procedure
 retn
-seg004_0849_6240 endp
+CalcLeftEdgeGradientsX_seg004_0849_6240 endp
 
 
 
 
-seg004_0849_6437 proc near
+CalcRightEdgeGradientsX_seg004_0849_6437 proc near
 mov	ax, ds:0CF54h
 inc	ax		; Increment by 1
 cmp	ax, [bp+8]	; Compare Two Operands
@@ -33494,12 +33494,12 @@ mov	ds:0CFA0h, eax
 
 seg004_0849_6631:	; Return Near from Procedure
 retn
-seg004_0849_6437 endp
+CalcRightEdgeGradientsX_seg004_0849_6437 endp
 
 
 
 
-seg004_0849_6632 proc near
+FindTopBottomVerticesX_seg004_0849_6632 proc near
 mov	dword ptr ds:0D008h, 7FFFFFFFh
 mov	dword ptr ds:0D00Ch, 80000001h
 mov	bx, [bp+6]
@@ -33600,13 +33600,13 @@ lea	ax, [bx-1]	; Load Effective Address
 seg004_0849_671C:
 mov	ds:0D024h, ax
 retn			; Return Near from Procedure
-seg004_0849_6632 endp
+FindTopBottomVerticesX_seg004_0849_6632 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg004_0849_6720 proc near
+RasterizeTexturedPolygonX_seg004_0849_6720 proc near
 
 arg_0= word ptr	 4
 arg_2= word ptr	 6
@@ -33652,8 +33652,8 @@ mov	ds:0CF3Ah, ax
 mov	word ptr ds:0CF38h, 0
 mov	al, [bx+8]
 mov	ds:0CF46h, al
-call	seg004_0849_6632 ; Call	Procedure
-call	seg004_0849_6952 ; Call	Procedure
+call	FindTopBottomVerticesX_seg004_0849_6632 ; Call	Procedure
+call	CalcInitialEdgeGradientsX_seg004_0849_6952 ; Call	Procedure
 mov	ax, ds:0D022h
 mov	ds:0CCC4h, ax	; case 0x25
 
@@ -33671,7 +33671,7 @@ add	eax, 41h ; 'A'  ; Add
 sar	eax, 10h	; Shift	Arithmetic Right
 cmp	ax, ds:0CCC4h	; case 0x25
 jg	short seg004_0849_67A8 ; Jump if Greater (ZF=0 & SF=OF)
-call	seg004_0849_6240 ; Call	Procedure
+call	CalcLeftEdgeGradientsX_seg004_0849_6240 ; Call	Procedure
 dec	word ptr ds:0CF52h ; Decrement by 1
 jns	short seg004_0849_67A8 ; Jump if Not Sign (SF=0)
 mov	ax, [bp+arg_4]
@@ -33692,7 +33692,7 @@ add	eax, 41h ; 'A'  ; Add
 sar	eax, 10h	; Shift	Arithmetic Right
 cmp	ax, ds:0CCC4h	; case 0x25
 jg	short seg004_0849_67E1 ; Jump if Greater (ZF=0 & SF=OF)
-call	seg004_0849_6437 ; Call	Procedure
+call	CalcRightEdgeGradientsX_seg004_0849_6437 ; Call	Procedure
 inc	word ptr ds:0CF54h ; Increment by 1
 mov	ax, ds:0CF54h
 cmp	ax, [bp+arg_4]	; Compare Two Operands
@@ -33704,7 +33704,7 @@ cmp	word ptr ds:0CF44h, 1
 jz	short seg004_0849_6859 ; Jump if Zero (ZF=1)
 nop			; No Operation
 nop			; No Operation
-call	seg004_0849_68B5 ; Call	Procedure
+call	PrepareAndDrawColumnStrip_seg004_0849_68B5 ; Call	Procedure
 mov	eax, ds:0CF84h
 add	ds:0D010h, eax	; Add
 mov	eax, ds:0CF88h
@@ -33731,7 +33731,7 @@ inc	word ptr ds:0CCC4h ; case 0x25
 mov	ax, ds:0CCC4h	; case 0x25
 cmp	ax, ds:0D024h	; Compare Two Operands
 jl	seg004_0849_6776 ; Jump	if Less	(SF!=OF)
-call	seg004_0849_68B5 ; Call	Procedure
+call	PrepareAndDrawColumnStrip_seg004_0849_68B5 ; Call	Procedure
 
 seg004_0849_6859:
 mov	word ptr ds:0CF44h, 0
@@ -33742,12 +33742,12 @@ pop	di
 pop	si
 pop	bp
 retn			; Return Near from Procedure
-seg004_0849_6720 endp
+RasterizeTexturedPolygonX_seg004_0849_6720 endp
 
 
 
 
-seg004_0849_6866 proc near
+ClampColumnParams_seg004_0849_6866 proc near
 test	word ptr ds:0CFE6h, 0FFFFh ; Logical Compare
 jns	short seg004_0849_6877 ; Jump if Not Sign (SF=0)
 mov	dword ptr ds:0CFE4h, 0
@@ -33782,19 +33782,19 @@ seg004_0849_68B0:	; Decrement by 1
 dec	ax
 mov	ds:0CCC4h, ax	; case 0x25
 retn			; Return Near from Procedure
-seg004_0849_6866 endp
+ClampColumnParams_seg004_0849_6866 endp
 
 
 
 
-seg004_0849_68B5 proc near
+PrepareAndDrawColumnStrip_seg004_0849_68B5 proc near
 mov	eax, ds:0D010h
 mov	ds:0CFE4h, eax
 mov	eax, ds:0D014h
 mov	ds:0CFE0h, eax
 dec	word ptr ds:0CFE2h ; Decrement by 1
 inc	word ptr ds:0CFE6h ; Increment by 1
-call	seg004_0849_6866 ; Call	Procedure
+call	ClampColumnParams_seg004_0849_6866 ; Call	Procedure
 mov	eax, ds:0CF6Ch
 rol	eax, 10h	; Rotate Left
 movsx	edx, ax		; Move with Sign-Extend
@@ -33834,15 +33834,15 @@ mov	eax, ds:0CF74h
 seg004_0849_6948:
 mov	ds:0D004h, eax
 push	bp
-call	seg004_0849_51B0 ; Call	Procedure
+call	DrawTexturedSpan_seg004_0849_51B0 ; Call	Procedure
 pop	bp
 retn			; Return Near from Procedure
-seg004_0849_68B5 endp
+PrepareAndDrawColumnStrip_seg004_0849_68B5 endp
 
 
 
 
-seg004_0849_6952 proc near
+CalcInitialEdgeGradientsX_seg004_0849_6952 proc near
 mov	ax, 20h	; ' '
 imul	word ptr ds:0CF52h ; Signed Multiply
 add	ax, [bp+6]	; Add
@@ -34179,7 +34179,7 @@ sub	ax, ax		; Integer Subtraction
 idiv	dword ptr ds:0CFC0h ; Signed Divide
 mov	ds:0CF98h, eax
 retn			; Return Near from Procedure
-seg004_0849_6952 endp
+CalcInitialEdgeGradientsX_seg004_0849_6952 endp
 
 neg	ax		; Two's Complement Negation
 jz	short seg004_0849_6D14 ; Jump if Zero (ZF=1)
@@ -34589,7 +34589,7 @@ mov	bx, 0D049h
 shl	ax, 1		; Shift	Logical	Left
 add	bx, ax		; Add
 mov	ax, [bx]
-call	seg004_0849_7EDE ; Call	Procedure
+call	MapEmsPage_seg004_0849_7EDE ; Call	Procedure
 mov	bx, ax
 push	bx
 mov	di, 0C832h
@@ -34674,7 +34674,7 @@ mov	bx, 0D049h
 shl	ax, 1		; Shift	Logical	Left
 add	bx, ax		; Add
 mov	ax, [bx]
-call	seg004_0849_7EDE ; Call	Procedure
+call	MapEmsPage_seg004_0849_7EDE ; Call	Procedure
 mov	bx, ax
 lodsw			; Load String
 mov	ch, al
@@ -34765,7 +34765,7 @@ mov	bx, 7
 sub	bx, cx		; Integer Subtraction
 mov	dx, bp
 mov	bp, ax
-call	seg004_0849_7F8D ; Call	Procedure
+call	LoadCreatureGraphicsFromDisk_seg004_0849_7F8D ; Call	Procedure
 pop	dx
 jmp	seg004_0849_809F ; Jump
 
@@ -34777,7 +34777,7 @@ jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
 
 
 
-seg004_0849_7EDE proc near
+MapEmsPage_seg004_0849_7EDE proc near
 mov	di, ax
 mov	cl, 0Ch
 shr	ax, cl		; Shift	Logical	Right
@@ -34805,20 +34805,20 @@ retn			; Return Near from Procedure
 seg004_0849_7F0A:	; Trap to Debugger
 int	3
 retn			; Return Near from Procedure
-seg004_0849_7EDE endp
+MapEmsPage_seg004_0849_7EDE endp
 
 
 
 
-seg004_0849_7F0C proc far
+IndirectCallAndReturnFar_seg004_0849_7F0C proc far
 call	word ptr cs:[bx+6D30h] ; Indirect Call Near Procedure
 retf			; Return Far from Procedure
-seg004_0849_7F0C endp
+IndirectCallAndReturnFar_seg004_0849_7F0C endp
 
 
 
 
-seg004_0849_7F12 proc far
+DecrementSoundTimers_seg004_0849_7F12 proc far
 mov	bx, ds
 mov	ax, seg	seg052_519C
 mov	ds, ax
@@ -34839,9 +34839,9 @@ jnz	short seg004_0849_7F1F ; Jump if Not Zero (ZF=0)
 mov	ds, bx
 assume ds:nothing
 retf			; Return Far from Procedure
-seg004_0849_7F12 endp
+DecrementSoundTimers_seg004_0849_7F12 endp
 
-; START	OF FUNCTION CHUNK FOR seg004_0849_7F8D
+; START	OF FUNCTION CHUNK FOR LoadCreatureGraphicsFromDisk_seg004_0849_7F8D
 
 seg004_0849_7F31:
 mov	di, 0FFh
@@ -34888,11 +34888,11 @@ add	si, 4		; Add
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jmp	word ptr [bx+24F4h] ; Indirect Near Jump
-; END OF FUNCTION CHUNK	FOR seg004_0849_7F8D
+; END OF FUNCTION CHUNK	FOR LoadCreatureGraphicsFromDisk_seg004_0849_7F8D
 
 
 
-seg004_0849_7F8D proc near
+LoadCreatureGraphicsFromDisk_seg004_0849_7F8D proc near
 
 ; FUNCTION CHUNK AT 7F31 SIZE 0000005C BYTES
 
@@ -34901,7 +34901,7 @@ add	bx, dx		; Add
 mov	al, [bx-1F37h]
 cmp	al, 0FFh	; Compare Two Operands
 jz	short seg004_0849_7F9D ; Jump if Zero (ZF=1)
-jmp	seg004_0849_805B ; Jump
+jmp	MapEmsPagePair_seg004_0849_805B ; Jump
 
 seg004_0849_7F9D:
 mov	di, 0E1C9h
@@ -34958,7 +34958,7 @@ pop	ax
 push	dx
 
 seg004_0849_7FFD:	; Call Procedure
-call	seg004_0849_805B
+call	MapEmsPagePair_seg004_0849_805B
 
 seg004_0849_8000:
 pop	bx
@@ -35010,12 +35010,12 @@ mov	byte ptr [bx-1E37h], 0FEh ; '˛'
 lodsw			; Load String
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jmp	seg052_519C_24F4[bx] ; Indirect	Near Jump
-seg004_0849_7F8D endp
+LoadCreatureGraphicsFromDisk_seg004_0849_7F8D endp
 
 
 
 
-seg004_0849_805B proc near
+MapEmsPagePair_seg004_0849_805B proc near
 mov	dl, [bx-1C37h]
 cmp	dl, 0F0h ; ''  ; Compare Two Operands
 jnb	short seg004_0849_8069 ; Jump if Not Below (CF=0)
@@ -35053,7 +35053,7 @@ retn			; Return Near from Procedure
 seg004_0849_809C:	; - external hardware -	NMI (NON-MASKABLE INTERRUPT)
 int	2		; Generated by NMI signal in hardware.
 retn			; Return Near from Procedure
-seg004_0849_805B endp
+MapEmsPagePair_seg004_0849_805B endp
 
 
 seg004_0849_809F:
@@ -35463,7 +35463,7 @@ start endp
 
 
 
-seg005_105F_113	proc near
+ShutdownAndExit_seg005_105F_113	proc near
 mov	ax, seg	seg071
 mov	ds, ax
 assume ds:seg071
@@ -35488,7 +35488,7 @@ call	CodeCallBackRelatingToCloseFile_dseg_67d6_1CFC
 seg005_105F_12E:	; Indirect Call	Far Procedure
 call	dseg_67d6_1D00
 push	ax
-seg005_105F_113	endp
+ShutdownAndExit_seg005_105F_113	endp
 
 
 
@@ -35766,7 +35766,7 @@ FileOrDirectoryExists_seg005_105F_249 endp
 
 ; Attributes: bp-based frame
 
-seg005_105F_280	proc far
+RegisterAtExitCallback_seg005_105F_280	proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -35796,7 +35796,7 @@ xor	ax, ax		; Logical Exclusive OR
 seg005_105F_2AB:
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_280	endp
+RegisterAtExitCallback_seg005_105F_280	endp
 
 
 
@@ -35842,7 +35842,7 @@ seg005_105F_2D9:
 push	[bp+MultiplicationResult_var_4]
 
 seg005_105F_2DC:	; Call Procedure
-call	ProbablyGetAnArrayReference_seg005_105F_37AF
+call	NearHeapMalloc_seg005_105F_37AF
 pop	cx
 
 seg005_105F_2E2:
@@ -35962,7 +35962,7 @@ jnz	short seg005_105F_331
 
 seg005_105F_348:
 push	[bp+arg_0]
-call	seg005_105F_113	; Call Procedure
+call	ShutdownAndExit_seg005_105F_113	; Call Procedure
 pop	cx
 pop	bp
 
@@ -35974,7 +35974,7 @@ ExitGame_seg005_105F_32C endp
 
 ; Attributes: bp-based frame
 
-seg005_105F_351	proc near
+GrowNearHeap_seg005_105F_351	proc near
 
 arg_0= word ptr	 4
 arg_2= word ptr	 6
@@ -36085,13 +36085,13 @@ pop	bp
 
 seg005_105F_3CE:	; Return Near from Procedure
 retn	4
-seg005_105F_351	endp
+GrowNearHeap_seg005_105F_351	endp
 
 
 
 ; Attributes: bp-based frame
 
-seg005_105F_3D1	proc near
+CheckAndGrowHeap_seg005_105F_3D1	proc near
 
 arg_0= word ptr	 4
 arg_2= word ptr	 6
@@ -36110,7 +36110,7 @@ mov	dx, [bp+arg_2]
 mov	ax, [bp+arg_0]
 
 seg005_105F_3E2:	; Call Procedure
-call	seg005_105F_3972
+call	CompareFarPtrs_seg005_105F_3972
 
 seg005_105F_3E5:	; Jump if Below	(CF=1)
 jb	short seg005_105F_407
@@ -36124,7 +36124,7 @@ mov	dx, [bp+arg_2]
 mov	ax, [bp+arg_0]
 
 seg005_105F_3F5:	; Call Procedure
-call	seg005_105F_3972
+call	CompareFarPtrs_seg005_105F_3972
 ja	short seg005_105F_407 ;	Jump if	Above (CF=0 & ZF=0)
 push	[bp+arg_2]
 
@@ -36132,7 +36132,7 @@ seg005_105F_3FD:
 push	[bp+arg_0]
 
 seg005_105F_400:	; Call Procedure
-call	seg005_105F_351
+call	GrowNearHeap_seg005_105F_351
 
 seg005_105F_403:	; Logical Inclusive OR
 or	ax, ax
@@ -36148,13 +36148,13 @@ xor	ax, ax
 seg005_105F_40E:
 pop	bp
 retn			; Return Near from Procedure
-seg005_105F_3D1	endp
+CheckAndGrowHeap_seg005_105F_3D1	endp
 
 
 
 ; Attributes: bp-based frame
 
-seg005_105F_410	proc near
+AllocateHeapBlock_seg005_105F_410	proc near
 
 var_8= word ptr	-8
 var_6= word ptr	-6
@@ -36172,7 +36172,7 @@ mov	cx, [bp+FileHandleMaybe_arg_2]
 
 seg005_105F_420:	; no of	block addresses?
 mov	bx, [bp+arg_0]
-call	near ptr seg005_105F_3632 ; Call Procedure
+call	near ptr FarPtrAdd_seg005_105F_3632 ; Call Procedure
 mov	[bp+var_4], ax
 mov	[bp+var_2], dx
 mov	cx, dseg_67d6_A2
@@ -36182,7 +36182,7 @@ mov	bx, dseg_67d6_A0
 
 seg005_105F_434:
 mov	ax, [bp+var_4]
-call	seg005_105F_3972 ; Call	Procedure
+call	CompareFarPtrs_seg005_105F_3972 ; Call	Procedure
 jb	short seg005_105F_44F ;	Jump if	Below (CF=1)
 mov	cx, dseg_67d6_AA
 mov	bx, dseg_67d6_A8
@@ -36190,7 +36190,7 @@ mov	dx, [bp+var_2]
 mov	ax, [bp+var_4]
 
 seg005_105F_44A:	; Call Procedure
-call	seg005_105F_3972
+call	CompareFarPtrs_seg005_105F_3972
 jbe	short seg005_105F_457 ;	Jump if	Below or Equal (CF=1 | ZF=1)
 
 seg005_105F_44F:
@@ -36207,7 +36207,7 @@ mov	[bp+var_8], dx
 mov	[bp+var_6], ax
 push	[bp+var_2]
 push	[bp+var_4]
-call	seg005_105F_351	; Call Procedure
+call	GrowNearHeap_seg005_105F_351	; Call Procedure
 or	ax, ax		; Logical Inclusive OR
 jnz	short seg005_105F_473 ;	Jump if	Not Zero (ZF=0)
 jmp	short seg005_105F_44F ;	Jump
@@ -36220,7 +36220,7 @@ seg005_105F_479:
 mov	sp, bp
 pop	bp
 retn			; Return Near from Procedure
-seg005_105F_410	endp
+AllocateHeapBlock_seg005_105F_410	endp
 
 
 
@@ -36246,7 +36246,7 @@ jz	short seg005_105F_4B7 ;	Jump if	Zero (ZF=1)
 cmp	word ptr [si], 0 ; Compare Two Operands
 jge	short seg005_105F_4A7 ;	Jump if	Greater	or Equal (SF=OF)
 push	si
-call	seg005_105F_54F	; Call Procedure
+call	FlushFileBuffer_seg005_105F_54F	; Call Procedure
 pop	cx
 or	ax, ax		; Logical Inclusive OR
 jz	short seg005_105F_4A7 ;	Jump if	Zero (ZF=1)
@@ -36258,7 +36258,7 @@ jz	short seg005_105F_4B7 ;	Jump if	Zero (ZF=1)
 push	word ptr [si+8]
 
 seg005_105F_4B1:	; Call Procedure
-call	seg005_105F_36E0
+call	NearHeapFree_seg005_105F_36E0
 pop	cx
 
 seg005_105F_4B7:	; Compare Two Operands
@@ -36281,7 +36281,7 @@ jz	short seg005_105F_4F7 ;	Jump if	Zero (ZF=1)
 xor	ax, ax		; Logical Exclusive OR
 push	ax
 push	word ptr [si+0Ch]
-call	seg005_105F_137F ; Call	Procedure
+call	BuildTempFileName_seg005_105F_137F ; Call	Procedure
 push	ax		; FileToDelete
 
 seg005_105F_4EC:	; Call Procedure
@@ -36305,7 +36305,7 @@ CloseFile_seg005_105F_47D endp
 
 ; Attributes: bp-based frame
 
-seg005_105F_4FD	proc far
+GetFreeHeapSize_seg005_105F_4FD	proc far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -36323,7 +36323,7 @@ mov	dx, dseg_67d6_AA
 mov	ax, dseg_67d6_A8
 mov	cx, dseg_67d6_A6
 mov	bx, dseg_67d6_A4
-call	near ptr seg005_105F_3692 ; Call Procedure
+call	near ptr FarPtrDiff_seg005_105F_3692 ; Call Procedure
 mov	[bp+var_4], ax
 mov	[bp+var_2], dx
 cmp	[bp+var_2], 0	; Compare Two Operands
@@ -36346,13 +36346,13 @@ mov	ax, [bp+var_4]
 mov	sp, bp
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_4FD	endp
+GetFreeHeapSize_seg005_105F_4FD	endp
 
 
 
 ; Attributes: bp-based frame
 
-seg005_105F_54F	proc far
+FlushFileBuffer_seg005_105F_54F	proc far
 
 arg_0= word ptr	 6
 
@@ -36369,7 +36369,7 @@ or	si, si
 
 seg005_105F_559:	; Jump if Not Zero (ZF=0)
 jnz	short seg005_105F_562
-call	seg005_105F_644	; Call Procedure
+call	FlushAllOpenFiles_seg005_105F_644	; Call Procedure
 
 seg005_105F_560:	; Jump
 jmp	short seg005_105F_5CF
@@ -36457,13 +36457,13 @@ pop	di
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_54F	endp
+FlushFileBuffer_seg005_105F_54F	endp
 
 
 
 ; Attributes: bp-based frame
 
-seg005_105F_5D5	proc far
+ReadLineFromStream_seg005_105F_5D5	proc far
 
 var_2= word ptr	-2
 arg_0= word ptr	 6
@@ -36518,7 +36518,7 @@ jmp	short seg005_105F_616 ;	Jump
 
 seg005_105F_60F:
 push	di
-call	seg005_105F_19C1 ; Call	Procedure
+call	IncrementAndReadChar_seg005_105F_19C1 ; Call	Procedure
 pop	cx
 
 seg005_105F_616:
@@ -36552,13 +36552,13 @@ pop	si
 mov	sp, bp
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_5D5	endp
+ReadLineFromStream_seg005_105F_5D5	endp
 
 
 
 ; Attributes: bp-based frame
 
-seg005_105F_644	proc far
+FlushAllOpenFiles_seg005_105F_644	proc far
 
 var_2= word ptr	-2
 
@@ -36577,7 +36577,7 @@ seg005_105F_658:	; Logical Compare
 test	word ptr [si+2], 3
 jz	short seg005_105F_669 ;	Jump if	Zero (ZF=1)
 push	si
-call	seg005_105F_54F	; Call Procedure
+call	FlushFileBuffer_seg005_105F_54F	; Call Procedure
 pop	cx
 
 seg005_105F_666:	; Increment by 1
@@ -36597,7 +36597,7 @@ pop	si
 mov	sp, bp
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_644	endp
+FlushAllOpenFiles_seg005_105F_644	endp
 
 
 
@@ -36813,7 +36813,7 @@ push	ax
 xor	ax, ax		; Logical Exclusive OR
 push	ax
 push	si		; table	offset
-call	seg005_105F_E7E	; Call Procedure
+call	OpenFileStream_seg005_105F_E7E	; Call Procedure
 add	sp, 8		; Add
 or	ax, ax		; Logical Inclusive OR
 jz	short seg005_105F_7CC ;	Jump if	Zero (ZF=1)
@@ -37098,7 +37098,7 @@ jmp	short seg005_105F_930 ;	Jump
 
 seg005_105F_927:
 push	[bp+FileHandle_arg_0]
-call	seg005_105F_19C1 ; Call	Procedure
+call	IncrementAndReadChar_seg005_105F_19C1 ; Call	Procedure
 pop	cx
 
 seg005_105F_930:
@@ -37202,7 +37202,7 @@ FileReadToAddress_seg005_105F_954 endp
 
 ; Attributes: bp-based frame
 
-seg005_105F_9A1	proc near
+CountBufferedBytes_seg005_105F_9A1	proc near
 
 arg_0= word ptr	 4
 
@@ -37291,7 +37291,7 @@ pop	di
 pop	si
 pop	bp
 retn	2		; Return Near from Procedure
-seg005_105F_9A1	endp
+CountBufferedBytes_seg005_105F_9A1	endp
 
 
 
@@ -37314,7 +37314,7 @@ mov	bp, sp
 push	si
 mov	si, [bp+FileReadParams_arg_0]
 push	si
-call	seg005_105F_54F	; Call Procedure
+call	FlushFileBuffer_seg005_105F_54F	; Call Procedure
 pop	cx
 or	ax, ax		; Logical Inclusive OR
 jz	short seg005_105F_A1E ;	Jump if	Zero (ZF=1)
@@ -37331,7 +37331,7 @@ seg005_105F_A24:	; Compare Two Operands
 cmp	word ptr [si], 0
 jle	short seg005_105F_A34 ;	Jump if	Less or	Equal (ZF=1 | SF!=OF)
 push	si
-call	seg005_105F_9A1	; Call Procedure
+call	CountBufferedBytes_seg005_105F_9A1	; Call Procedure
 cwd			; AX ->	DX:AX (with sign)
 sub	[bp+SeekLocationLow_arg_2], ax ; Integer Subtraction
 sbb	[bp+SeekLocationHigh_arg_4], dx	; Integer Subtraction with Borrow
@@ -37369,7 +37369,7 @@ SeekToAFile_Location_seg005_105F_A07 endp
 
 ; Attributes: bp-based frame
 
-seg005_105F_A6D	proc far
+GetFilePosition_seg005_105F_A6D	proc far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -37390,7 +37390,7 @@ mov	[bp+var_2], dx
 cmp	word ptr [si], 0 ; Compare Two Operands
 jge	short seg005_105F_A9A ;	Jump if	Greater	or Equal (SF=OF)
 push	si
-call	seg005_105F_9A1	; Call Procedure
+call	CountBufferedBytes_seg005_105F_9A1	; Call Procedure
 cwd			; AX ->	DX:AX (with sign)
 
 seg005_105F_A92:	; Add
@@ -37400,7 +37400,7 @@ jmp	short seg005_105F_AA5 ;	Jump
 
 seg005_105F_A9A:
 push	si
-call	seg005_105F_9A1	; Call Procedure
+call	CountBufferedBytes_seg005_105F_9A1	; Call Procedure
 cwd			; AX ->	DX:AX (with sign)
 sub	[bp+var_4], ax	; Integer Subtraction
 sbb	[bp+var_2], dx	; Integer Subtraction with Borrow
@@ -37412,7 +37412,7 @@ pop	si
 mov	sp, bp
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_A6D	endp
+GetFilePosition_seg005_105F_A6D	endp
 
 
 
@@ -37457,7 +37457,7 @@ seg005_105F_AE0:
 push	[bp+arg_0]
 push	[bp+var_4]
 push	[bp+arg_6]
-call	seg005_105F_C96	; Call Procedure
+call	WriteBufferedData_seg005_105F_C96	; Call Procedure
 xor	dx, dx		; Logical Exclusive OR
 div	si		; Unsigned Divide
 jmp	short seg005_105F_AF4 ;	Jump
@@ -37583,7 +37583,7 @@ push	ax
 push	[bp+arg_0]
 lea	ax, [bp+arg_2]	; Load Effective Address
 push	ax
-call	MaybeMusicInit_seg005_105F_2BEE	; Call Procedure
+call	SprintfEngine_seg005_105F_2BEE	; Call Procedure
 pop	bp
 retf			; Return Far from Procedure
 MaybeMusicInit_seg005_105F_B47 endp ; sp = -8
@@ -37592,7 +37592,7 @@ MaybeMusicInit_seg005_105F_B47 endp ; sp = -8
 
 ; Attributes: bp-based frame
 
-seg005_105F_B5E	proc far
+PutCharDecrement_seg005_105F_B5E	proc far
 
 arg_0= byte ptr	 6
 arg_2= word ptr	 8
@@ -37610,19 +37610,19 @@ push	si
 mov	al, [bp+arg_0]
 cbw			; AL ->	AX (with sign)
 push	ax
-call	seg005_105F_B7A	; Call Procedure
+call	PutCharToFileBuffer_seg005_105F_B7A	; Call Procedure
 pop	cx
 pop	cx
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_B5E	endp
+PutCharDecrement_seg005_105F_B5E	endp
 
 
 
 ; Attributes: bp-based frame
 
-seg005_105F_B7A	proc far
+PutCharToFileBuffer_seg005_105F_B7A	proc far
 
 arg_0= byte ptr	 6
 arg_2= word ptr	 8
@@ -37657,7 +37657,7 @@ jnz	short seg005_105F_BC2 ;	Jump if	Not Zero (ZF=0)
 
 seg005_105F_BB1:
 push	si
-call	seg005_105F_54F	; Call Procedure
+call	FlushFileBuffer_seg005_105F_54F	; Call Procedure
 pop	cx
 
 seg005_105F_BB8:	; Logical Inclusive OR
@@ -37696,7 +37696,7 @@ cmp	word ptr [si], 0 ; Compare Two Operands
 seg005_105F_BE8:	; Jump if Zero (ZF=1)
 jz	short seg005_105F_BF7
 push	si
-call	seg005_105F_54F	; Call Procedure
+call	FlushFileBuffer_seg005_105F_54F	; Call Procedure
 pop	cx
 or	ax, ax		; Logical Inclusive OR
 jz	short seg005_105F_BF7 ;	Jump if	Zero (ZF=1)
@@ -37721,7 +37721,7 @@ jnz	short seg005_105F_C2B ;	Jump if	Not Zero (ZF=0)
 
 seg005_105F_C1E:
 push	si
-call	seg005_105F_54F	; Call Procedure
+call	FlushFileBuffer_seg005_105F_54F	; Call Procedure
 pop	cx
 
 seg005_105F_C25:	; Logical Inclusive OR
@@ -37783,7 +37783,7 @@ seg005_105F_C7E:
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_B7A	endp
+PutCharToFileBuffer_seg005_105F_B7A	endp
 
 push	bp
 mov	bp, sp
@@ -37797,7 +37797,7 @@ push	ax
 seg005_105F_C8C:
 push	si
 push	cs
-call	near ptr seg005_105F_B7A ; Call	Procedure
+call	near ptr PutCharToFileBuffer_seg005_105F_B7A ; Call	Procedure
 pop	cx
 pop	cx
 pop	si
@@ -37807,7 +37807,7 @@ retf			; Return Far from Procedure
 
 ; Attributes: bp-based frame
 
-seg005_105F_C96	proc near
+WriteBufferedData_seg005_105F_C96	proc near
 
 var_2= word ptr	-2
 arg_0= word ptr	 4
@@ -37843,7 +37843,7 @@ mov	al, [bx]
 cbw			; AL ->	AX (with sign)
 push	ax
 push	cs
-call	near ptr seg005_105F_B7A ; Call	Procedure
+call	near ptr PutCharToFileBuffer_seg005_105F_B7A ; Call	Procedure
 pop	cx
 pop	cx
 
@@ -37883,7 +37883,7 @@ jz	short seg005_105F_CFB ;	Jump if	Zero (ZF=1)
 push	si
 
 seg005_105F_CEF:	; Call Procedure
-call	seg005_105F_54F
+call	FlushFileBuffer_seg005_105F_54F
 pop	cx
 or	ax, ax		; Logical Inclusive OR
 jz	short seg005_105F_CFB ;	Jump if	Zero (ZF=1)
@@ -37927,7 +37927,7 @@ jmp	short seg005_105F_D37 ;	Jump
 
 seg005_105F_D2A:
 push	si
-call	seg005_105F_54F	; Call Procedure
+call	FlushFileBuffer_seg005_105F_54F	; Call Procedure
 pop	cx
 
 seg005_105F_D31:	; Logical Inclusive OR
@@ -37941,7 +37941,7 @@ push	[bp+arg_4]
 
 seg005_105F_D3B:
 push	word ptr [si+0Ah]
-call	seg005_105F_1D81 ; Call	Procedure
+call	MemCopy_seg005_105F_1D81 ; Call	Procedure
 add	sp, 6		; Add
 mov	ax, [si]
 
@@ -38007,7 +38007,7 @@ seg005_105F_D99:
 mov	al, [bx]
 push	ax
 push	cs
-call	near ptr seg005_105F_B5E ; Call	Procedure
+call	near ptr PutCharDecrement_seg005_105F_B5E ; Call	Procedure
 pop	cx
 pop	cx
 
@@ -38052,7 +38052,7 @@ pop	si
 mov	sp, bp
 pop	bp
 retn	6		; Return Near from Procedure
-seg005_105F_C96	endp
+WriteBufferedData_seg005_105F_C96	endp
 
 
 
@@ -38133,7 +38133,7 @@ xor	ax, ax
 push	ax
 mov	ax, 1D06h
 push	ax
-call	seg005_105F_E7E	; Call Procedure
+call	OpenFileStream_seg005_105F_E7E	; Call Procedure
 
 seg005_105F_E42:	; Add
 add	sp, 8
@@ -38169,14 +38169,14 @@ push	ax
 seg005_105F_E71:
 mov	ax, 1D16h
 push	ax
-call	seg005_105F_E7E	; Call Procedure
+call	OpenFileStream_seg005_105F_E7E	; Call Procedure
 add	sp, 8		; Add
 retn			; Return Near from Procedure
 
 
 ; Attributes: bp-based frame
 
-seg005_105F_E7E	proc far
+OpenFileStream_seg005_105F_E7E	proc far
 
 TableOffset_arg_0= word	ptr  6
 arg_2= word ptr	 8
@@ -38254,7 +38254,7 @@ jz	short seg005_105F_EF0 ;	Jump if	Zero (ZF=1)
 push	word ptr [si+8]
 
 seg005_105F_EEA:	; Call Procedure
-call	seg005_105F_36E0
+call	NearHeapFree_seg005_105F_36E0
 
 seg005_105F_EEF:
 pop	cx
@@ -38289,7 +38289,7 @@ jnz	short seg005_105F_F39 ;	Jump if	Not Zero (ZF=0)
 push	di
 
 seg005_105F_F22:	; Call Procedure
-call	ProbablyGetAnArrayReference_seg005_105F_37AF
+call	NearHeapMalloc_seg005_105F_37AF
 pop	cx
 mov	[bp+arg_2], ax
 
@@ -38325,7 +38325,7 @@ pop	di
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_E7E	endp
+OpenFileStream_seg005_105F_E7E	endp
 
 
 seg005_105F_F56:
@@ -38370,7 +38370,7 @@ retn			; Return Near from Procedure
 
 ; Attributes: bp-based frame
 
-seg005_105F_F7F	proc far
+ScanFormatted_seg005_105F_F7F	proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -38391,11 +38391,11 @@ push	ax
 seg005_105F_F91:
 mov	ax, 0F56h
 push	ax
-call	seg005_105F_20C1 ; Call	Procedure
+call	FormatScanfParser_seg005_105F_20C1 ; Call	Procedure
 add	sp, 0Ah		; Add
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_F7F	endp
+ScanFormatted_seg005_105F_F7F	endp
 
 push	bp
 
@@ -38413,7 +38413,7 @@ mov	ax, 0F56h
 push	ax
 
 seg005_105F_FB2:	; Call Procedure
-call	seg005_105F_20C1
+call	FormatScanfParser_seg005_105F_20C1
 add	sp, 0Ah		; Add
 pop	bp
 retf			; Return Far from Procedure
@@ -38421,7 +38421,7 @@ retf			; Return Far from Procedure
 
 ; Attributes: bp-based frame
 
-seg005_105F_FBA	proc far
+SetDateTimeFromEpoch_seg005_105F_FBA	proc far
 
 NewTime_var_8= word ptr	-8
 NewDate_var_4= word ptr	-4
@@ -38443,7 +38443,7 @@ push	word ptr [bx+2]
 push	word ptr [bx]
 
 seg005_105F_FD0:	; Call Procedure
-call	seg005_105F_11AF
+call	EpochToDateTime_seg005_105F_11AF
 add	sp, 8		; Add
 lea	ax, [bp+NewDate_var_4] ; Load Effective	Address
 push	ax
@@ -38463,7 +38463,7 @@ seg005_105F_FEE:
 mov	sp, bp
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_FBA	endp
+SetDateTimeFromEpoch_seg005_105F_FBA	endp
 
 
 
@@ -38541,7 +38541,7 @@ GetRNGSeed_seg005_105F_FF2 endp
 
 ; Attributes: bp-based frame
 
-seg005_105F_103F proc far
+StringFindLastChar_seg005_105F_103F proc far
 
 String_arg_0= word ptr	6
 arg_2= byte ptr	 8
@@ -38590,7 +38590,7 @@ pop	di
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_103F endp
+StringFindLastChar_seg005_105F_103F endp
 
 
 
@@ -38757,7 +38757,7 @@ add	ax, 0F84Eh	; -1970
 push	ax
 
 seg005_105F_1156:	; if 1 decrement var6
-call	seg005_105F_2AE1
+call	IsDaylightSavingTime_seg005_105F_2AE1
 or	ax, ax		; Logical Inclusive OR
 jz	short seg005_105F_1160 ; Jump if Zero (ZF=1)
 dec	[bp+HoursThisYear_var_6] ; Decrement by	1
@@ -38815,7 +38815,7 @@ CalculateRNGSeeds_seg005_105F_108C endp
 
 ; Attributes: bp-based frame
 
-seg005_105F_11AF proc far
+EpochToDateTime_seg005_105F_11AF proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -38860,7 +38860,7 @@ push	[bp+arg_2]
 
 seg005_105F_11F4:
 push	[bp+arg_0]
-call	seg005_105F_3522 ; Call	Procedure
+call	NearToFarCallThunk_seg005_105F_3522 ; Call	Procedure
 mov	[bp+arg_0], ax
 
 seg005_105F_11FD:
@@ -38879,7 +38879,7 @@ push	ax
 push	dx
 push	[bp+arg_2]
 push	[bp+arg_0]
-call	seg005_105F_3522 ; Call	Procedure
+call	NearToFarCallThunk_seg005_105F_3522 ; Call	Procedure
 mov	[bp+arg_0], ax
 mov	[bp+arg_2], dx
 xor	ax, ax		; Logical Exclusive OR
@@ -38892,7 +38892,7 @@ push	[bp+arg_2]
 
 seg005_105F_1232:
 push	[bp+arg_0]
-call	seg005_105F_3522 ; Call	Procedure
+call	NearToFarCallThunk_seg005_105F_3522 ; Call	Procedure
 shl	ax, 1		; Shift	Logical	Left
 shl	ax, 1		; Shift	Logical	Left
 add	ax, 7BCh	; Add
@@ -38922,7 +38922,7 @@ push	ax
 push	dx
 push	[bp+arg_2]
 push	[bp+arg_0]
-call	seg005_105F_3522 ; Call	Procedure
+call	NearToFarCallThunk_seg005_105F_3522 ; Call	Procedure
 add	[si], ax	; Add
 xor	ax, ax		; Logical Exclusive OR
 mov	dx, 2238h
@@ -38955,7 +38955,7 @@ push	[bp+arg_2]
 push	[bp+arg_0]
 
 seg005_105F_12BE:	; Call Procedure
-call	seg005_105F_3522
+call	NearToFarCallThunk_seg005_105F_3522
 push	ax
 xor	ax, ax		; Logical Exclusive OR
 push	ax
@@ -38964,7 +38964,7 @@ seg005_105F_12C5:
 mov	ax, [si]
 add	ax, 0F84Eh	; -1970
 push	ax
-call	seg005_105F_2AE1 ; Call	Procedure
+call	IsDaylightSavingTime_seg005_105F_2AE1 ; Call	Procedure
 
 seg005_105F_12CE:	; Logical Inclusive OR
 or	ax, ax
@@ -38995,7 +38995,7 @@ push	ax
 push	dx
 push	[bp+arg_2]
 push	[bp+arg_0]
-call	seg005_105F_3522 ; Call	Procedure
+call	NearToFarCallThunk_seg005_105F_3522 ; Call	Procedure
 mov	[bp+arg_0], ax
 mov	[bp+arg_2], dx
 add	[bp+arg_0], 1	; Add
@@ -39070,13 +39070,13 @@ pop	di
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_11AF endp ;	sp = -54h
+EpochToDateTime_seg005_105F_11AF endp ;	sp = -54h
 
 
 
 ; Attributes: bp-based frame
 
-seg005_105F_137F proc near
+BuildTempFileName_seg005_105F_137F proc near
 
 arg_0= word ptr	 4
 arg_2= word ptr	 6
@@ -39105,7 +39105,7 @@ push	ax
 xor	ax, ax		; Logical Exclusive OR
 push	ax
 push	[bp+arg_0]
-call	seg005_105F_1D42 ; Call	Procedure
+call	UnsignedToString_seg005_105F_1D42 ; Call	Procedure
 add	sp, 8		; Add
 mov	ax, offset DummyExt_a__2 ; ".$$$"
 push	ax
@@ -39117,7 +39117,7 @@ mov	ax, si
 pop	si
 pop	bp
 retn	4		; Return Near from Procedure
-seg005_105F_137F endp
+BuildTempFileName_seg005_105F_137F endp
 
 push	bp
 mov	bp, sp
@@ -39138,7 +39138,7 @@ seg005_105F_13DE:	; Add
 add	dseg_67d6_86DE,	ax
 mov	ax, dseg_67d6_86DE
 push	ax
-call	seg005_105F_137F ; Call	Procedure
+call	BuildTempFileName_seg005_105F_137F ; Call	Procedure
 mov	si, ax
 xor	ax, ax		; Logical Exclusive OR
 push	ax
@@ -39194,7 +39194,7 @@ ToLowerCase_seg005_105F_1400 endp
 
 ; Attributes: bp-based frame
 
-seg005_105F_142C proc far
+CharToUpper_seg005_105F_142C proc far
 
 arg_0= word ptr	 6
 
@@ -39224,7 +39224,7 @@ mov	ah, 0
 seg005_105F_1456:
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_142C endp
+CharToUpper_seg005_105F_142C endp
 
 
 
@@ -39448,7 +39448,7 @@ jz	short seg005_105F_158C ; Jump if Zero (ZF=1)
 
 seg005_105F_1585:
 push	si
-call	seg005_105F_54F	; Call Procedure
+call	FlushFileBuffer_seg005_105F_54F	; Call Procedure
 
 seg005_105F_158B:
 pop	cx
@@ -39588,7 +39588,7 @@ retf			; Return Far from Procedure
 
 ; Attributes: bp-based frame
 
-seg005_105F_1614 proc near
+CheckStackSpaceAvailable_seg005_105F_1614 proc near
 
 arg_0= word ptr	 4
 
@@ -39618,13 +39618,13 @@ pop	bp
 
 seg005_105F_1635:	; Return Near from Procedure
 retn
-seg005_105F_1614 endp
+CheckStackSpaceAvailable_seg005_105F_1614 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg005_105F_1636 proc near
+GrowHeapAllocation_seg005_105F_1636 proc near
 
 arg_0= word ptr	 4
 arg_2= word ptr	 6
@@ -39654,12 +39654,12 @@ mov	ax, 0FFFFh
 seg005_105F_1665:
 pop	bp
 retn			; Return Near from Procedure
-seg005_105F_1636 endp
+GrowHeapAllocation_seg005_105F_1636 endp
 
 push	bp
 mov	bp, sp
 push	word ptr [bp+6]
-call	seg005_105F_1614 ; Call	Procedure
+call	CheckStackSpaceAvailable_seg005_105F_1614 ; Call	Procedure
 pop	cx
 pop	bp
 retf			; Return Far from Procedure
@@ -39669,7 +39669,7 @@ mov	ax, [bp+6]
 cwd			; AX ->	DX:AX (with sign)
 push	dx
 push	ax
-call	seg005_105F_1636 ; Call	Procedure
+call	GrowHeapAllocation_seg005_105F_1636 ; Call	Procedure
 pop	cx
 pop	cx
 pop	bp
@@ -39778,7 +39778,7 @@ CloseFileByHandle_seg005_16C7 endp
 
 
 
-seg005_105F_16E5 proc far
+GetAvailableStackSpace_seg005_105F_16E5 proc far
 mov	ax, sp
 sub	ax, dseg_67d6_9E ; Integer Subtraction
 sub	ax, 220h	; Integer Subtraction
@@ -39788,13 +39788,13 @@ xor	ax, ax		; Logical Exclusive OR
 seg005_105F_16F2:	; Logical AND
 and	al, 0F0h
 retf			; Return Far from Procedure
-seg005_105F_16E5 endp
+GetAvailableStackSpace_seg005_105F_16E5 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg005_105F_16F5 proc near
+DOSDateTimeToUnixTime_seg005_105F_16F5 proc near
 
 var_6= word ptr	-6
 var_4= word ptr	-4
@@ -39887,7 +39887,7 @@ push	[bp+var_4]
 xor	ax, ax		; Logical Exclusive OR
 push	ax
 push	[bp+var_6]
-call	seg005_105F_2AE1 ; Call	Procedure
+call	IsDaylightSavingTime_seg005_105F_2AE1 ; Call	Procedure
 or	ax, ax		; Logical Inclusive OR
 
 seg005_105F_17A1:	; Jump if Zero (ZF=1)
@@ -39917,13 +39917,13 @@ seg005_105F_17B5:
 mov	sp, bp
 pop	bp
 retn	4		; Return Near from Procedure
-seg005_105F_16F5 endp
+DOSDateTimeToUnixTime_seg005_105F_16F5 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg005_105F_17BB proc far
+IsAtEndOfFile_seg005_105F_17BB proc far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -40019,7 +40019,7 @@ seg005_105F_181F:
 mov	sp, bp
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_17BB endp
+IsAtEndOfFile_seg005_105F_17BB endp
 
 
 
@@ -40318,7 +40318,7 @@ push	dx
 push	cx
 
 seg005_105F_18F8:	; Call Procedure
-call	seg005_105F_16F5
+call	DOSDateTimeToUnixTime_seg005_105F_16F5
 xchg	ax, cx		; Exchange Register/Memory with	Register
 jmp	short seg005_105F_190C ; Jump
 
@@ -40393,7 +40393,7 @@ LoadFile_seg005_105F_18C4 endp
 
 
 
-seg005_105F_193F proc near
+FlushDirtyOpenFiles_seg005_105F_193F proc near
 push	si
 push	di
 
@@ -40412,7 +40412,7 @@ jnz	short seg005_105F_195B ; Jump if Not Zero (ZF=0)
 push	si
 
 seg005_105F_1955:	; Call Procedure
-call	seg005_105F_54F
+call	FlushFileBuffer_seg005_105F_54F
 pop	cx
 
 seg005_105F_195B:	; Add
@@ -40428,13 +40428,13 @@ jnz	short seg005_105F_1949 ; Jump if Not Zero (ZF=0)
 pop	di
 pop	si
 retn			; Return Near from Procedure
-seg005_105F_193F endp
+FlushDirtyOpenFiles_seg005_105F_193F endp
 
 
 
 ; Attributes: bp-based frame
 
-seg005_105F_1968 proc near
+RefillFileReadBuffer_seg005_105F_1968 proc near
 
 arg_0= word ptr	 4
 
@@ -40448,7 +40448,7 @@ test	word ptr [si+2], 200h
 
 seg005_105F_1974:	; Jump if Zero (ZF=1)
 jz	short seg005_105F_1979
-call	seg005_105F_193F ; Call	Procedure
+call	FlushDirtyOpenFiles_seg005_105F_193F ; Call	Procedure
 
 seg005_105F_1979:
 push	word ptr [si+6]
@@ -40503,13 +40503,13 @@ seg005_105F_19BC:
 pop	si
 pop	bp
 retn	2		; Return Near from Procedure
-seg005_105F_1968 endp
+RefillFileReadBuffer_seg005_105F_1968 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg005_105F_19C1 proc far
+IncrementAndReadChar_seg005_105F_19C1 proc far
 
 arg_0= word ptr	 6
 
@@ -40524,14 +40524,14 @@ inc	ax		; Increment by 1
 mov	[si], ax
 push	si
 push	cs
-call	near ptr seg005_105F_19D9 ; Call Procedure
+call	near ptr ReadCharFromStream_seg005_105F_19D9 ; Call Procedure
 pop	cx
 pop	si
 pop	bp
 
 seg005_105F_19D5:	; Return Far from Procedure
 retf
-seg005_105F_19C1 endp
+IncrementAndReadChar_seg005_105F_19C1 endp
 
 pop	ax
 push	cs
@@ -40540,7 +40540,7 @@ push	ax
 
 ; Attributes: bp-based frame
 
-seg005_105F_19D9 proc far
+ReadCharFromStream_seg005_105F_19D9 proc far
 
 arg_0= word ptr	 6
 
@@ -40582,7 +40582,7 @@ or	word ptr [si+2], 80h
 cmp	word ptr [si+6], 0 ; Compare Two Operands
 jz	short seg005_105F_1A28 ; Jump if Zero (ZF=1)
 push	si
-call	seg005_105F_1968 ; Call	Procedure
+call	RefillFileReadBuffer_seg005_105F_1968 ; Call	Procedure
 or	ax, ax		; Logical Inclusive OR
 jz	short seg005_105F_1A26 ; Jump if Zero (ZF=1)
 jmp	short seg005_105F_1A0C ; Jump
@@ -40593,7 +40593,7 @@ jmp	short seg005_105F_19E5
 seg005_105F_1A28:	; Logical Compare
 test	word ptr [si+2], 200h
 jz	short seg005_105F_1A32 ; Jump if Zero (ZF=1)
-call	seg005_105F_193F ; Call	Procedure
+call	FlushDirtyOpenFiles_seg005_105F_193F ; Call	Procedure
 
 seg005_105F_1A32:
 mov	ax, 1
@@ -40616,7 +40616,7 @@ jnz	short seg005_105F_1A6D
 mov	al, [si+4]
 cbw			; AL ->	AX (with sign)
 push	ax
-call	seg005_105F_17BB ; Call	Procedure
+call	IsAtEndOfFile_seg005_105F_17BB ; Call	Procedure
 pop	cx
 cmp	ax, 1		; Compare Two Operands
 
@@ -40655,12 +40655,12 @@ seg005_105F_1A84:
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_19D9 endp
+ReadCharFromStream_seg005_105F_19D9 endp
 
 mov	ax, 1D06h
 push	ax
 push	cs
-call	near ptr seg005_105F_19D9 ; Call Procedure
+call	near ptr ReadCharFromStream_seg005_105F_19D9 ; Call Procedure
 pop	cx
 
 seg005_105F_1A90:	; Return Far from Procedure
@@ -40930,7 +40930,7 @@ lea	ax, [bp-8]	; Load Effective Address
 push	ax
 
 seg005_105F_1B82:	; Call Procedure
-call	seg005_105F_26FE
+call	SaveSegmentRegisters_seg005_105F_26FE
 pop	cx
 
 seg005_105F_1B88:	; Load Effective Address
@@ -41397,7 +41397,7 @@ Hex2DecimalString_seg005_105F_1D1B endp
 
 ; Attributes: bp-based frame
 
-seg005_105F_1D42 proc far
+UnsignedToString_seg005_105F_1D42 proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -41419,7 +41419,7 @@ push	ax
 call	Hex2Dec_seg005_105F_1C9E ; Call	Procedure
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_1D42 endp
+UnsignedToString_seg005_105F_1D42 endp
 
 
 
@@ -41459,7 +41459,7 @@ Hex2Dec_seg005_105F_1D5C endp
 
 ; Attributes: bp-based frame
 
-seg005_105F_1D81 proc far
+MemCopy_seg005_105F_1D81 proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -41487,7 +41487,7 @@ pop	di
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_1D81 endp
+MemCopy_seg005_105F_1D81 endp
 
 
 
@@ -42184,7 +42184,7 @@ Rename_File_seg005_20A2	endp
 
 ; Attributes: bp-based frame
 
-seg005_105F_20C1 proc near
+FormatScanfParser_seg005_105F_20C1 proc near
 
 var_2A=	word ptr -2Ah
 var_A= word ptr	-0Ah
@@ -42218,12 +42218,12 @@ mov	[bp+var_4], 0
 seg005_105F_20CE:
 mov	[bp+var_6], 0
 jmp	short seg005_105F_20EE ; Jump
-seg005_105F_20C1 endp
+FormatScanfParser_seg005_105F_20C1 endp
 
 
 
 
-seg005_105F_20D5 proc near
+LoadNextArgPointer_seg005_105F_20D5 proc near
 mov	di, [bp+0Ch]
 
 seg005_105F_20D8:	; Logical Compare
@@ -42251,9 +42251,9 @@ assume es:dseg_67d6
 seg005_105F_20E9:	; Add
 add	word ptr [bp+0Ch], 2
 retn			; Return Near from Procedure
-seg005_105F_20D5 endp
+LoadNextArgPointer_seg005_105F_20D5 endp
 
-; START	OF FUNCTION CHUNK FOR seg005_105F_20C1
+; START	OF FUNCTION CHUNK FOR FormatScanfParser_seg005_105F_20C1
 
 seg005_105F_20EE:
 push	es
@@ -42469,7 +42469,7 @@ push	si
 push	[bp+FunctionArgument_arg_4]
 push	[bp+AnotherFunctionToCall_arg_2]
 push	[bp+FunctionToCall_arg_0]
-call	seg005_105F_257F ; Call	Procedure
+call	ParseIntegerFromInput_seg005_105F_257F ; Call	Procedure
 add	sp, 0Eh		; Add
 cmp	[bp+var_8], 0	; Compare Two Operands
 jle	short seg005_105F_2228 ; Jump if Less or Equal (ZF=1 | SF!=OF)
@@ -42478,7 +42478,7 @@ jnz	short seg005_105F_2225 ; Jump if Not Zero (ZF=0)
 inc	[bp+var_4]	; Increment by 1
 
 seg005_105F_2219:	; Call Procedure
-call	seg005_105F_20D5
+call	LoadNextArgPointer_seg005_105F_20D5
 stosw			; Store	String
 test	[bp+var_1], 4	; Logical Compare
 jz	short seg005_105F_2225 ; Jump if Zero (ZF=1)
@@ -42498,7 +42498,7 @@ jmp	seg005_105F_2481
 seg005_105F_2230:	; case 0x13
 call	$+3
 jmp	seg005_105F_249C ; Jump
-; END OF FUNCTION CHUNK	FOR seg005_105F_20C1
+; END OF FUNCTION CHUNK	FOR FormatScanfParser_seg005_105F_20C1
 
 seg005_105F_2236:
 push	word ptr [bp+8]
@@ -42549,7 +42549,7 @@ pop	dx
 seg005_105F_2282:	; Logical Compare
 test	byte ptr [bp-1], 1
 jnz	short seg005_105F_2298 ; Jump if Not Zero (ZF=0)
-call	seg005_105F_20D5 ; Call	Procedure
+call	LoadNextArgPointer_seg005_105F_20D5 ; Call	Procedure
 inc	word ptr [bp-4]	; Increment by 1
 xchg	ax, dx		; Exchange Register/Memory with	Register
 stosw			; Store	String
@@ -42560,7 +42560,7 @@ stosw			; Store	String
 
 seg005_105F_2298:	; Jump
 jmp	seg005_105F_20F0
-; START	OF FUNCTION CHUNK FOR seg005_105F_20C1
+; START	OF FUNCTION CHUNK FOR FormatScanfParser_seg005_105F_20C1
 
 seg005_105F_229B:	; default
 jmp	seg005_105F_2481
@@ -42576,7 +42576,7 @@ push	ax
 push	[bp+FunctionArgument_arg_4]
 push	[bp+AnotherFunctionToCall_arg_2]
 push	[bp+FunctionToCall_arg_0]
-call	seg005_105F_3997 ; Call	Procedure
+call	ThunkToEcvt_seg005_105F_3997 ; Call	Procedure
 add	sp, 0Ch		; Add
 cmp	[bp+var_8], 0	; Compare Two Operands
 jle	short seg005_105F_22FA ; Jump if Less or Equal (ZF=1 | SF!=OF)
@@ -42584,7 +42584,7 @@ mov	al, [bp+var_1]
 cbw			; AL ->	AX (with sign)
 test	ax, 1		; Logical Compare
 jnz	short seg005_105F_22F4 ; Jump if Not Zero (ZF=0)
-call	seg005_105F_20D5 ; Call	Procedure
+call	LoadNextArgPointer_seg005_105F_20D5 ; Call	Procedure
 inc	[bp+var_4]	; Increment by 1
 test	[bp+var_1], 4	; Logical Compare
 jz	short seg005_105F_22DC ; Jump if Zero (ZF=1)
@@ -42603,26 +42603,26 @@ xor	ax, ax
 seg005_105F_22E9:
 push	ax
 push	di
-call	seg005_105F_399B ; Call	Procedure
+call	ThunkToGcvt_seg005_105F_399B ; Call	Procedure
 add	sp, 4		; Add
 jmp	seg005_105F_20F0 ; Jump
 
 seg005_105F_22F4:	; Call Procedure
-call	seg005_105F_399F
+call	ThunkToLdcvt_seg005_105F_399F
 jmp	seg005_105F_20F0 ; Jump
 
 seg005_105F_22FA:	; Call Procedure
-call	seg005_105F_399F
+call	ThunkToLdcvt_seg005_105F_399F
 jl	short seg005_105F_229B ; Jump if Less (SF!=OF)
 jmp	seg005_105F_2495 ; case	0x0
 
 seg005_105F_2302:	; case 0xF
 call	$+3
 jmp	seg005_105F_249C ; Jump
-; END OF FUNCTION CHUNK	FOR seg005_105F_20C1
+; END OF FUNCTION CHUNK	FOR FormatScanfParser_seg005_105F_20C1
 test	byte ptr [bp-1], 1 ; Logical Compare
 jnz	short seg005_105F_2314 ; Jump if Not Zero (ZF=0)
-call	seg005_105F_20D5 ; Call	Procedure
+call	LoadNextArgPointer_seg005_105F_20D5 ; Call	Procedure
 inc	word ptr [bp-4]	; Increment by 1
 
 seg005_105F_2314:	; Logical AND
@@ -42673,12 +42673,12 @@ stosb			; Store	String
 
 seg005_105F_235B:	; Jump
 jmp	seg005_105F_20F0
-; START	OF FUNCTION CHUNK FOR seg005_105F_20C1
+; START	OF FUNCTION CHUNK FOR FormatScanfParser_seg005_105F_20C1
 
 seg005_105F_235E:	; case 0x6
 test	[bp+var_1], 1
 jnz	short seg005_105F_2367 ; Jump if Not Zero (ZF=0)
-call	seg005_105F_20D5 ; Call	Procedure
+call	LoadNextArgPointer_seg005_105F_20D5 ; Call	Procedure
 
 seg005_105F_2367:
 mov	si, [bp+var_A]
@@ -42786,7 +42786,7 @@ mov	si, [bp+var_A]
 seg005_105F_2404:	; Logical Compare
 test	[bp+var_1], 1
 jnz	short seg005_105F_240D ; Jump if Not Zero (ZF=0)
-call	seg005_105F_20D5 ; Call	Procedure
+call	LoadNextArgPointer_seg005_105F_20D5 ; Call	Procedure
 
 seg005_105F_240D:	; Decrement by 1
 dec	si
@@ -42922,7 +42922,7 @@ seg005_105F_24BD:	; Jump if Zero (ZF=1)
 jz	short seg005_105F_24B7
 pop	cx
 jmp	short seg005_105F_2481 ; default
-; END OF FUNCTION CHUNK	FOR seg005_105F_20C1
+; END OF FUNCTION CHUNK	FOR FormatScanfParser_seg005_105F_20C1
 
 seg005_105F_24C2:	; Integer Subtraction
 sub	dx, dx
@@ -42991,7 +42991,7 @@ pop	cx
 
 seg005_105F_251F:	; default
 jmp	seg005_105F_2481
-; START	OF FUNCTION CHUNK FOR seg005_105F_20C1
+; START	OF FUNCTION CHUNK FOR FormatScanfParser_seg005_105F_20C1
 
 seg005_105F_2522:
 pop	di
@@ -43005,7 +43005,7 @@ pop	bp
 
 seg005_105F_2527:	; Return Near from Procedure
 retn
-; END OF FUNCTION CHUNK	FOR seg005_105F_20C1
+; END OF FUNCTION CHUNK	FOR FormatScanfParser_seg005_105F_20C1
 seg005_105F_2528 dw offset seg005_105F_2495 ; jump table for switch statement
 dw offset seg005_105F_2495
 dw offset seg005_105F_2495
@@ -43031,7 +43031,7 @@ dw offset seg005_105F_21B9
 
 
 
-seg005_105F_2554 proc near
+ConvertCharToDigit_seg005_105F_2554 proc near
 push	bx
 sub	bl, 30h	; '0'   ; Integer Subtraction
 jb	short seg005_105F_257C ; Jump if Below (CF=1)
@@ -43068,13 +43068,13 @@ stc			; Set Carry Flag
 
 seg005_105F_257E:	; Return Near from Procedure
 retn
-seg005_105F_2554 endp
+ConvertCharToDigit_seg005_105F_2554 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg005_105F_257F proc near
+ParseIntegerFromInput_seg005_105F_257F proc near
 
 var_6= word ptr	-6
 var_4= word ptr	-4
@@ -43206,7 +43206,7 @@ jmp	short seg005_105F_266F
 seg005_105F_2658:
 mov	cx, [bp+arg_6]
 xchg	ax, bx		; Exchange Register/Memory with	Register
-call	seg005_105F_2554 ; Call	Procedure
+call	ConvertCharToDigit_seg005_105F_2554 ; Call	Procedure
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jb	short seg005_105F_2612 ; Jump if Below (CF=1)
 xchg	ax, si		; Exchange Register/Memory with	Register
@@ -43232,7 +43232,7 @@ pop	cx
 seg005_105F_267E:
 mov	cx, [bp+arg_6]
 xchg	ax, bx		; Exchange Register/Memory with	Register
-call	seg005_105F_2554 ; Call	Procedure
+call	ConvertCharToDigit_seg005_105F_2554 ; Call	Procedure
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jnb	short seg005_105F_2665 ; Jump if Not Below (CF=0)
 jmp	short seg005_105F_26B4 ; Jump
@@ -43260,7 +43260,7 @@ pop	cx
 seg005_105F_26AA:
 mov	cx, [bp+arg_6]
 xchg	ax, bx		; Exchange Register/Memory with	Register
-call	seg005_105F_2554 ; Call	Procedure
+call	ConvertCharToDigit_seg005_105F_2554 ; Call	Procedure
 xchg	ax, bx		; Exchange Register/Memory with	Register
 jnb	short seg005_105F_268A ; Jump if Not Below (CF=0)
 
@@ -43313,13 +43313,13 @@ pop	si
 mov	sp, bp
 pop	bp
 retn			; Return Near from Procedure
-seg005_105F_257F endp
+ParseIntegerFromInput_seg005_105F_257F endp
 
 
 
 ; Attributes: bp-based frame
 
-seg005_105F_26FE proc far
+SaveSegmentRegisters_seg005_105F_26FE proc far
 
 arg_0= word ptr	 6
 
@@ -43337,7 +43337,7 @@ mov	word ptr [si+6], ds
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_26FE endp
+SaveSegmentRegisters_seg005_105F_26FE endp
 
 
 
@@ -43483,7 +43483,7 @@ or	si, 4040h
 seg005_105F_27A4:
 push	[bp+var_14]
 push	[bp+var_16]
-call	seg005_105F_16F5 ; Call	Procedure
+call	DOSDateTimeToUnixTime_seg005_105F_16F5 ; Call	Procedure
 xchg	ax, cx		; Exchange Register/Memory with	Register
 jmp	short seg005_105F_27BD ; Jump
 
@@ -43643,7 +43643,7 @@ MaybeAComparison_seg005_105F_282C endp
 
 ; Attributes: bp-based frame
 
-seg005_105F_2862 proc far
+CompareStrings_seg005_105F_2862 proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -43673,7 +43673,7 @@ pop	di
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_2862 endp
+CompareStrings_seg005_105F_2862 endp
 
 
 
@@ -43772,7 +43772,7 @@ ExtractString_seg005_105F_28CF endp
 
 ; Attributes: bp-based frame
 
-seg005_105F_28FB proc far
+CompareStringsCaseInsensitive_seg005_105F_28FB proc far
 
 arg_0= word ptr	 6
 Command_PATH_arg_2= word ptr  8
@@ -43826,7 +43826,7 @@ pop	di_arg2
 pop	si_arg0
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_28FB endp
+CompareStringsCaseInsensitive_seg005_105F_28FB endp
 
 
 
@@ -44039,7 +44039,7 @@ GetTimezone_seg005_105F_2960 endp
 
 ; Attributes: bp-based frame
 
-seg005_105F_2AE1 proc near
+IsDaylightSavingTime_seg005_105F_2AE1 proc near
 
 Year_arg_0= word ptr  4
 arg_2= word ptr	 6
@@ -44169,7 +44169,7 @@ seg005_105F_2BBB:
 pop	si
 pop	bp
 retn	8		; Return Near from Procedure
-seg005_105F_2AE1 endp
+IsDaylightSavingTime_seg005_105F_2AE1 endp
 
 
 
@@ -44202,39 +44202,39 @@ DeleteFile_seg005_2BC0 endp
 
 
 
-seg005_105F_2BD6 proc near
+WordToHexString_seg005_105F_2BD6 proc near
 mov	al, dh
-call	seg005_105F_2BDD ; Call	Procedure
+call	ByteToHexChars_seg005_105F_2BDD ; Call	Procedure
 mov	al, dl
-seg005_105F_2BD6 endp
+WordToHexString_seg005_105F_2BD6 endp
 
 
 
 
-seg005_105F_2BDD proc near
+ByteToHexChars_seg005_105F_2BDD proc near
 aam	10h		; ASCII	Adjust AX after	Multiply
 xchg	ah, al		; Exchange Register/Memory with	Register
-call	seg005_105F_2BE6 ; Call	Procedure
+call	NibbleToHexChar_seg005_105F_2BE6 ; Call	Procedure
 xchg	ah, al		; Exchange Register/Memory with	Register
-seg005_105F_2BDD endp
+ByteToHexChars_seg005_105F_2BDD endp
 
 
 
 
-seg005_105F_2BE6 proc near
+NibbleToHexChar_seg005_105F_2BE6 proc near
 add	al, 90h	; 'ê'   ; Add
 daa			; Decimal Adjust AL after Addition
 adc	al, 40h	; '@'   ; Add with Carry
 daa			; Decimal Adjust AL after Addition
 stosb			; Store	String
 retn			; Return Near from Procedure
-seg005_105F_2BE6 endp
+NibbleToHexChar_seg005_105F_2BE6 endp
 
 
 
 ; Attributes: bp-based frame
 
-MaybeMusicInit_seg005_105F_2BEE	proc near
+SprintfEngine_seg005_105F_2BEE	proc near
 
 var_96=	word ptr -96h
 var_45=	word ptr -45h
@@ -44264,12 +44264,12 @@ mov	[bp+var_12], 0
 mov	[bp+var_14], 50h ; 'P'
 mov	[bp+var_16], 0
 jmp	short seg005_105F_2C4E ; Jump
-MaybeMusicInit_seg005_105F_2BEE	endp
+SprintfEngine_seg005_105F_2BEE	endp
 
 
 
 
-seg005_105F_2C08 proc near
+StrLen_seg005_105F_2C08 proc near
 push	di
 mov	cx, 0FFFFh
 xor	al, al		; Logical Exclusive OR
@@ -44278,22 +44278,22 @@ not	cx		; One's Complement Negation
 dec	cx		; Decrement by 1
 pop	di
 retn			; Return Near from Procedure
-seg005_105F_2C08 endp
+StrLen_seg005_105F_2C08 endp
 
 
 
 
-seg005_105F_2C15 proc near
+SprintfStoreByte_seg005_105F_2C15 proc near
 mov	ss:[di], al
 inc	di		; Increment by 1
 dec	byte ptr [bp-14h] ; Decrement by 1
 jnz	short seg005_105F_2C4D ; Jump if Not Zero (ZF=0)
-seg005_105F_2C15 endp
+SprintfStoreByte_seg005_105F_2C15 endp
 
 
 
 
-seg005_105F_2C1E proc near
+SprintfFlushBuffer_seg005_105F_2C1E proc near
 push	bx
 push	cx
 push	dx
@@ -44321,9 +44321,9 @@ pop	bx
 
 seg005_105F_2C4D:	; Return Near from Procedure
 retn
-seg005_105F_2C1E endp
+SprintfFlushBuffer_seg005_105F_2C1E endp
 
-; START	OF FUNCTION CHUNK FOR MaybeMusicInit_seg005_105F_2BEE
+; START	OF FUNCTION CHUNK FOR SprintfEngine_seg005_105F_2BEE
 
 seg005_105F_2C4E:
 push	es
@@ -44351,7 +44351,7 @@ mov	ss:[di], al
 inc	di		; Increment by 1
 dec	byte ptr [bp+var_14] ; Decrement by 1
 jg	short seg005_105F_2C5D ; Jump if Greater (ZF=0 & SF=OF)
-call	seg005_105F_2C1E ; Call	Procedure
+call	SprintfFlushBuffer_seg005_105F_2C1E ; Call	Procedure
 jmp	short seg005_105F_2C5D ; Jump
 
 seg005_105F_2C74:	; Jump
@@ -44584,7 +44584,7 @@ mov	dl, 20h	; ' '
 
 seg005_105F_2E07:
 mov	al, dl
-call	seg005_105F_2C15 ; Call	Procedure
+call	SprintfStoreByte_seg005_105F_2C15 ; Call	Procedure
 loop	seg005_105F_2E07 ; Loop	while CX != 0
 
 seg005_105F_2E0E:	; Jump
@@ -44632,7 +44632,7 @@ inc	bx		; Increment by 1
 mov	[bp+arg_0], bx
 push	ss
 pop	es
-call	seg005_105F_2BD6 ; Call	Procedure
+call	WordToHexString_seg005_105F_2BD6 ; Call	Procedure
 mov	al, 3Ah	; ':'
 stosb			; Store	String
 
@@ -44640,7 +44640,7 @@ seg005_105F_2E5E:
 push	ss
 pop	es
 pop	dx
-call	seg005_105F_2BD6 ; Call	Procedure
+call	WordToHexString_seg005_105F_2BD6 ; Call	Procedure
 mov	byte ptr ss:[di], 0
 mov	[bp+var_6], 0
 and	[bp+var_2], 0FFFBh ; Logical AND
@@ -44699,7 +44699,7 @@ assume es:dseg_67d6
 mov	di, 1F9Eh
 
 seg005_105F_2ED2:	; Call Procedure
-call	seg005_105F_2C08
+call	StrLen_seg005_105F_2C08
 cmp	cx, [bp+var_A]	; Compare Two Operands
 jbe	short seg005_105F_2EDD ; Jump if Below or Equal	(CF=1 |	ZF=1)
 mov	cx, [bp+var_A]
@@ -44740,7 +44740,7 @@ mov	ax, 6
 
 seg005_105F_2F18:
 push	ax
-call	seg005_105F_3993 ; Call	Procedure
+call	ThunkToFcvt_seg005_105F_3993 ; Call	Procedure
 push	ss
 pop	es
 lea	di, [bp+var_45]	; Load Effective Address
@@ -44753,7 +44753,7 @@ or	dx, dx		; Logical Inclusive OR
 jle	short seg005_105F_2F40 ; Jump if Less or Equal (ZF=1 | SF!=OF)
 
 seg005_105F_2F2F:	; Call Procedure
-call	seg005_105F_2C08
+call	StrLen_seg005_105F_2C08
 cmp	byte ptr es:[di], 2Dh ;	'-' ; Compare Two Operands
 jnz	short seg005_105F_2F39 ; Jump if Not Zero (ZF=0)
 dec	cx		; Decrement by 1
@@ -44775,7 +44775,7 @@ dec	di		; Decrement by 1
 mov	es:[di], al
 
 seg005_105F_2F59:	; Call Procedure
-call	seg005_105F_2C08
+call	StrLen_seg005_105F_2C08
 
 seg005_105F_2F5C:
 mov	si, di
@@ -44823,7 +44823,7 @@ seg005_105F_2FAB:
 mov	al, 20h	; ' '
 
 seg005_105F_2FAD:	; Call Procedure
-call	seg005_105F_2C15
+call	SprintfStoreByte_seg005_105F_2C15
 dec	bx		; Decrement by 1
 
 seg005_105F_2FB1:	; Compare Two Operands
@@ -44834,11 +44834,11 @@ seg005_105F_2FB5:	; Logical Compare
 test	[bp+var_2], 40h
 jz	short seg005_105F_2FC7 ; Jump if Zero (ZF=1)
 mov	al, 30h	; '0'
-call	seg005_105F_2C15 ; Call	Procedure
+call	SprintfStoreByte_seg005_105F_2C15 ; Call	Procedure
 
 seg005_105F_2FC1:
 mov	al, [bp+var_5]
-call	seg005_105F_2C15 ; Call	Procedure
+call	SprintfStoreByte_seg005_105F_2C15 ; Call	Procedure
 
 seg005_105F_2FC7:
 mov	dx, [bp+var_E]
@@ -44856,7 +44856,7 @@ jnz	short seg005_105F_2FE8 ; Jump if Not Zero (ZF=0)
 
 seg005_105F_2FE1:	; Load String
 lods	byte ptr es:[si]
-call	seg005_105F_2C15 ; Call	Procedure
+call	SprintfStoreByte_seg005_105F_2C15 ; Call	Procedure
 dec	cx		; Decrement by 1
 dec	bx		; Decrement by 1
 
@@ -44866,7 +44866,7 @@ jcxz	short seg005_105F_2FF3 ; Jump if CX is 0
 
 seg005_105F_2FEC:
 mov	al, 30h	; '0'
-call	seg005_105F_2C15 ; Call	Procedure
+call	SprintfStoreByte_seg005_105F_2C15 ; Call	Procedure
 loop	seg005_105F_2FEC ; Loop	while CX != 0
 
 seg005_105F_2FF3:	; Exchange Register/Memory with	Register
@@ -44890,7 +44890,7 @@ seg005_105F_3002:	; Jump if Greater (ZF=0	& SF=OF)
 jg	short seg005_105F_3007
 
 seg005_105F_3004:	; Call Procedure
-call	seg005_105F_2C1E
+call	SprintfFlushBuffer_seg005_105F_2C1E
 
 seg005_105F_3007:	; Loop while CX	!= 0
 loop	seg005_105F_2FF9
@@ -44904,7 +44904,7 @@ mov	cx, bx
 
 seg005_105F_300F:
 mov	al, 20h	; ' '
-call	seg005_105F_2C15 ; Call	Procedure
+call	SprintfStoreByte_seg005_105F_2C15 ; Call	Procedure
 
 seg005_105F_3014:	; Loop while CX	!= 0
 loop	seg005_105F_300F
@@ -44950,7 +44950,7 @@ mov	di, [bp+var_4]
 mov	al, 25h	; '%'
 
 seg005_105F_305D:	; Call Procedure
-call	seg005_105F_2C15
+call	SprintfStoreByte_seg005_105F_2C15
 lodsb			; Load String
 or	al, al		; Logical Inclusive OR
 jnz	short seg005_105F_305D ; Jump if Not Zero (ZF=0)
@@ -44958,7 +44958,7 @@ jnz	short seg005_105F_305D ; Jump if Not Zero (ZF=0)
 seg005_105F_3065:	; Compare Two Operands
 cmp	byte ptr [bp+var_14], 50h ; 'P'
 jge	short seg005_105F_306E ; Jump if Greater or Equal (SF=OF)
-call	seg005_105F_2C1E ; Call	Procedure
+call	SprintfFlushBuffer_seg005_105F_2C1E ; Call	Procedure
 
 seg005_105F_306E:
 pop	es
@@ -44976,7 +44976,7 @@ pop	si
 mov	sp, bp
 pop	bp
 retn	8		; Return Near from Procedure
-; END OF FUNCTION CHUNK	FOR MaybeMusicInit_seg005_105F_2BEE
+; END OF FUNCTION CHUNK	FOR SprintfEngine_seg005_105F_2BEE
 seg005_105F_3085 dw offset seg005_105F_2CD4 ; jump table for switch statement
 dw offset seg005_105F_2CBE
 dw offset seg005_105F_2D09
@@ -45056,7 +45056,7 @@ WriteDataToHandle_seg005_105F_30B5 endp
 
 
 
-seg005_105F_30FE proc near
+WriteErrorMsgToStderr_seg005_105F_30FE proc near
 mov	dx, 2006h
 jmp	short seg005_105F_3106 ; Jump
 
@@ -45075,7 +45075,7 @@ mov	ah, 40h
 int	21h		; DOS -	2+ - WRITE TO FILE WITH	HANDLE
 			; BX = file handle, CX = number	of bytes to write, DS:DX -> buffer
 jmp	seg005_105F_22E	; Jump
-seg005_105F_30FE endp
+WriteErrorMsgToStderr_seg005_105F_30FE endp
 
 align 4
 seg005_105F_3120 dw 0
@@ -45087,7 +45087,7 @@ seg005_105F_312A dw 0
 
 
 
-seg005_105F_312C proc near
+FarHeapFreeBlock_seg005_105F_312C proc near
 cmp	dx, cs:seg005_105F_3120	; Compare Two Operands
 jz	short seg005_105F_316A ; Jump if Zero (ZF=1)
 mov	ds, dx
@@ -45108,7 +45108,7 @@ mov	cs:seg005_105F_3122, ax
 push	ds
 xor	ax, ax		; Logical Exclusive OR
 push	ax
-call	seg005_105F_31FF ; Call	Procedure
+call	FarHeapUnlinkFreeBlock_seg005_105F_31FF ; Call	Procedure
 mov	ds, cs:seg005_105F_3126
 assume ds:dseg_67d6
 jmp	short seg005_105F_3188 ; Jump
@@ -45128,16 +45128,16 @@ xor	ax, ax		; Logical Exclusive OR
 push	ax
 
 seg005_105F_3188:	; Call Procedure
-call	seg005_105F_3D1
+call	CheckAndGrowHeap_seg005_105F_3D1
 pop	ax
 pop	ax
 retn			; Return Near from Procedure
-seg005_105F_312C endp
+FarHeapFreeBlock_seg005_105F_312C endp
 
 
 
 
-seg005_105F_318E proc near
+FarHeapCoalesceAndFree_seg005_105F_318E proc near
 mov	ds, dx
 push	ds
 mov	es, word ptr ds:2 ; Handle_arg_0
@@ -45179,7 +45179,7 @@ mov	es:2, cx
 jmp	short seg005_105F_31D7 ; Jump
 
 seg005_105F_31D4:	; Call Procedure
-call	seg005_105F_3228
+call	FarHeapInsertFreeBlock_seg005_105F_3228
 
 seg005_105F_31D7:
 pop	es
@@ -45212,12 +45212,12 @@ add	bx, ds:0	; Handle_arg_0
 			; ax is	no of bytes processed
 mov	es, bx
 mov	es:2, ax
-seg005_105F_318E endp
+FarHeapCoalesceAndFree_seg005_105F_318E endp
 
 
 
 
-seg005_105F_31FF proc near
+FarHeapUnlinkFreeBlock_seg005_105F_31FF proc near
 mov	bx, ds
 cmp	bx, dseg_67d6_6	; Compare Two Operands
 jz	short seg005_105F_3220 ; Jump if Zero (ZF=1)
@@ -45232,12 +45232,12 @@ retn			; Return Near from Procedure
 seg005_105F_3220:
 mov	cs:seg005_105F_3124, 0
 retn			; Return Near from Procedure
-seg005_105F_31FF endp
+FarHeapUnlinkFreeBlock_seg005_105F_31FF endp
 
 
 
 
-seg005_105F_3228 proc near
+FarHeapInsertFreeBlock_seg005_105F_3228 proc near
 mov	ax, cs:seg005_105F_3124
 or	ax, ax		; Logical Inclusive OR
 jz	short seg005_105F_3250 ; Jump if Zero (ZF=1)
@@ -45260,13 +45260,13 @@ mov	cs:seg005_105F_3124, ds
 mov	dseg_67d6_4, ds
 mov	dseg_67d6_6, ds
 retn			; Return Near from Procedure
-seg005_105F_3228 endp
+FarHeapInsertFreeBlock_seg005_105F_3228 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg005_105F_325E proc far
+FarHeapFree_seg005_105F_325E proc far
 
 arg_2= word ptr	 8
 
@@ -45282,11 +45282,11 @@ jz	short seg005_105F_327E ; Jump if Zero (ZF=1)
 seg005_105F_326F:	; Compare Two Operands
 cmp	dx, cs:seg005_105F_3122
 jnz	short seg005_105F_327B ; Jump if Not Zero (ZF=0)
-call	seg005_105F_312C ; Call	Procedure
+call	FarHeapFreeBlock_seg005_105F_312C ; Call	Procedure
 jmp	short seg005_105F_327E ; Jump
 
 seg005_105F_327B:	; Call Procedure
-call	seg005_105F_318E
+call	FarHeapCoalesceAndFree_seg005_105F_318E
 
 seg005_105F_327E:
 mov	ds, cs:seg005_105F_3126
@@ -45294,18 +45294,18 @@ pop	di
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_325E endp
+FarHeapFree_seg005_105F_325E endp
 
 
 
 
-seg005_105F_3287 proc near
+FarHeapInitAndAlloc_seg005_105F_3287 proc near
 push	ax
 mov	ds, cs:seg005_105F_3126
 xor	ax, ax		; Logical Exclusive OR
 push	ax
 push	ax
-call	seg005_105F_410	; Call Procedure
+call	AllocateHeapBlock_seg005_105F_410	; Call Procedure
 pop	bx
 pop	bx
 and	ax, 0Fh		; Logical AND
@@ -45316,7 +45316,7 @@ xor	ax, ax		; Logical Exclusive OR
 mov	ds, cs:seg005_105F_3126
 push	ax
 push	dx
-call	seg005_105F_410	; Call Procedure
+call	AllocateHeapBlock_seg005_105F_410	; Call Procedure
 pop	bx
 pop	bx
 
@@ -45333,7 +45333,7 @@ shl	ax, cl		; Shift	Logical	Left
 mov	ds, cs:seg005_105F_3126
 push	bx
 push	ax
-call	seg005_105F_410	; Call Procedure
+call	AllocateHeapBlock_seg005_105F_410	; Call Procedure
 pop	bx
 pop	bx
 pop	bx
@@ -45361,12 +45361,12 @@ seg005_105F_32E4:	; Logical Exclusive OR
 xor	ax, ax
 cwd			; AX ->	DX:AX (with sign)
 retn			; Return Near from Procedure
-seg005_105F_3287 endp
+FarHeapInitAndAlloc_seg005_105F_3287 endp
 
 
 
 
-seg005_105F_32E8 proc near
+FarHeapAllocNewBlock_seg005_105F_32E8 proc near
 push	ax
 xor	bx, bx		; Logical Exclusive OR
 mov	bl, ah
@@ -45376,7 +45376,7 @@ shl	ax, cl		; Shift	Logical	Left
 mov	ds, cs:seg005_105F_3126	; store	data segment #
 push	bx
 push	ax
-call	seg005_105F_410	; Call Procedure
+call	AllocateHeapBlock_seg005_105F_410	; Call Procedure
 pop	bx
 pop	bx
 pop	bx
@@ -45404,12 +45404,12 @@ seg005_105F_331D:	; Logical Exclusive OR
 xor	ax, ax
 cwd			; AX ->	DX:AX (with sign)
 retn			; Return Near from Procedure
-seg005_105F_32E8 endp
+FarHeapAllocNewBlock_seg005_105F_32E8 endp
 
 
 
 
-seg005_105F_3321 proc near
+FarHeapSplitBlock_seg005_105F_3321 proc near
 mov	bx, dx
 sub	ds:0, ax	; Handle_arg_0
 			; WriteAdress_arg_2
@@ -45452,13 +45452,13 @@ mov	ds:2, dx	; Handle_arg_0
 			; ax is	no of bytes processed
 mov	ax, 4
 retn			; Return Near from Procedure
-seg005_105F_3321 endp
+FarHeapSplitBlock_seg005_105F_3321 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg005_105F_3344 proc far
+FarHeapMalloc_seg005_105F_3344 proc far
 
 DataSize_arg_0=	word ptr  6
 arg_2= word ptr	 8
@@ -45510,15 +45510,15 @@ cmp	dx, bx		; Compare Two Operands
 jnz	short seg005_105F_3384 ; Jump if Not Zero (ZF=0)
 
 seg005_105F_3394:	; Call Procedure
-call	seg005_105F_32E8
+call	FarHeapAllocNewBlock_seg005_105F_32E8
 jmp	short seg005_105F_33B8 ; Jump
 
 seg005_105F_3399:	; Call Procedure
-call	seg005_105F_3287
+call	FarHeapInitAndAlloc_seg005_105F_3287
 jmp	short seg005_105F_33B8 ; Jump
 
 seg005_105F_339E:	; Call Procedure
-call	seg005_105F_3321
+call	FarHeapSplitBlock_seg005_105F_3321
 jmp	short seg005_105F_33B8 ; Jump
 
 seg005_105F_33A3:	; Logical Exclusive OR
@@ -45528,7 +45528,7 @@ jmp	short seg005_105F_33B8 ; Jump
 
 seg005_105F_33A8:	; Jump if Above	(CF=0 &	ZF=0)
 ja	short seg005_105F_339E
-call	seg005_105F_31FF ; Call	Procedure
+call	FarHeapUnlinkFreeBlock_seg005_105F_31FF ; Call	Procedure
 mov	bx, dseg_67d6_8
 mov	ds:2, bx	; Handle_arg_0
 			; WriteAdress_arg_2
@@ -45544,19 +45544,19 @@ pop	di
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-seg005_105F_3344 endp
+FarHeapMalloc_seg005_105F_3344 endp
 
 
 
 
-seg005_105F_33C1 proc near
+FarHeapReallocGrow_seg005_105F_33C1 proc near
 push	bx
 mov	si, cs:seg005_105F_3128
 push	si
 mov	si, cs:seg005_105F_312A
 push	si
 push	cs
-call	near ptr seg005_105F_3344 ; Call Procedure
+call	near ptr FarHeapMalloc_seg005_105F_3344 ; Call Procedure
 pop	bx
 pop	bx
 or	dx, dx		; Logical Inclusive OR
@@ -45634,18 +45634,18 @@ seg005_105F_3430:
 push	cs
 
 seg005_105F_3431:	; Call Procedure
-call	near ptr seg005_105F_325E
+call	near ptr FarHeapFree_seg005_105F_325E
 pop	dx
 pop	dx
 pop	dx
 mov	ax, 4
 retn			; Return Near from Procedure
-seg005_105F_33C1 endp
+FarHeapReallocGrow_seg005_105F_33C1 endp
 
 
 
 
-seg005_105F_343B proc near
+FarHeapShrinkBlock_seg005_105F_343B proc near
 cmp	bx, cs:seg005_105F_3122	; Compare Two Operands
 jz	short seg005_105F_3486 ; Jump if Zero (ZF=1)
 mov	di, bx
@@ -45678,7 +45678,7 @@ mov	si, bx
 push	cs
 
 seg005_105F_347B:	; Call Procedure
-call	near ptr seg005_105F_325E
+call	near ptr FarHeapFree_seg005_105F_325E
 pop	dx
 pop	dx
 mov	dx, si
@@ -45697,13 +45697,13 @@ xor	ax, ax		; Logical Exclusive OR
 
 seg005_105F_3492:
 push	ax
-call	seg005_105F_3D1	; Call Procedure
+call	CheckAndGrowHeap_seg005_105F_3D1	; Call Procedure
 pop	dx
 pop	dx
 pop	dx
 mov	ax, 4
 retn			; Return Near from Procedure
-seg005_105F_343B endp
+FarHeapShrinkBlock_seg005_105F_343B endp
 
 push	bp
 mov	bp, sp
@@ -45742,20 +45742,20 @@ mov	ax, 4
 jmp	short seg005_105F_3502 ; Jump
 
 seg005_105F_34E5:	; Call Procedure
-call	seg005_105F_343B
+call	FarHeapShrinkBlock_seg005_105F_343B
 
 seg005_105F_34E8:	; Jump
 jmp	short seg005_105F_3502
 
 seg005_105F_34EA:	; Call Procedure
-call	seg005_105F_33C1
+call	FarHeapReallocGrow_seg005_105F_33C1
 jmp	short seg005_105F_3502 ; Jump
 
 seg005_105F_34EF:
 push	dx
 push	ax
 push	cs
-call	near ptr seg005_105F_3344 ; Call Procedure
+call	near ptr FarHeapMalloc_seg005_105F_3344 ; Call Procedure
 
 seg005_105F_34F5:	; Jump
 jmp	short seg005_105F_3500
@@ -45764,7 +45764,7 @@ seg005_105F_34F7:
 push	bx
 push	ax
 push	cs
-call	near ptr seg005_105F_325E ; Call Procedure
+call	near ptr FarHeapFree_seg005_105F_325E ; Call Procedure
 xor	ax, ax		; Logical Exclusive OR
 cwd			; AX ->	DX:AX (with sign)
 
@@ -45822,11 +45822,11 @@ MultiplyAXByBX_seg005_105F_350B	endp
 
 
 
-seg005_105F_3522 proc near
+NearToFarCallThunk_seg005_105F_3522 proc near
 pop	cx
 push	cs
 push	cx
-seg005_105F_3522 endp
+NearToFarCallThunk_seg005_105F_3522 endp
 
 
 
@@ -46073,7 +46073,7 @@ BitShiftR_AXDX_BY_CX_seg005_105F_3614 endp
 
 
 
-seg005_105F_3632 proc far
+FarPtrAdd_seg005_105F_3632 proc far
 pop	es
 push	cs
 push	es
@@ -46129,12 +46129,12 @@ add	dx, ax		; Add
 mov	al, ch
 and	ax, 0Fh		; Logical AND
 retf			; Return Far from Procedure
-seg005_105F_3632 endp ;	sp = -2
+FarPtrAdd_seg005_105F_3632 endp ;	sp = -2
 
 
 
 
-seg005_105F_3692 proc far
+FarPtrDiff_seg005_105F_3692 proc far
 pop	es
 push	cs
 push	es
@@ -46160,7 +46160,7 @@ cbw			; AL ->	AX (with sign)
 xchg	ax, dx		; Exchange Register/Memory with	Register
 pop	di
 retf			; Return Far from Procedure
-seg005_105F_3692 endp ;	sp = -2
+FarPtrDiff_seg005_105F_3692 endp ;	sp = -2
 
 pop	es
 push	cs
@@ -46198,7 +46198,7 @@ align 8
 
 
 
-seg005_105F_36E0 proc far
+NearHeapFree_seg005_105F_36E0 proc far
 push	si
 push	di
 mov	si, sp
@@ -46207,11 +46207,11 @@ sub	bx, 4		; Integer Subtraction
 jb	short seg005_105F_36FA ; Jump if Below (CF=1)
 cmp	bx, dseg_67d6_203A ; Compare Two Operands
 jz	short seg005_105F_36F7 ; Jump if Zero (ZF=1)
-call	seg005_105F_3737 ; Call	Procedure
+call	NearHeapFreeAndCoalesce_seg005_105F_3737 ; Call	Procedure
 jmp	short seg005_105F_36FA ; Jump
 
 seg005_105F_36F7:	; Call Procedure
-call	seg005_105F_36FD
+call	NearHeapFreeTopBlock_seg005_105F_36FD
 
 seg005_105F_36FA:
 pop	di
@@ -46219,12 +46219,12 @@ pop	si
 
 seg005_105F_36FC:	; Return Far from Procedure
 retf
-seg005_105F_36E0 endp
+NearHeapFree_seg005_105F_36E0 endp
 
 
 
 
-seg005_105F_36FD proc near
+NearHeapFreeTopBlock_seg005_105F_36FD proc near
 cmp	dseg_67d6_2038,	bx ; Compare Two Operands
 jz	short seg005_105F_3726 ; Jump if Zero (ZF=1)
 mov	si, [bx+2]
@@ -46237,7 +46237,7 @@ seg005_105F_3711:	; Compare Two Operands
 cmp	si, dseg_67d6_2038
 jz	short seg005_105F_3724 ; Jump if Zero (ZF=1)
 mov	bx, si
-call	seg005_105F_3770 ; Call	Procedure
+call	NearHeapUnlinkFreeBlock_seg005_105F_3770 ; Call	Procedure
 mov	ax, [bx+2]
 mov	dseg_67d6_203A,	ax
 jmp	short seg005_105F_3731 ; Jump
@@ -46253,15 +46253,15 @@ mov	dseg_67d6_203C,	ax
 
 seg005_105F_3731:
 push	bx
-call	seg005_105F_1614 ; Call	Procedure
+call	CheckStackSpaceAvailable_seg005_105F_1614 ; Call	Procedure
 pop	bx
 retn			; Return Near from Procedure
-seg005_105F_36FD endp
+NearHeapFreeTopBlock_seg005_105F_36FD endp
 
 
 
 
-seg005_105F_3737 proc near
+NearHeapFreeAndCoalesce_seg005_105F_3737 proc near
 dec	word ptr [bx]	; Decrement by 1
 cmp	bx, dseg_67d6_2038 ; Compare Two Operands
 jz	short seg005_105F_3757 ; Jump if Zero (ZF=1)
@@ -46280,7 +46280,7 @@ mov	bx, si
 jmp	short seg005_105F_375A ; Jump
 
 seg005_105F_3757:	; Call Procedure
-call	seg005_105F_378C
+call	NearHeapInsertFreeBlock_seg005_105F_378C
 
 seg005_105F_375A:
 mov	di, [bx]
@@ -46296,12 +46296,12 @@ mov	si, di
 add	si, ax		; Add
 mov	[si+2],	bx
 mov	bx, di
-seg005_105F_3737 endp
+NearHeapFreeAndCoalesce_seg005_105F_3737 endp
 
 
 
 
-seg005_105F_3770 proc near
+NearHeapUnlinkFreeBlock_seg005_105F_3770 proc near
 mov	di, [bx+6]
 cmp	bx, di		; Compare Two Operands
 jz	short seg005_105F_3785 ; Jump if Zero (ZF=1)
@@ -46314,12 +46314,12 @@ retn			; Return Near from Procedure
 seg005_105F_3785:
 mov	dseg_67d6_203C,	0
 retn			; Return Near from Procedure
-seg005_105F_3770 endp
+NearHeapUnlinkFreeBlock_seg005_105F_3770 endp
 
 
 
 
-seg005_105F_378C proc near
+NearHeapInsertFreeBlock_seg005_105F_378C proc near
 mov	si, dseg_67d6_203C
 or	si, si		; Logical Inclusive OR
 jz	short seg005_105F_37A4 ; Jump if Zero (ZF=1)
@@ -46335,12 +46335,12 @@ mov	dseg_67d6_203C,	bx
 mov	[bx+4],	bx
 mov	[bx+6],	bx
 retn			; Return Near from Procedure
-seg005_105F_378C endp
+NearHeapInsertFreeBlock_seg005_105F_378C endp
 
 
 
 
-ProbablyGetAnArrayReference_seg005_105F_37AF proc far
+NearHeapMalloc_seg005_105F_37AF proc far
 si_stackptr = si
 push	si_stackptr
 push	di
@@ -46373,15 +46373,15 @@ cmp	bx, dx		; Compare Two Operands
 jnz	short seg005_105F_37DB ; Jump if Not Zero (ZF=0)
 
 seg005_105F_37E6:	; Call Procedure
-call	seg005_105F_384F
+call	NearHeapExtendAndAlloc_seg005_105F_384F
 jmp	short seg005_105F_380C ; Jump
 
 seg005_105F_37EB:	; Call Procedure
-call	seg005_105F_3878
+call	NearHeapSplitBlock_seg005_105F_3878
 jmp	short seg005_105F_380C ; Jump
 
 seg005_105F_37F0:	; Call Procedure
-call	seg005_105F_380F
+call	NearHeapInitAndAlloc_seg005_105F_380F
 jmp	short seg005_105F_380C ; Jump
 
 seg005_105F_37F5:	; Logical Exclusive OR
@@ -46393,7 +46393,7 @@ mov	si_stackptr, ax
 add	si_stackptr, 8	; Add
 cmp	[bx], si_stackptr ; Compare Two	Operands
 jnb	short seg005_105F_37EB ; Jump if Not Below (CF=0)
-call	seg005_105F_3770 ; Call	Procedure
+call	NearHeapUnlinkFreeBlock_seg005_105F_3770 ; Call	Procedure
 inc	word ptr [bx]	; Increment by 1
 mov	ax, bx
 add	ax, 4		; Add
@@ -46402,17 +46402,17 @@ seg005_105F_380C:
 pop	di
 pop	si_stackptr
 retf			; Return Far from Procedure
-ProbablyGetAnArrayReference_seg005_105F_37AF endp
+NearHeapMalloc_seg005_105F_37AF endp
 
 
 
 
-seg005_105F_380F proc near
+NearHeapInitAndAlloc_seg005_105F_380F proc near
 push	ax
 xor	ax, ax		; Logical Exclusive OR
 push	ax
 push	ax
-call	seg005_105F_1636 ; Call	Procedure
+call	GrowHeapAllocation_seg005_105F_1636 ; Call	Procedure
 pop	bx
 pop	bx
 and	ax, 1		; Logical AND
@@ -46420,7 +46420,7 @@ jz	short seg005_105F_3827 ; Jump if Zero (ZF=1)
 xor	dx, dx		; Logical Exclusive OR
 push	dx
 push	ax
-call	seg005_105F_1636 ; Call	Procedure
+call	GrowHeapAllocation_seg005_105F_1636 ; Call	Procedure
 pop	bx
 pop	bx
 
@@ -46430,7 +46430,7 @@ push	ax
 xor	bx, bx		; Logical Exclusive OR
 push	bx
 push	ax
-call	seg005_105F_1636 ; Call	Procedure
+call	GrowHeapAllocation_seg005_105F_1636 ; Call	Procedure
 pop	bx
 pop	bx
 cmp	ax, 0FFFFh	; Compare Two Operands
@@ -46449,17 +46449,17 @@ seg005_105F_384B:
 pop	bx
 xor	ax, ax		; Logical Exclusive OR
 retn			; Return Near from Procedure
-seg005_105F_380F endp
+NearHeapInitAndAlloc_seg005_105F_380F endp
 
 
 
 
-seg005_105F_384F proc near
+NearHeapExtendAndAlloc_seg005_105F_384F proc near
 push	ax
 xor	bx, bx		; Logical Exclusive OR
 push	bx
 push	ax
-call	seg005_105F_1636 ; Call	Procedure
+call	GrowHeapAllocation_seg005_105F_1636 ; Call	Procedure
 pop	bx
 pop	bx
 cmp	ax, 0FFFFh	; Compare Two Operands
@@ -46479,12 +46479,12 @@ seg005_105F_3874:
 pop	ax
 xor	ax, ax		; Logical Exclusive OR
 retn			; Return Near from Procedure
-seg005_105F_384F endp
+NearHeapExtendAndAlloc_seg005_105F_384F endp
 
 
 
 
-seg005_105F_3878 proc near
+NearHeapSplitBlock_seg005_105F_3878 proc near
 sub	[bx], ax	; Integer Subtraction
 mov	si, bx
 add	si, [bx]	; Add
@@ -46497,13 +46497,13 @@ mov	[di+2],	si
 add	si, 4		; Add
 mov	ax, si
 retn			; Return Near from Procedure
-seg005_105F_3878 endp
+NearHeapSplitBlock_seg005_105F_3878 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg005_105F_3891 proc near
+NearHeapReallocGrow_seg005_105F_3891 proc near
 
 var_2= word ptr	-2
 
@@ -46513,7 +46513,7 @@ push	ax
 push	cx
 push	ax
 push	cs
-call	near ptr ProbablyGetAnArrayReference_seg005_105F_37AF ;	Call Procedure
+call	near ptr NearHeapMalloc_seg005_105F_37AF ;	Call Procedure
 pop	bx
 mov	bx, ax
 or	ax, ax		; Logical Inclusive OR
@@ -46532,19 +46532,19 @@ shr	cx, 1		; Shift	Logical	Right
 rep movsw		; Move Byte(s) from String to String
 mov	[bp+var_2], ax
 push	cs
-call	near ptr seg005_105F_36E0 ; Call Procedure
+call	near ptr NearHeapFree_seg005_105F_36E0 ; Call Procedure
 pop	bx
 mov	bx, [bp+var_2]
 
 seg005_105F_38C2:	; Add
 add	sp, 6
 retn			; Return Near from Procedure
-seg005_105F_3891 endp
+NearHeapReallocGrow_seg005_105F_3891 endp
 
 
 
 
-seg005_105F_38C6 proc near
+NearHeapReallocShrink_seg005_105F_38C6 proc near
 mov	ax, dx
 add	dx, 8		; Add
 cmp	dx, cx		; Compare Two Operands
@@ -46557,7 +46557,7 @@ inc	word ptr [bx]	; Increment by 1
 add	ax, bx		; Add
 push	bx
 push	ax
-call	seg005_105F_1614 ; Call	Procedure
+call	CheckStackSpaceAvailable_seg005_105F_1614 ; Call	Procedure
 pop	bx
 pop	bx
 jmp	short seg005_105F_3904 ; Jump
@@ -46577,19 +46577,19 @@ inc	dx		; Increment by 1
 mov	[di], dx
 mov	cx, bx
 mov	bx, di
-call	seg005_105F_3737 ; Call	Procedure
+call	NearHeapFreeAndCoalesce_seg005_105F_3737 ; Call	Procedure
 mov	bx, cx
 
 seg005_105F_3904:	; Add
 add	bx, 4
 retn			; Return Near from Procedure
-seg005_105F_38C6 endp
+NearHeapReallocShrink_seg005_105F_38C6 endp
 
 
 
 ; Attributes: bp-based frame
 
-RegisterEventRelated_seg005_105F_3908 proc far
+NearHeapRealloc_seg005_105F_3908 proc far
 
 arg_0= word ptr	 0Ah
 arg_2= word ptr	 0Ch
@@ -46622,13 +46622,13 @@ add	bx, 4		; Add
 jmp	short seg005_105F_3944 ; Jump
 
 seg005_105F_393C:	; Call Procedure
-call	seg005_105F_38C6
+call	NearHeapReallocShrink_seg005_105F_38C6
 
 seg005_105F_393F:	; Jump
 jmp	short seg005_105F_3944
 
 seg005_105F_3941:	; Call Procedure
-call	seg005_105F_3891
+call	NearHeapReallocGrow_seg005_105F_3891
 
 seg005_105F_3944:
 mov	ax, bx
@@ -46637,13 +46637,13 @@ jmp	short seg005_105F_3957 ; Jump
 seg005_105F_3948:
 push	ax
 push	cs
-call	near ptr ProbablyGetAnArrayReference_seg005_105F_37AF ;	Call Procedure
+call	near ptr NearHeapMalloc_seg005_105F_37AF ;	Call Procedure
 jmp	short seg005_105F_3956 ; Jump
 
 seg005_105F_394F:
 push	bx
 push	cs
-call	near ptr seg005_105F_36E0 ; Call Procedure
+call	near ptr NearHeapFree_seg005_105F_36E0 ; Call Procedure
 xor	ax, ax		; Logical Exclusive OR
 
 seg005_105F_3956:
@@ -46654,7 +46654,7 @@ pop	bp
 pop	di
 pop	si
 retf			; Return Far from Procedure
-RegisterEventRelated_seg005_105F_3908 endp
+NearHeapRealloc_seg005_105F_3908 endp
 
 
 
@@ -46713,7 +46713,7 @@ Multiply_DxAx_By_CxBx_seg005_105F_395B endp
 
 
 
-seg005_105F_3972 proc near
+CompareFarPtrs_seg005_105F_3972 proc near
 push	cx
 mov	ch, al
 mov	cl, 4
@@ -46735,39 +46735,39 @@ cmp	ax, bx		; Compare Two Operands
 
 seg005_105F_3992:	; Return Near from Procedure
 retn
-seg005_105F_3972 endp
+CompareFarPtrs_seg005_105F_3972 endp
 
 
 
 ; Attributes: thunk
 
-seg005_105F_3993 proc near
+ThunkToFcvt_seg005_105F_3993 proc near
 jmp	dseg_67d6_2224	; Indirect Near	Jump
-seg005_105F_3993 endp
+ThunkToFcvt_seg005_105F_3993 endp
 
 
 
 ; Attributes: thunk
 
-seg005_105F_3997 proc near
+ThunkToEcvt_seg005_105F_3997 proc near
 jmp	dseg_67d6_2226	; Indirect Near	Jump
-seg005_105F_3997 endp
+ThunkToEcvt_seg005_105F_3997 endp
 
 
 
 ; Attributes: thunk
 
-seg005_105F_399B proc near
+ThunkToGcvt_seg005_105F_399B proc near
 jmp	dseg_67d6_2228	; Indirect Near	Jump
-seg005_105F_399B endp
+ThunkToGcvt_seg005_105F_399B endp
 
 
 
 ; Attributes: thunk
 
-seg005_105F_399F proc near
+ThunkToLdcvt_seg005_105F_399F proc near
 jmp	dseg_67d6_222A	; Indirect Near	Jump
-seg005_105F_399F endp
+ThunkToLdcvt_seg005_105F_399F endp
 
 seg005_105F_39A3 db 2 dup(0), 8Fh, 6, 42h, 20h,	8Fh, 6,	44h
 db 20h,	8Fh, 6,	46h, 20h, 2Eh, 8Ch, 1Eh
@@ -46835,7 +46835,7 @@ seg005_105F_3ADB:
 push	dseg_67d6_90
 
 seg005_105F_3ADF:	; Call Procedure
-call	ProbablyGetAnArrayReference_seg005_105F_37AF
+call	NearHeapMalloc_seg005_105F_37AF
 pop	bx
 
 seg005_105F_3AE5:
@@ -66879,7 +66879,7 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; Attributes: bp-based frame
 
-seg009_7 proc far
+GetCursorBitmapAddress_seg009_7 proc far
 
 var_2= byte ptr	-2
 var_1= byte ptr	-1
@@ -67005,13 +67005,13 @@ xor	ax, ax
 seg009_71:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-seg009_7 endp
+GetCursorBitmapAddress_seg009_7 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg009_73 proc far
+DrawCursorIconAtXY_seg009_73 proc far
 
 var_8= word ptr	-8
 var_6= word ptr	-6
@@ -67133,7 +67133,7 @@ seg009_CD:
 push	cs
 
 seg009_CE:		; Call Procedure
-call	near ptr seg009_7
+call	near ptr GetCursorBitmapAddress_seg009_7
 inc	sp		; Increment by 1
 
 seg009_D2:		; Increment by 1
@@ -67266,13 +67266,13 @@ leave			; High Level Procedure Exit
 
 seg009_14F:		; Return Far from Procedure
 retf
-seg009_73 endp
+DrawCursorIconAtXY_seg009_73 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg009_150 proc	far
+GetCursorBitmapPixelPtr_seg009_150 proc	far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -67348,13 +67348,13 @@ mov	ax, [bp+var_4]
 seg009_1A0:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-seg009_150 endp
+GetCursorBitmapPixelPtr_seg009_150 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg009_1A2 proc	far
+BlitCursorToVRAM_seg009_1A2 proc	far
 
 var_8= word ptr	-8
 var_6= word ptr	-6
@@ -67372,7 +67372,7 @@ push	di
 seg009_1AA:
 push	[bp+arg_0]
 push	cs
-call	near ptr seg009_7 ; Call Procedure
+call	near ptr GetCursorBitmapAddress_seg009_7 ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 mov	word ptr [bp+var_4], ax
@@ -67454,7 +67454,7 @@ seg009_218:
 push	[bp+var_8]
 
 seg009_21B:		; Call Procedure
-call	seg003_0272_5088
+call	BlitToVRAMFar_seg003_0272_5088
 
 seg009_220:		; Add
 add	sp, 0Ch
@@ -67462,7 +67462,7 @@ pop	di
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-seg009_1A2 endp
+BlitCursorToVRAM_seg009_1A2 endp
 
 
 
@@ -67594,7 +67594,7 @@ seg009_2AD:
 push	[bp+XPoint_arg_2]
 push	si
 push	cs
-call	near ptr seg009_73 ; Call Procedure
+call	near ptr DrawCursorIconAtXY_seg009_73 ; Call Procedure
 
 seg009_2B5:		; Add
 add	sp, 0Ah
@@ -67622,7 +67622,7 @@ MaybeDrawCursorAtCoordinate_seg009_26B endp
 
 ; Attributes: bp-based frame
 
-seg009_2CC proc	far
+GetCursorIconDimensions_seg009_2CC proc	far
 
 var_4= dword ptr -4
 arg_0= word ptr	 6
@@ -67689,7 +67689,7 @@ push	si
 push	cs
 
 seg009_308:		; Call Procedure
-call	near ptr seg009_7
+call	near ptr GetCursorBitmapAddress_seg009_7
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 mov	word ptr [bp+var_4], ax
@@ -67725,13 +67725,13 @@ pop	si
 seg009_330:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-seg009_2CC endp
+GetCursorIconDimensions_seg009_2CC endp
 
 
 
 ; Attributes: bp-based frame
 
-seg009_332 proc	far
+BlitCursorIconToVRAM_seg009_332 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -67763,20 +67763,20 @@ push	[bp+arg_2]
 seg009_348:
 push	si
 push	cs
-call	near ptr seg009_1A2 ; Call Procedure
+call	near ptr BlitCursorToVRAM_seg009_1A2 ; Call Procedure
 add	sp, 6		; Add
 
 seg009_350:
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-seg009_332 endp	; sp = -2
+BlitCursorIconToVRAM_seg009_332 endp	; sp = -2
 
 
 
 ; Attributes: bp-based frame
 
-seg009_353 proc	far
+DrawCursorIconScaled_seg009_353 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -67847,13 +67847,13 @@ pop	bp
 
 seg009_391:		; Return Far from Procedure
 retf
-seg009_353 endp	; sp = -2
+DrawCursorIconScaled_seg009_353 endp	; sp = -2
 
 
 
 ; Attributes: bp-based frame
 
-seg009_392 proc	far
+GetTexturePageAddress_seg009_392 proc	far
 
 var_2= byte ptr	-2
 var_1= byte ptr	-1
@@ -67942,13 +67942,13 @@ add	ax, 0C00h
 seg009_3F0:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-seg009_392 endp
+GetTexturePageAddress_seg009_392 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg009_3F2 proc	far
+ScaleBitmapToBuffer_seg009_3F2 proc	far
 
 var_6= word ptr	-6
 var_4= dword ptr -4
@@ -68106,7 +68106,7 @@ leave
 
 seg009_472:		; Return Far from Procedure
 retf
-seg009_3F2 endp
+ScaleBitmapToBuffer_seg009_3F2 endp
 
 seg009 ends
 
@@ -68130,7 +68130,7 @@ seg010_1CA1_6:
 push	12h
 
 seg010_1CA1_8:		; Call Procedure
-call	ProbablyGetAnArrayReference_seg005_105F_37AF
+call	NearHeapMalloc_seg005_105F_37AF
 
 seg010_1CA1_D:		; Increment by 1
 inc	sp
@@ -68145,7 +68145,7 @@ seg010_1CA1_12:
 push	0Ch
 
 seg010_1CA1_14:		; Call Procedure
-call	ProbablyGetAnArrayReference_seg005_105F_37AF
+call	NearHeapMalloc_seg005_105F_37AF
 
 seg010_1CA1_19:		; Increment by 1
 inc	sp
@@ -68221,7 +68221,7 @@ seg010_1CA1_64:
 push	MaybeEventHandlers_dseg_67d6_22B8
 
 seg010_1CA1_68:		; Call Procedure
-call	seg005_105F_36E0
+call	NearHeapFree_seg005_105F_36E0
 
 seg010_1CA1_6D:		; Increment by 1
 inc	sp
@@ -68233,7 +68233,7 @@ seg010_1CA1_6F:
 push	EventHandlers_dseg_67d6_22C8
 
 seg010_1CA1_73:		; Call Procedure
-call	seg005_105F_36E0
+call	NearHeapFree_seg005_105F_36E0
 
 seg010_1CA1_78:		; Increment by 1
 inc	sp
@@ -68287,7 +68287,7 @@ seg010_1CA1_93:
 push	MaybeEventHandlers_dseg_67d6_22B8
 
 seg010_1CA1_97:		; Call Procedure
-call	RegisterEventRelated_seg005_105F_3908
+call	NearHeapRealloc_seg005_105F_3908
 
 seg010_1CA1_9C:		; Add
 add	sp, 4
@@ -68443,7 +68443,7 @@ push	ax
 
 seg010_1CA1_115:
 push	EventHandlers_dseg_67d6_22C8
-call	RegisterEventRelated_seg005_105F_3908 ;	Call Procedure
+call	NearHeapRealloc_seg005_105F_3908 ;	Call Procedure
 
 seg010_1CA1_11E:	; Add
 add	sp, 4
@@ -68647,7 +68647,7 @@ seg010_1CA1_1F2:
 push	MaybeEventHandlers_dseg_67d6_22B8
 
 seg010_1CA1_1F6:	; Call Procedure
-call	RegisterEventRelated_seg005_105F_3908
+call	NearHeapRealloc_seg005_105F_3908
 add	sp, 4		; Add
 
 seg010_1CA1_1FE:
@@ -68749,7 +68749,7 @@ push	ax
 
 seg010_1CA1_279:
 push	EventHandlers_dseg_67d6_22C8
-call	RegisterEventRelated_seg005_105F_3908 ;	Call Procedure
+call	NearHeapRealloc_seg005_105F_3908 ;	Call Procedure
 add	sp, 4		; Add
 
 seg010_1CA1_285:
@@ -69232,7 +69232,7 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; Attributes: bp-based frame
 
-seg011_6 proc far
+ProcessJoystickMotionInput_seg011_6 proc far
 push	bp
 
 seg011_7:
@@ -69577,13 +69577,13 @@ seg011_128:
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-seg011_6 endp
+ProcessJoystickMotionInput_seg011_6 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg011_12B proc	far
+WaitForJoystickButtonPress_seg011_12B proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -69705,7 +69705,7 @@ seg011_1B5:
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-seg011_12B endp	; sp = -2
+WaitForJoystickButtonPress_seg011_12B endp	; sp = -2
 
 
 
@@ -69792,7 +69792,7 @@ push	ax
 lea	ax, [bp+var_6]	; Load Effective Address
 push	ax
 push	cs
-call	near ptr seg011_12B ; Call Procedure
+call	near ptr WaitForJoystickButtonPress_seg011_12B ; Call Procedure
 add	sp, 4		; Add
 mov	[bp+var_1], al
 
@@ -69828,7 +69828,7 @@ push	ax
 lea	ax, [bp+var_4]	; Load Effective Address
 push	ax
 push	cs
-call	near ptr seg011_12B ; Call Procedure
+call	near ptr WaitForJoystickButtonPress_seg011_12B ; Call Procedure
 
 seg011_246:		; Add
 add	sp, 4
@@ -69925,7 +69925,7 @@ JoyStickCalibration_seg011_1B8 endp
 
 ; Attributes: bp-based frame
 
-seg011_2C6 proc	far
+CalculateJoystickVelocity_seg011_2C6 proc	far
 
 var_C= word ptr	-0Ch
 var_A= word ptr	-0Ah
@@ -70398,7 +70398,7 @@ leave
 
 seg011_4A0:		; Return Far from Procedure
 retf
-seg011_2C6 endp
+CalculateJoystickVelocity_seg011_2C6 endp
 
 seg011 ends
 
@@ -71290,7 +71290,7 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; Attributes: bp-based frame
 
-seg014_A proc far
+RegisterOptionsClickArea_seg014_A proc far
 push	bp
 
 seg014_B:
@@ -71359,13 +71359,13 @@ pop	bp
 
 seg014_4B:		; Return Far from Procedure
 retf
-seg014_A endp
+RegisterOptionsClickArea_seg014_A endp
 
 
 
 ; Attributes: bp-based frame
 
-seg014_4C proc far
+UnregisterOptionsClickArea_seg014_4C proc far
 push	bp
 
 seg014_4D:
@@ -71386,13 +71386,13 @@ pop	bp
 
 seg014_5B:		; Return Far from Procedure
 retf
-seg014_4C endp ; sp = -2
+UnregisterOptionsClickArea_seg014_4C endp ; sp = -2
 
 
 
 ; Attributes: bp-based frame
 
-seg014_5C proc far
+GetOptionsGridSlotFromCursor_seg014_5C proc far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -71503,13 +71503,13 @@ leave
 
 seg014_AE:		; Return Far from Procedure
 retf
-seg014_5C endp
+GetOptionsGridSlotFromCursor_seg014_5C endp
 
 
 
 ; Attributes: bp-based frame
 
-seg014_AF proc far
+HighlightOptionsSlot_seg014_AF proc far
 
 arg_0= word ptr	 6
 
@@ -71586,7 +71586,7 @@ seg014_F4:
 push	106h
 
 seg014_F7:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 seg014_FC:		; Increment by 1
 inc	sp
@@ -71613,7 +71613,7 @@ push	si
 push	di
 
 seg014_10C:		; Call Procedure
-call	seg003_0272_4D3C
+call	InitDisplayFar_seg003_0272_4D3C
 
 seg014_111:		; Add
 add	sp, 8
@@ -71628,13 +71628,13 @@ pop	bp
 
 seg014_11C:		; Return Far from Procedure
 retf
-seg014_AF endp ; sp = -2
+HighlightOptionsSlot_seg014_AF endp ; sp = -2
 
 
 
 ; Attributes: bp-based frame
 
-seg014_11D proc	far
+UnhighlightOptionsSlot_seg014_11D proc	far
 
 arg_0= word ptr	 6
 
@@ -71711,7 +71711,7 @@ seg014_162:
 push	106h
 
 seg014_165:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 seg014_16A:		; Increment by 1
 inc	sp
@@ -71742,7 +71742,7 @@ seg014_179:
 push	di
 
 seg014_17A:		; Call Procedure
-call	seg003_0272_4D3C
+call	InitDisplayFar_seg003_0272_4D3C
 
 seg014_17F:		; Add
 add	sp, 8
@@ -71757,7 +71757,7 @@ seg014_188:
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-seg014_11D endp	; sp = -2
+UnhighlightOptionsSlot_seg014_11D endp	; sp = -2
 
 
 
@@ -72122,7 +72122,7 @@ seg015_1D7C_7E:		; 257d
 push	101h
 
 seg015_1D7C_81:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 seg015_1D7C_86:		; Increment by 1
 inc	sp
@@ -72180,7 +72180,7 @@ seg015_1D7C_B2:
 push	ax
 
 seg015_1D7C_B3:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 seg015_1D7C_B8:		; Add
 add	sp, 8
@@ -72260,7 +72260,7 @@ seg015_1D7C_EC:
 push	1
 
 seg015_1D7C_EE:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 seg015_1D7C_F3:		; Increment by 1
 inc	sp
@@ -74140,7 +74140,7 @@ call	GetMouseIcon_seg009_227
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 push	ax
-call	seg009_7	; Call Procedure
+call	GetCursorBitmapAddress_seg009_7	; Call Procedure
 
 seg015_1D7C_761:	; Increment by 1
 inc	sp
@@ -74483,7 +74483,7 @@ mov	ah, 0
 push	ax
 
 seg015_1D7C_89E:	; Call Procedure
-call	seg011_6
+call	ProcessJoystickMotionInput_seg011_6
 inc	sp		; Increment by 1
 
 seg015_1D7C_8A4:	; Increment by 1
@@ -74526,7 +74526,7 @@ lea	ax, [bp+var_A]
 push	ax
 
 seg015_1D7C_8CB:	; Call Procedure
-call	seg011_2C6
+call	CalculateJoystickVelocity_seg011_2C6
 
 seg015_1D7C_8D0:	; Add
 add	sp, 6
@@ -75134,7 +75134,7 @@ mov	bp, sp
 
 seg015_1D7C_B73:
 push	100h
-call	seg003_0272_48F4 ; Call	Procedure
+call	ClearScreenFar_seg003_0272_48F4 ; Call	Procedure
 
 seg015_1D7C_B7B:	; Increment by 1
 inc	sp
@@ -75186,7 +75186,7 @@ seg015_1D7C_BA7:
 push	ax
 
 seg015_1D7C_BA8:	; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 add	sp, 8		; Add
 
 seg015_1D7C_BB0:
@@ -75217,7 +75217,7 @@ seg015_1D7C_BC1:
 push	100h
 
 seg015_1D7C_BC4:	; Call Procedure
-call	seg003_0272_5239
+call	ProcessDisplayEntryFar_seg003_0272_5239
 
 seg015_1D7C_BC9:	; Increment by 1
 inc	sp
@@ -75285,7 +75285,7 @@ sub	ax, dseg_67d6_23D8
 push	ax
 
 seg015_1D7C_C0C:	; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 seg015_1D7C_C11:	; Add
 add	sp, 8
@@ -75352,7 +75352,7 @@ seg015_1D7C_C55:
 push	ax
 
 seg015_1D7C_C56:	; Call Procedure
-call	seg003_0272_517B
+call	ApplyColorMapFar_seg003_0272_517B
 
 seg015_1D7C_C5B:	; Add
 add	sp, 0Ah
@@ -75468,7 +75468,7 @@ seg015_1D7C_CC9:
 push	0
 
 seg015_1D7C_CCB:	; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 pop	bp
@@ -75551,7 +75551,7 @@ seg015_1D7C_D15:
 push	dseg_67d6_239A
 
 seg015_1D7C_D19:	; Call Procedure
-call	seg009_332
+call	BlitCursorIconToVRAM_seg009_332
 
 seg015_1D7C_D1E:	; Add
 add	sp, 6
@@ -78577,7 +78577,7 @@ seg016_1E73_9D3:
 push	[bp+FileHandle_var_1A]
 
 seg016_1E73_9D6:	; Call Procedure
-call	seg005_105F_17BB
+call	IsAtEndOfFile_seg005_105F_17BB
 
 seg016_1E73_9DB:	; Increment by 1
 inc	sp
@@ -80826,7 +80826,7 @@ seg016_1E73_14DA:
 push	2328h
 
 seg016_1E73_14DD:	; Call Procedure
-call	seg005_105F_3344
+call	FarHeapMalloc_seg005_105F_3344
 add	sp, 4		; Add
 mov	dseg_67d6_2492,	ax
 mov	dseg_67d6_2494,	dx
@@ -80846,7 +80846,7 @@ mov	dseg_67d6_23EA,	ax
 cwd			; AX ->	DX:AX (with sign)
 push	dx
 push	ax
-call	seg005_105F_3344 ; Call	Procedure
+call	FarHeapMalloc_seg005_105F_3344 ; Call	Procedure
 
 seg016_1E73_1506:	; Add
 add	sp, 4
@@ -81037,7 +81037,7 @@ push	0
 
 seg016_1E73_15C8:
 push	dseg_67d6_23E2
-call	seg005_105F_3344 ; Call	Procedure
+call	FarHeapMalloc_seg005_105F_3344 ; Call	Procedure
 
 seg016_1E73_15D1:	; Add
 add	sp, 4
@@ -81173,7 +81173,7 @@ push	dx
 push	ax
 
 seg016_1E73_1674:	; Call Procedure
-call	seg005_105F_3344
+call	FarHeapMalloc_seg005_105F_3344
 add	sp, 4		; Add
 mov	dseg_67d6_24A4,	ax
 mov	dseg_67d6_24A6,	dx
@@ -81304,7 +81304,7 @@ seg016_1E73_1738:
 push	[bp+var_4]
 
 seg016_1E73_173B:	; Call Procedure
-call	seg005_105F_325E
+call	FarHeapFree_seg005_105F_325E
 
 seg016_1E73_1740:	; Add
 add	sp, 4
@@ -81667,7 +81667,7 @@ push	ax
 push	dx
 
 seg016_1E73_192A:	; Call Procedure
-call	seg005_105F_3344
+call	FarHeapMalloc_seg005_105F_3344
 add	sp, 4		; Add
 mov	bx, [bp+arg_2]
 
@@ -81851,7 +81851,7 @@ inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 push	[bp+var_2]
 push	[bp+var_4]
-call	seg005_105F_3344 ; Call	Procedure
+call	FarHeapMalloc_seg005_105F_3344 ; Call	Procedure
 add	sp, 4		; Add
 mov	[bp+var_8], ax
 mov	[bp+var_6], dx
@@ -84647,7 +84647,7 @@ or	ax, dseg_67d6_2494 ; Logical Inclusive OR
 jz	short seg016_1E73_2A03 ; Jump if Zero (ZF=1)
 push	dseg_67d6_2494
 push	dseg_67d6_2492
-call	seg005_105F_325E ; Call	Procedure
+call	FarHeapFree_seg005_105F_325E ; Call	Procedure
 add	sp, 4		; Add
 
 seg016_1E73_2A03:
@@ -84660,7 +84660,7 @@ seg016_1E73_2A10:
 push	dseg_67d6_2436
 
 seg016_1E73_2A14:	; Call Procedure
-call	seg005_105F_325E
+call	FarHeapFree_seg005_105F_325E
 
 seg016_1E73_2A19:	; Add
 add	sp, 4
@@ -84675,7 +84675,7 @@ push	dseg_67d6_24A6
 push	dseg_67d6_24A4
 
 seg016_1E73_2A2D:	; Call Procedure
-call	seg005_105F_325E
+call	FarHeapFree_seg005_105F_325E
 add	sp, 4		; Add
 
 seg016_1E73_2A35:
@@ -84688,7 +84688,7 @@ push	dseg_67d6_2490
 
 seg016_1E73_2A42:
 push	dseg_67d6_248E
-call	seg005_105F_325E ; Call	Procedure
+call	FarHeapFree_seg005_105F_325E ; Call	Procedure
 add	sp, 4		; Add
 
 seg016_1E73_2A4E:
@@ -84708,7 +84708,7 @@ add	sp, 6		; Add
 seg016_1E73_2A67:
 push	dseg_67d6_249A
 push	dseg_67d6_2498
-call	seg005_105F_325E ; Call	Procedure
+call	FarHeapFree_seg005_105F_325E ; Call	Procedure
 
 seg016_1E73_2A74:	; Add
 add	sp, 4
@@ -84734,7 +84734,7 @@ seg016_1E73_2AA0:
 push	dseg_67d6_249C
 
 seg016_1E73_2AA4:	; Call Procedure
-call	seg005_105F_325E
+call	FarHeapFree_seg005_105F_325E
 add	sp, 4		; Add
 mov	dseg_67d6_249C,	0
 mov	dseg_67d6_249E,	0
@@ -85569,7 +85569,7 @@ lea	ax, [bp+var_6C]
 push	ax
 
 seg016_1E73_2FDA:	; Call Procedure
-call	seg005_105F_5D5
+call	ReadLineFromStream_seg005_105F_5D5
 
 seg016_1E73_2FDF:	; Add
 add	sp, 6
@@ -85594,7 +85594,7 @@ seg016_1E73_2FF8:
 push	ax
 
 seg016_1E73_2FF9:	; Call Procedure
-call	seg005_105F_F7F
+call	ScanFormatted_seg005_105F_F7F
 
 seg016_1E73_2FFE:	; Add
 add	sp, 0Ch
@@ -85632,7 +85632,7 @@ lea	ax, [bp+var_6C]
 push	ax
 
 seg016_1E73_3022:	; Call Procedure
-call	seg005_105F_5D5
+call	ReadLineFromStream_seg005_105F_5D5
 
 seg016_1E73_3027:	; Add
 add	sp, 6
@@ -85667,7 +85667,7 @@ seg016_1E73_3040:
 push	ax
 
 seg016_1E73_3041:	; Call Procedure
-call	seg005_105F_F7F
+call	ScanFormatted_seg005_105F_F7F
 
 seg016_1E73_3046:	; Add
 add	sp, 0Ch
@@ -91073,7 +91073,7 @@ mov	di, bx
 
 
 
-seg020_24 proc far
+BlitEGAPlanarTile_seg020_24 proc far
 mov	ax, 0A000h
 
 seg020_27:
@@ -91183,7 +91183,7 @@ pop	bp
 
 seg020_6D:		; Return Far from Procedure
 retf
-seg020_24 endp ; sp =  8
+BlitEGAPlanarTile_seg020_24 endp ; sp =  8
 
 seg020 ends
 
@@ -94546,7 +94546,7 @@ seg021_22FD_C99:
 mov	ax, [bp+Colour_arg_0]
 
 seg021_22FD_C9C:	; store	value of ax at es:di 13545d times
-call	seg003_0272_6E4	; es:di	= seg49:2
+call	FillFrameBuffer_seg003_0272_6E4	; es:di	= seg49:2
 
 seg021_22FD_CA1:	; Clear	Interrupt Flag
 cli
@@ -94605,7 +94605,7 @@ seg021_22FD_CCC:
 mov	cx, [bp+arg_0]
 
 seg021_22FD_CCF:	; Call Procedure
-call	seg003_0272_764
+call	ApplyColorMapToBuffer_seg003_0272_764
 
 seg021_22FD_CD4:	; Clear	Interrupt Flag
 cli
@@ -94667,7 +94667,7 @@ mov	cs:seg021_22FD_C26, dx
 
 seg021_22FD_CFF:
 mov	cx, [bp+arg_0]
-call	seg003_0272_788	; Call Procedure
+call	ApplyShadeTableToBuffer_seg003_0272_788	; Call Procedure
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg021_22FD_C24
 
@@ -94761,7 +94761,7 @@ sti
 mov	seg048MaybeGraphics_94E, ax
 
 seg021_22FD_D5F:	; Call Procedure
-call	seg003_0272_7A8
+call	InitScanlineTable_seg003_0272_7A8
 
 seg021_22FD_D64:	; Clear	Interrupt Flag
 cli
@@ -94860,16 +94860,16 @@ int	21h		; DOS -	SET INTERRUPT VECTOR
 			; DS:DX	= new vector to	be used	for specified interrupt
 
 seg021_22FD_DC9:	; Call Procedure
-call	far ptr	seg003_0272_6E2
+call	far ptr	ClearFrameBufferBlack_seg003_0272_6E2
 
 seg021_22FD_DCE:	; Call Procedure
-call	seg004_0849_3007
+call	RenderModelFrame_seg004_0849_3007
 
 seg021_22FD_DD3:	; Call Procedure
-call	seg003_0272_18
+call	DispatchWithStackCheck_seg003_0272_18
 
 seg021_22FD_DD8:	; Call Procedure
-call	seg004_0849_7F12
+call	DecrementSoundTimers_seg004_0849_7F12
 cli			; Clear	Interrupt Flag
 
 seg021_22FD_DDE:
@@ -94973,7 +94973,7 @@ seg021_22FD_E44:
 mov	si, dseg062_62a6_A98
 
 seg021_22FD_E48:	; Call Procedure
-call	far ptr	seg003_0272_5363
+call	far ptr	CopyViewportBoundsAndSet_seg003_0272_5363
 cli			; Clear	Interrupt Flag
 
 seg021_22FD_E4E:
@@ -95446,7 +95446,7 @@ seg021_22FD_FBB:
 mov	dh, 0FFh
 
 seg021_22FD_FBD:	; Call Procedure
-call	seg004_0849_7F0C
+call	IndirectCallAndReturnFar_seg004_0849_7F0C
 cli			; Clear	Interrupt Flag
 mov	dx, cs:seg021_22FD_C24
 
@@ -98006,7 +98006,7 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; Attributes: bp-based frame
 
-seg023_9 proc far
+RotatePaletteEntry_seg023_9 proc far
 
 var_4= dword ptr -4
 arg_0= byte ptr	 6
@@ -98198,13 +98198,13 @@ pop	si
 seg023_A9:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-seg023_9 endp
+RotatePaletteEntry_seg023_9 endp
 
 
 
 ; Attributes: bp-based frame
 
-seg023_AB proc far
+CycleLightingPalette_seg023_AB proc far
 
 arg_0= byte ptr	 6
 
@@ -98280,7 +98280,7 @@ seg023_E3:
 push	cs
 
 seg023_E4:		; Call Procedure
-call	near ptr seg023_9
+call	near ptr RotatePaletteEntry_seg023_9
 
 seg023_E7:		; Add
 add	sp, 6
@@ -98296,7 +98296,7 @@ push	0E4h ; '‰'
 push	cs
 
 seg023_F2:		; Call Procedure
-call	near ptr seg023_9
+call	near ptr RotatePaletteEntry_seg023_9
 
 seg023_F5:		; Add
 add	sp, 6
@@ -98314,7 +98314,7 @@ seg023_FF:
 push	cs
 
 seg023_100:		; Call Procedure
-call	near ptr seg023_9
+call	near ptr RotatePaletteEntry_seg023_9
 
 seg023_103:		; Add
 add	sp, 6
@@ -98330,7 +98330,7 @@ push	0ECh ; 'Ï'
 push	cs
 
 seg023_10E:		; Call Procedure
-call	near ptr seg023_9
+call	near ptr RotatePaletteEntry_seg023_9
 
 seg023_111:		; Add
 add	sp, 6
@@ -98358,7 +98358,7 @@ push	3
 push	cs
 
 seg023_128:		; Call Procedure
-call	near ptr seg023_9
+call	near ptr RotatePaletteEntry_seg023_9
 
 seg023_12B:		; Add
 add	sp, 6
@@ -98376,7 +98376,7 @@ seg023_134:
 push	cs
 
 seg023_135:		; Call Procedure
-call	near ptr seg023_9
+call	near ptr RotatePaletteEntry_seg023_9
 
 seg023_138:		; Add
 add	sp, 6
@@ -98410,7 +98410,7 @@ pop	bp
 
 seg023_152:		; Return Far from Procedure
 retf
-seg023_AB endp
+CycleLightingPalette_seg023_AB endp
 
 seg023 ends
 
@@ -106380,7 +106380,7 @@ seg026_2716_A3:
 push	ax
 
 seg026_2716_A4:		; Call Procedure
-call	seg023_AB
+call	CycleLightingPalette_seg023_AB
 inc	sp		; Increment by 1
 
 seg026_2716_AA:		; Increment by 1
@@ -109843,7 +109843,7 @@ jmp	seg026_2716_12F3
 seg026_2716_1141:	; Compare Two Operands
 cmp	si_mode, 0FFFFh
 jnz	short seg026_2716_1169 ; Jump if Not Zero (ZF=0)
-call	seg014_5C	; Call Procedure
+call	GetOptionsGridSlotFromCursor_seg014_5C	; Call Procedure
 
 seg026_2716_114B:
 mov	dseg_67d6_24E6,	ax
@@ -109962,7 +109962,7 @@ seg026_2716_11E6:
 push	ax
 
 seg026_2716_11E7:	; Call Procedure
-call	seg014_AF
+call	HighlightOptionsSlot_seg014_AF
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -109987,7 +109987,7 @@ seg026_2716_1208:
 push	ax
 
 seg026_2716_1209:	; Call Procedure
-call	seg014_AF
+call	HighlightOptionsSlot_seg014_AF
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -110054,7 +110054,7 @@ mov	ah, 0
 push	ax
 
 seg026_2716_1271:	; Call Procedure
-call	seg014_11D
+call	UnhighlightOptionsSlot_seg014_11D
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 call	GetMusicFileNo_seg016_1E73_1AB6	; get currently	playing	music theme
@@ -110080,7 +110080,7 @@ seg026_2716_1297:
 mov	al, [bx+128h]
 mov	ah, 0
 push	ax
-call	seg014_11D	; Call Procedure
+call	UnhighlightOptionsSlot_seg014_11D	; Call Procedure
 
 seg026_2716_12A3:	; Increment by 1
 inc	sp
@@ -110216,7 +110216,7 @@ mov	al, [bx+128h]
 seg026_2716_1343:
 mov	ah, 0
 push	ax
-call	seg014_AF	; Call Procedure
+call	HighlightOptionsSlot_seg014_AF	; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -110250,7 +110250,7 @@ mov	ah, 0
 push	ax
 
 seg026_2716_1372:	; Call Procedure
-call	seg014_11D
+call	UnhighlightOptionsSlot_seg014_11D
 inc	sp		; Increment by 1
 
 seg026_2716_1378:	; Increment by 1
@@ -110340,7 +110340,7 @@ mov	ah, 0
 push	ax
 
 seg026_2716_13C8:	; Call Procedure
-call	seg014_AF
+call	HighlightOptionsSlot_seg014_AF
 inc	sp		; Increment by 1
 
 seg026_2716_13CE:	; Increment by 1
@@ -121579,7 +121579,7 @@ mov	[bp+var_13], 1
 
 seg029_2A8E_11EA:
 push	di_objectarray
-call	seg005_105F_36E0 ; Call	Procedure
+call	NearHeapFree_seg005_105F_36E0 ; Call	Procedure
 inc	sp		; Increment by 1
 
 seg029_2A8E_11F1:	; Increment by 1
@@ -137908,7 +137908,7 @@ seg034_310D_76:
 push	2F9Ch
 
 seg034_310D_79:		; Call Procedure
-call	seg005_105F_1D81
+call	MemCopy_seg005_105F_1D81
 
 seg034_310D_7E:		; Add
 add	sp, 6
@@ -137974,7 +137974,7 @@ seg034_310D_B8:
 push	ax
 
 seg034_310D_B9:		; Call Procedure
-call	seg005_105F_1D81
+call	MemCopy_seg005_105F_1D81
 
 seg034_310D_BE:		; Add
 add	sp, 6
@@ -139085,7 +139085,7 @@ add	ax, 30F6h
 push	ax
 
 seg034_310D_555:	; Call Procedure
-call	seg005_105F_1D81
+call	MemCopy_seg005_105F_1D81
 
 seg034_310D_55A:	; Add
 add	sp, 6
@@ -143597,7 +143597,7 @@ seg037_32C0_69:
 push	word ptr [bx+85Ch]
 
 seg037_32C0_6D:		; Call Procedure
-call	seg000_18B
+call	SetRegionPosition_seg000_18B
 
 seg037_32C0_72:		; Add
 add	sp, 6
@@ -143621,13 +143621,13 @@ seg037_32C0_7F:
 push	word ptr [bx+85Ch]
 
 seg037_32C0_83:		; Call Procedure
-call	seg000_EB
+call	SetRegionCallback_seg000_EB
 
 seg037_32C0_88:		; Add
 add	sp, 4
 
 seg037_32C0_8B:		; Call Procedure
-call	seg000_330
+call	ProcessDirtyRegions_seg000_330
 
 seg037_32C0_90:		; Increment by 1
 inc	di
@@ -143694,7 +143694,7 @@ seg037_32C0_B9:
 push	dseg_67d6_860
 
 seg037_32C0_BD:		; Call Procedure
-call	seg000_EB
+call	SetRegionCallback_seg000_EB
 
 seg037_32C0_C2:		; Add
 add	sp, 4
@@ -143731,7 +143731,7 @@ seg037_32C0_DD:
 push	dseg_67d6_862
 
 seg037_32C0_E1:		; Call Procedure
-call	seg000_18B
+call	SetRegionPosition_seg000_18B
 
 seg037_32C0_E6:		; Add
 add	sp, 6
@@ -143749,13 +143749,13 @@ seg037_32C0_EF:
 push	dseg_67d6_862
 
 seg037_32C0_F3:		; Call Procedure
-call	seg000_EB
+call	SetRegionCallback_seg000_EB
 
 seg037_32C0_F8:		; Add
 add	sp, 4
 
 seg037_32C0_FB:		; Call Procedure
-call	seg000_330
+call	ProcessDirtyRegions_seg000_330
 
 seg037_32C0_100:
 pop	si
@@ -143828,7 +143828,7 @@ seg037_32C0_13E:
 mov	aUI_Element_dseg_67d6_7A8, 0
 
 seg037_32C0_144:	; Call Procedure
-call	seg000_330
+call	ProcessDirtyRegions_seg000_330
 pop	si
 pop	bp
 retf			; Return Far from Procedure
@@ -143870,7 +143870,7 @@ seg037_32C0_160:
 push	0
 
 seg037_32C0_162:	; Call Procedure
-call	seg000_2
+call	AllocScreenRegion_seg000_2
 inc	sp		; Increment by 1
 
 seg037_32C0_168:	; Increment by 1
@@ -143903,7 +143903,7 @@ seg037_32C0_17D:
 push	word ptr [bx+85Ch]
 
 seg037_32C0_181:	; Call Procedure
-call	seg000_A6
+call	SetRegionBounds_seg000_A6
 add	sp, 0Ah		; Add
 
 seg037_32C0_189:	; Increment by 1
@@ -143919,7 +143919,7 @@ seg037_32C0_18F:
 push	0
 
 seg037_32C0_191:	; Call Procedure
-call	seg000_2
+call	AllocScreenRegion_seg000_2
 
 seg037_32C0_196:	; Increment by 1
 inc	sp
@@ -143940,12 +143940,12 @@ push	5Eh ; '^'
 push	dseg_67d6_860
 
 seg037_32C0_1A7:	; Call Procedure
-call	seg000_A6
+call	SetRegionBounds_seg000_A6
 add	sp, 0Ah		; Add
 push	0
 
 seg037_32C0_1B1:	; Call Procedure
-call	seg000_2
+call	AllocScreenRegion_seg000_2
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -143976,7 +143976,7 @@ seg037_32C0_1CD:
 push	dseg_67d6_862
 
 seg037_32C0_1D1:	; Call Procedure
-call	seg000_A6
+call	SetRegionBounds_seg000_A6
 
 seg037_32C0_1D6:	; Add
 add	sp, 0Ah
@@ -143985,7 +143985,7 @@ seg037_32C0_1D9:
 push	0
 
 seg037_32C0_1DB:	; Call Procedure
-call	seg000_2
+call	AllocScreenRegion_seg000_2
 
 seg037_32C0_1E0:	; Increment by 1
 inc	sp
@@ -144010,7 +144010,7 @@ seg037_32C0_1EE:
 push	dseg_67d6_840
 
 seg037_32C0_1F2:	; Call Procedure
-call	seg000_A6
+call	SetRegionBounds_seg000_A6
 
 seg037_32C0_1F7:	; Add
 add	sp, 0Ah
@@ -144058,7 +144058,7 @@ call	near ptr seg037_32C0_A7
 seg037_32C0_226:
 push	207Fh
 push	dseg_67d6_840
-call	seg000_EB	; Call Procedure
+call	SetRegionCallback_seg000_EB	; Call Procedure
 add	sp, 4		; Add
 mov	ax, PlayerDataPTR_dseg_828A ; Selected Rune for	display
 add	ax, 47h	; 'G'   ; Add
@@ -144143,7 +144143,7 @@ seg037_32C0_290:	; Indirect Call	Far Procedure
 call	dseg_67d6_850[bx]
 
 seg037_32C0_294:	; Call Procedure
-call	seg000_330
+call	ProcessDirtyRegions_seg000_330
 
 seg037_32C0_299:	; Call Procedure
 call	MaybeApplyPalette_seg003_0272_46AA
@@ -144824,7 +144824,7 @@ cmp	[bp+var_5], 0
 jz	short seg037_32C0_579 ;	Jump if	Zero (ZF=1)
 
 seg037_32C0_56E:	; Call Procedure
-call	seg000_330
+call	ProcessDirtyRegions_seg000_330
 
 seg037_32C0_573:
 mov	al, [bp+var_1]
@@ -144957,7 +144957,7 @@ seg037_32C0_61F:
 push	0
 
 seg037_32C0_621:	; Call Procedure
-call	seg000_2
+call	AllocScreenRegion_seg000_2
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -144982,12 +144982,12 @@ shl	bx, 1		; Shift	Logical	Left
 
 seg037_32C0_642:
 push	word ptr [bx+891h]
-call	seg000_A6	; Call Procedure
+call	SetRegionBounds_seg000_A6	; Call Procedure
 add	sp, 0Ah		; Add
 push	0
 
 seg037_32C0_650:	; Call Procedure
-call	seg000_2
+call	AllocScreenRegion_seg000_2
 inc	sp		; Increment by 1
 
 seg037_32C0_656:	; Increment by 1
@@ -145010,14 +145010,14 @@ seg037_32C0_66B:
 push	word ptr [bx+88Dh]
 
 seg037_32C0_66F:	; Call Procedure
-call	seg000_A6
+call	SetRegionBounds_seg000_A6
 
 seg037_32C0_674:	; Add
 add	sp, 0Ah
 push	0
 
 seg037_32C0_679:	; Call Procedure
-call	seg000_2
+call	AllocScreenRegion_seg000_2
 inc	sp		; Increment by 1
 
 seg037_32C0_67F:	; Increment by 1
@@ -145052,7 +145052,7 @@ seg037_32C0_69A:
 push	word ptr [bx+895h]
 
 seg037_32C0_69E:	; Call Procedure
-call	seg000_A6
+call	SetRegionBounds_seg000_A6
 add	sp, 0Ah		; Add
 
 seg037_32C0_6A6:
@@ -145100,7 +145100,7 @@ shl	bx, 1		; Shift	Logical	Left
 
 seg037_32C0_6DF:
 push	word ptr [bx+85Ch]
-call	seg000_18B	; Call Procedure
+call	SetRegionPosition_seg000_18B	; Call Procedure
 add	sp, 6		; Add
 mov	ax, [bp+var_4]
 add	ax, di		; Add
@@ -145117,7 +145117,7 @@ seg037_32C0_6F6:
 push	word ptr [bx+85Ch]
 
 seg037_32C0_6FA:	; Call Procedure
-call	seg000_EB
+call	SetRegionCallback_seg000_EB
 
 seg037_32C0_6FF:	; Add
 add	sp, 4
@@ -145169,7 +145169,7 @@ seg037_32C0_740:
 push	word ptr [bx+891h]
 
 seg037_32C0_744:	; Call Procedure
-call	seg000_A6
+call	SetRegionBounds_seg000_A6
 
 seg037_32C0_749:	; Add
 add	sp, 0Ah
@@ -145189,7 +145189,7 @@ shl	bx, 1
 push	word ptr [bx+891h]
 
 seg037_32C0_75B:	; Call Procedure
-call	seg000_1F9
+call	SetRegionDrawMode_seg000_1F9
 add	sp, 4		; Add
 
 seg037_32C0_763:
@@ -145201,7 +145201,7 @@ seg037_32C0_76A:
 push	word ptr [bx+891h]
 
 seg037_32C0_76E:	; Call Procedure
-call	seg000_EB
+call	SetRegionCallback_seg000_EB
 
 seg037_32C0_773:	; Add
 add	sp, 4
@@ -145228,7 +145228,7 @@ seg037_32C0_78E:
 push	word ptr [bx+85Ch]
 
 seg037_32C0_792:	; Call Procedure
-call	seg000_18B
+call	SetRegionPosition_seg000_18B
 
 seg037_32C0_797:	; Add
 add	sp, 6
@@ -145245,7 +145245,7 @@ shl	bx, 1
 
 seg037_32C0_7A5:
 push	word ptr [bx+85Ch]
-call	seg000_EB	; Call Procedure
+call	SetRegionCallback_seg000_EB	; Call Procedure
 
 seg037_32C0_7AE:	; Add
 add	sp, 4
@@ -145325,7 +145325,7 @@ shl	bx, 1
 push	word ptr [bx+85Ch]
 
 seg037_32C0_810:	; Call Procedure
-call	seg000_EB
+call	SetRegionCallback_seg000_EB
 add	sp, 4		; Add
 mov	byte ptr [si+7EAh], 0
 
@@ -145352,7 +145352,7 @@ seg037_32C0_834:
 push	word ptr [bx+88Dh]
 
 seg037_32C0_838:	; Call Procedure
-call	seg000_18B
+call	SetRegionPosition_seg000_18B
 
 seg037_32C0_83D:	; Add
 add	sp, 6
@@ -145376,7 +145376,7 @@ seg037_32C0_851:
 push	word ptr [bx+88Dh]
 
 seg037_32C0_855:	; Call Procedure
-call	seg000_EB
+call	SetRegionCallback_seg000_EB
 
 seg037_32C0_85A:	; Add
 add	sp, 4
@@ -145396,7 +145396,7 @@ shl	bx, 1
 push	word ptr [bx+895h]
 
 seg037_32C0_871:	; Call Procedure
-call	seg000_1F9
+call	SetRegionDrawMode_seg000_1F9
 add	sp, 4		; Add
 mov	bx, di
 shl	bx, 1		; Shift	Logical	Left
@@ -145413,7 +145413,7 @@ shl	bx, 1		; Shift	Logical	Left
 
 seg037_32C0_88D:
 push	word ptr [bx+895h]
-call	seg000_18B	; Call Procedure
+call	SetRegionPosition_seg000_18B	; Call Procedure
 
 seg037_32C0_896:	; Add
 add	sp, 6
@@ -145423,7 +145423,7 @@ mov	bx, si
 seg037_32C0_89E:	; Shift	Logical	Left
 shl	bx, 1
 push	word ptr [bx+895h]
-call	seg000_120	; Call Procedure
+call	SetRegionCallbackWithRedraw_seg000_120	; Call Procedure
 add	sp, 4		; Add
 
 seg037_32C0_8AC:
@@ -145505,7 +145505,7 @@ seg037_32C0_8F7:
 push	dseg_67d6_860
 
 seg037_32C0_8FB:	; Call Procedure
-call	seg000_EB
+call	SetRegionCallback_seg000_EB
 add	sp, 4		; Add
 mov	bx, [bp+var_2]
 
@@ -145538,7 +145538,7 @@ seg037_32C0_91D:
 push	dseg_67d6_862
 
 seg037_32C0_921:	; Call Procedure
-call	seg000_18B
+call	SetRegionPosition_seg000_18B
 
 seg037_32C0_926:	; Add
 add	sp, 6
@@ -145548,7 +145548,7 @@ push	ax
 push	dseg_67d6_862
 
 seg037_32C0_934:	; Call Procedure
-call	seg000_EB
+call	SetRegionCallback_seg000_EB
 add	sp, 4		; Add
 mov	al, byte ptr [bp+var_2]
 mov	dseg_67d6_3429,	al
@@ -145607,7 +145607,7 @@ push	0Eh
 push	1
 
 seg037_32C0_97A:	; Call Procedure
-call	seg000_2
+call	AllocScreenRegion_seg000_2
 add	sp, 6		; Add
 mov	dseg_67d6_899, ax
 mov	ax, seg	seg048MaybeGraphics
@@ -145632,7 +145632,7 @@ seg037_32C0_998:
 push	dseg_67d6_899
 
 seg037_32C0_99C:	; Call Procedure
-call	seg000_A6
+call	SetRegionBounds_seg000_A6
 add	sp, 0Ah		; Add
 
 seg037_32C0_9A4:	; Compare Two Operands
@@ -145651,7 +145651,7 @@ push	ax
 push	dseg_67d6_899
 
 seg037_32C0_9B9:	; Call Procedure
-call	seg000_EB
+call	SetRegionCallback_seg000_EB
 add	sp, 4		; Add
 
 seg037_32C0_9C1:	; Compare Two Operands
@@ -145684,7 +145684,7 @@ seg037_32C0_9EB:
 push	dseg_67d6_899
 
 seg037_32C0_9EF:	; Call Procedure
-call	seg000_EB
+call	SetRegionCallback_seg000_EB
 
 seg037_32C0_9F4:	; Add
 add	sp, 4
@@ -145869,7 +145869,7 @@ seg037_32C0_AD7:
 push	dseg_67d6_840
 
 seg037_32C0_ADB:	; Call Procedure
-call	seg000_EB
+call	SetRegionCallback_seg000_EB
 
 seg037_32C0_AE0:	; Add
 add	sp, 4
@@ -145892,7 +145892,7 @@ seg037_32C0_AFA:
 push	dseg_67d6_840
 
 seg037_32C0_AFE:	; Call Procedure
-call	seg000_EB
+call	SetRegionCallback_seg000_EB
 add	sp, 4		; Add
 
 seg037_32C0_B06:	; Logical AND
@@ -146991,7 +146991,7 @@ push	10h
 push	1
 
 seg037_32C0_10BC:	; Call Procedure
-call	seg000_2
+call	AllocScreenRegion_seg000_2
 
 seg037_32C0_10C1:	; Add
 add	sp, 6
@@ -147013,7 +147013,7 @@ shl	bx, 1		; Shift	Logical	Left
 
 seg037_32C0_10DE:
 push	word ptr [bx+8AAh]
-call	seg000_A6	; Call Procedure
+call	SetRegionBounds_seg000_A6	; Call Procedure
 
 seg037_32C0_10E7:	; Add
 add	sp, 0Ah
@@ -147050,7 +147050,7 @@ shl	bx, 1		; Shift	Logical	Left
 push	word ptr [bx+8AAh]
 
 seg037_32C0_1119:	; Call Procedure
-call	seg000_EB
+call	SetRegionCallback_seg000_EB
 
 seg037_32C0_111E:	; Add
 add	sp, 4
@@ -147062,7 +147062,7 @@ seg037_32C0_1123:
 mov	bx, si
 shl	bx, 1		; Shift	Logical	Left
 push	word ptr [bx+8AAh]
-call	seg000_155	; Call Procedure
+call	ClearRegionCallback_seg000_155	; Call Procedure
 
 seg037_32C0_1130:	; Increment by 1
 inc	sp
@@ -147074,7 +147074,7 @@ inc	si
 seg037_32C0_1133:	; Compare Two Operands
 cmp	si, 3
 jl	short seg037_32C0_10FF ; Jump if Less (SF!=OF)
-call	seg000_330	; Call Procedure
+call	ProcessDirtyRegions_seg000_330	; Call Procedure
 pop	di
 pop	si
 pop	bp
@@ -147123,7 +147123,7 @@ seg037_32C0_116C:
 push	12h
 push	10h
 push	1
-call	seg000_2	; Call Procedure
+call	AllocScreenRegion_seg000_2	; Call Procedure
 
 seg037_32C0_1177:	; Add
 add	sp, 6
@@ -147149,7 +147149,7 @@ push	word ptr [bx+84Ah]
 mov	bx, si
 shl	bx, 1		; Shift	Logical	Left
 push	word ptr [bx+8B0h]
-call	seg000_A6	; Call Procedure
+call	SetRegionBounds_seg000_A6	; Call Procedure
 add	sp, 0Ah		; Add
 inc	si		; Increment by 1
 
@@ -147190,7 +147190,7 @@ shl	bx, 1		; Shift	Logical	Left
 
 seg037_32C0_11CB:
 push	dseg_67d6_8B0[bx]
-call	seg000_EB	; Call Procedure
+call	SetRegionCallback_seg000_EB	; Call Procedure
 
 seg037_32C0_11D4:	; Add
 add	sp, 4
@@ -147204,7 +147204,7 @@ shl	bx, 1		; Shift	Logical	Left
 push	dseg_67d6_8B0[bx]
 
 seg037_32C0_11E1:	; Call Procedure
-call	seg000_155
+call	ClearRegionCallback_seg000_155
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -147216,7 +147216,7 @@ cmp	si, 3
 jl	short seg037_32C0_11B5 ; Jump if Less (SF!=OF)
 
 seg037_32C0_11EE:	; Call Procedure
-call	seg000_330
+call	ProcessDirtyRegions_seg000_330
 
 seg037_32C0_11F3:
 pop	di_arg0
@@ -147461,7 +147461,7 @@ call	GraphicsCall_seg003_0272_46E6
 
 seg037_32C0_1347:
 push	106h
-call	seg003_0272_48F4 ; Call	Procedure
+call	ClearScreenFar_seg003_0272_48F4 ; Call	Procedure
 inc	sp		; Increment by 1
 
 seg037_32C0_1350:	; Increment by 1
@@ -147476,7 +147476,7 @@ seg037_32C0_1359:
 push	0EBh ; 'Î'
 
 seg037_32C0_135C:	; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 seg037_32C0_1361:	; Add
 add	sp, 8
@@ -147601,7 +147601,7 @@ seg037_32C0_13EF:
 push	0ECh ; 'Ï'
 
 seg037_32C0_13F2:	; Call Procedure
-call	seg003_0272_51C8
+call	ApplyShadeMapFar_seg003_0272_51C8
 
 seg037_32C0_13F7:	; Add
 add	sp, 0Ch
@@ -147761,7 +147761,7 @@ jnz	short seg037_32C0_14D9 ; Jump if Not Zero (ZF=0)
 push	1
 
 seg037_32C0_14BD:	; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 seg037_32C0_14C2:	; Increment by 1
 inc	sp
@@ -147778,7 +147778,7 @@ seg037_32C0_14CC:
 push	0ECh ; 'Ï'
 
 seg037_32C0_14CF:	; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 seg037_32C0_14D4:	; Add
 add	sp, 8
@@ -148101,7 +148101,7 @@ push	dseg_67d6_832
 push	word ptr dseg_67d6_830
 
 seg037_32C0_164B:	; Call Procedure
-call	seg009_150
+call	GetCursorBitmapPixelPtr_seg009_150
 
 seg037_32C0_1650:	; Add
 add	sp, 4
@@ -148156,7 +148156,7 @@ seg037_32C0_1680:
 push	[bp+var_4]
 
 seg037_32C0_1683:	; Call Procedure
-call	seg003_0272_5088
+call	BlitToVRAMFar_seg003_0272_5088
 
 seg037_32C0_1688:	; Add
 add	sp, 0Ch
@@ -148171,7 +148171,7 @@ seg037_32C0_1690:
 push	1090h
 
 seg037_32C0_1693:	; Call Procedure
-call	seg009_332
+call	BlitCursorIconToVRAM_seg009_332
 
 seg037_32C0_1698:	; Add
 add	sp, 6
@@ -150403,7 +150403,7 @@ shl	ax, 2
 seg039_3452_57A:
 push	0
 push	ax
-call	seg005_105F_3344 ; Call	Procedure
+call	FarHeapMalloc_seg005_105F_3344 ; Call	Procedure
 add	sp, 4		; Add
 mov	word ptr StringsPak_Address_Indices_dseg_349C, ax
 
@@ -150510,7 +150510,7 @@ push	word ptr StringsPak_Address_Indices_dseg_349C+2
 push	word ptr StringsPak_Address_Indices_dseg_349C
 
 seg039_3452_5F7:	; Call Procedure
-call	seg005_105F_325E
+call	FarHeapFree_seg005_105F_325E
 
 seg039_3452_5FC:	; Add
 add	sp, 4
@@ -150848,7 +150848,7 @@ seg039_3452_78C:
 push	[bp+arg_0]
 
 seg039_3452_78F:	; Call Procedure
-call	seg005_105F_19D9
+call	ReadCharFromStream_seg005_105F_19D9
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -156421,14 +156421,14 @@ seg043_3619_15D:
 push	word ptr [bx+4]
 
 seg043_3619_160:	; Call Procedure
-call	seg003_0272_51C8
+call	ApplyShadeMapFar_seg003_0272_51C8
 add	sp, 0Ch		; Add
 
 seg043_3619_168:
 push	71h ; 'q'
 
 seg043_3619_16A:	; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 seg043_3619_16F:	; Increment by 1
 inc	sp
@@ -156454,7 +156454,7 @@ seg043_3619_180:
 push	word ptr [bx+4]
 
 seg043_3619_183:	; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 seg043_3619_188:	; Add
 add	sp, 8
@@ -156629,7 +156629,7 @@ seg043_3619_23E:
 push	ax
 
 seg043_3619_23F:	; Call Procedure
-call	seg005_105F_103F
+call	StringFindLastChar_seg005_105F_103F
 
 seg043_3619_244:	; Add
 add	sp, 4
@@ -157426,7 +157426,7 @@ jmp	seg043_3619_5EA
 seg043_3619_560:
 push	20h ; ' '
 push	si
-call	seg005_105F_103F ; Call	Procedure
+call	StringFindLastChar_seg005_105F_103F ; Call	Procedure
 
 seg043_3619_568:	; Add
 add	sp, 4
@@ -157639,7 +157639,7 @@ jz	short seg043_3619_64A ;	Jump if	Zero (ZF=1)
 
 seg043_3619_621:
 push	1
-call	seg003_0272_48F4 ; Call	Procedure
+call	ClearScreenFar_seg003_0272_48F4 ; Call	Procedure
 
 seg043_3619_628:	; Increment by 1
 inc	sp
@@ -157674,14 +157674,14 @@ add	ax, 0Eh
 push	ax
 
 seg043_3619_642:	; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 add	sp, 8		; Add
 
 seg043_3619_64A:
 push	71h ; 'q'
 
 seg043_3619_64C:	; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 seg043_3619_651:	; Increment by 1
 inc	sp
@@ -157698,7 +157698,7 @@ push	[bp+arg_2]
 push	[bp+arg_0]
 
 seg043_3619_65F:	; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 seg043_3619_664:	; Add
 add	sp, 8
@@ -157806,7 +157806,7 @@ mov	es:seg048MaybeGraphics_DC5, 0
 push	74h ; 't'
 
 seg043_3619_6EC:	; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 inc	sp		; Increment by 1
 
 seg043_3619_6F2:	; Increment by 1
@@ -157829,7 +157829,7 @@ add	ax, 0Dh
 push	ax
 
 seg043_3619_704:	; Call Procedure
-call	seg003_0272_4DC2
+call	DrawPolygonFar_seg003_0272_4DC2
 
 seg043_3619_709:	; Add
 add	sp, 8
@@ -157838,7 +157838,7 @@ seg043_3619_70C:
 push	72h ; 'r'
 
 seg043_3619_70E:	; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 seg043_3619_713:	; Increment by 1
 inc	sp
@@ -157877,7 +157877,7 @@ seg043_3619_72A:
 push	ax
 
 seg043_3619_72B:	; Call Procedure
-call	seg003_0272_4DC2
+call	DrawPolygonFar_seg003_0272_4DC2
 
 seg043_3619_730:	; Add
 add	sp, 8
@@ -157886,7 +157886,7 @@ seg043_3619_733:
 push	71h ; 'q'
 
 seg043_3619_735:	; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 seg043_3619_73A:	; Increment by 1
 inc	sp
@@ -157932,7 +157932,7 @@ seg043_3619_754:
 push	ax
 
 seg043_3619_755:	; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 seg043_3619_75A:	; Add
 add	sp, 8
@@ -166240,7 +166240,7 @@ seg046_37CD_D46:
 push	ax
 
 seg046_37CD_D47:	; Call Procedure
-call	seg005_105F_3344
+call	FarHeapMalloc_seg005_105F_3344
 pop	bx
 pop	bx
 pop	bx
@@ -277579,20 +277579,20 @@ db    0
 db  90h	; ê
 db  10h
 seg052_519C_24F4 dw offset nullsub_3
-seg052_519C_24F6 dw offset seg004_0849_13D6
-dw offset seg004_0849_13E0
-dw offset seg004_0849_196E
-dw offset seg004_0849_1099
-dw offset seg004_0849_13EF
-dw offset seg004_0849_19B6
-dw offset seg004_0849_19F3
-dw offset seg004_0849_1A30
-dw offset seg004_0849_18F6
-dw offset seg004_0849_191A
-dw offset seg004_0849_1907
-dw offset seg004_0849_1A6D
-dw offset seg004_0849_18ED
-dw offset seg004_0849_1B4B
+seg052_519C_24F6 dw offset VMOp_CopyWord_seg004_0849_13D6
+dw offset VMOp_IndirectStoreWord_seg004_0849_13E0
+dw offset VMOp_DotProduct3BranchNeg_seg004_0849_196E
+dw offset VMOp_ProjectAndPlotVertex_seg004_0849_1099
+dw offset VMOp_StoreBPIndexedWord_seg004_0849_13EF
+dw offset VMOp_DotProduct2BranchNeg_YZ_seg004_0849_19B6
+dw offset VMOp_DotProduct2BranchNeg_XZ_seg004_0849_19F3
+dw offset VMOp_DotProduct2BranchNeg_XY_seg004_0849_1A30
+dw offset VMOp_CallSubroutine_seg004_0849_18F6
+dw offset VMOp_SkipIfGreaterThan_seg004_0849_191A
+dw offset VMOp_SkipIfLessThan_seg004_0849_1907
+dw offset VMOp_ComputeViewerDelta_seg004_0849_1A6D
+dw offset VMOp_CallNearIndirect_seg004_0849_18ED
+dw offset VMOp_TranslateVertexAlongAxis_seg004_0849_1B4B
 db  90h	; ê
 db  10h
 db  90h	; ê
@@ -349841,7 +349841,7 @@ db  94h	; î
 seg069_1B3 db	 0
 db    1
 seg069_1B5 db	 0
-seg069_1B6 dd seg003_0272_0+2 ;	case 0x0
+seg069_1B6 dd DispatchPlotPixel_seg003_0272_0+2 ;	case 0x0
 db  6Dh	; m
 db  5Dh	; ]
 seg069_1BC db	 0
@@ -349901,7 +349901,7 @@ db 0CAh	;  
 db    1
 seg069_214 db	 1
 seg069_215 db	 0
-seg069_216 dd seg014_A
+seg069_216 dd RegisterOptionsClickArea_seg014_A
 db  4Dh	; M
 seg069_21B db	 2
 db    1
@@ -350768,7 +350768,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub092_20 proc	far
-jmp	ovr092_18	; Jump
+jmp	StubNoOp3_ovr092_18	; Jump
 stub092_20 endp
 
 
@@ -350776,7 +350776,7 @@ stub092_20 endp
 ; Attributes: thunk
 
 stub092_25 proc	far
-jmp	ovr092_0	; Jump
+jmp	StubNoOp1_ovr092_0	; Jump
 stub092_25 endp
 
 
@@ -350784,7 +350784,7 @@ stub092_25 endp
 ; Attributes: thunk
 
 stub092_2A proc	far
-jmp	ovr092_22	; Jump
+jmp	StubNoOp5_ovr092_22	; Jump
 stub092_2A endp
 
 
@@ -350792,7 +350792,7 @@ stub092_2A endp
 ; Attributes: thunk
 
 stub092_2F proc	far
-jmp	ovr092_13	; Jump
+jmp	StubNoOp2_ovr092_13	; Jump
 stub092_2F endp
 
 
@@ -350800,7 +350800,7 @@ stub092_2F endp
 ; Attributes: thunk
 
 stub092_34 proc	far
-jmp	ovr092_1D	; Jump
+jmp	StubNoOp4_ovr092_1D	; Jump
 stub092_34 endp
 
 
@@ -350808,7 +350808,7 @@ stub092_34 endp
 ; Attributes: thunk
 
 stub092_39 proc	far
-jmp	ovr092_5	; Jump
+jmp	StubShowBarterUI_ovr092_5	; Jump
 stub092_39 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_ReturnFar_ovr092_27. PRESS KEYPAD "+" TO EXPAND]
@@ -350830,7 +350830,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub093_20 proc	far
-jmp	ovr093_DC1	; Jump
+jmp	ReadFileHeaderWord_ovr093_DC1	; Jump
 stub093_20 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_MaybeSeekToOffset_ovr093_0. PRESS KEYPAD "+" TO	EXPAND]
@@ -350839,7 +350839,7 @@ stub093_20 endp
 ; Attributes: thunk
 
 stub093_2A proc	far
-jmp	ovr093_128	; Jump
+jmp	WriteArkDataBlockHeaders_ovr093_128	; Jump
 stub093_2A endp
 
 
@@ -350857,7 +350857,7 @@ j_OpenArkFile_ovr093_779D_3A6 endp
 ; Attributes: thunk
 
 stub093_34 proc	far
-jmp	ovr093_339	; Jump
+jmp	CopyDataBetweenFileHandles_ovr093_339	; Jump
 stub093_34 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_CloseLevArk_ovr093_779D_47F. PRESS KEYPAD "+" TO EXPAND]
@@ -350874,7 +350874,7 @@ j_ReadDataFileBlock_ovr093_D48 endp
 ; Attributes: thunk
 
 stub093_43 proc	far
-jmp	ovr093_DBC	; Jump
+jmp	DoNothing_ovr093_DBC	; Jump
 stub093_43 endp
 
 
@@ -350954,7 +350954,7 @@ j_LoadLevArkForAutomap_ovr094_2D3 endp
 ; Attributes: thunk
 
 stub094_43 proc	far
-jmp	ovr094_A19	; Jump
+jmp	FindNearestMapNote_ovr094_A19	; Jump
 stub094_43 endp
 
 
@@ -350962,7 +350962,7 @@ stub094_43 endp
 ; Attributes: thunk
 
 stub094_48 proc	far
-jmp	ovr094_8DA	; Jump
+jmp	DrawAutomapDoorIndicator_ovr094_8DA	; Jump
 stub094_48 endp
 
 
@@ -350978,7 +350978,7 @@ j_AutoMapTrap_ovr094_1878 endp
 ; Attributes: thunk
 
 stub094_52 proc	far
-jmp	ovr094_B11	; Jump
+jmp	GetAutomapRegionFromClick_ovr094_B11	; Jump
 stub094_52 endp
 
 
@@ -350986,7 +350986,7 @@ stub094_52 endp
 ; Attributes: thunk
 
 stub094_57 proc	far
-jmp	ovr094_569	; Jump
+jmp	CheckAndDrawAdjacentWall_ovr094_569	; Jump
 stub094_57 endp
 
 
@@ -351002,7 +351002,7 @@ j_ViewAutomap_ovr094_0 endp
 ; Attributes: thunk
 
 stub094_61 proc	far
-jmp	ovr094_39F	; Jump
+jmp	CloseAutomapAndRestore_ovr094_39F	; Jump
 stub094_61 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_ClearAutomap_ovr094_412. PRESS KEYPAD "+" TO EXPAND]
@@ -351011,7 +351011,7 @@ stub094_61 endp
 ; Attributes: thunk
 
 stub094_6B proc	far
-jmp	ovr094_1317	; Jump
+jmp	DrawWorldSelectionIcon_ovr094_1317	; Jump
 stub094_6B endp
 
 
@@ -351019,7 +351019,7 @@ stub094_6B endp
 ; Attributes: thunk
 
 stub094_70 proc	far
-jmp	ovr094_427	; Jump
+jmp	DrawAutomapWalls_ovr094_427	; Jump
 stub094_70 endp
 
 
@@ -351027,7 +351027,7 @@ stub094_70 endp
 ; Attributes: thunk
 
 stub094_75 proc	far
-jmp	ovr094_9D2	; Jump
+jmp	DrawAutomapDiagonalWall_ovr094_9D2	; Jump
 stub094_75 endp
 
 
@@ -351035,7 +351035,7 @@ stub094_75 endp
 ; Attributes: thunk
 
 stub094_7A proc	far
-jmp	ovr094_2A8	; Jump
+jmp	RefreshFullAutomap_ovr094_2A8	; Jump
 stub094_7A endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_LoadMapNotesData_ovr094_12C6. PRESS KEYPAD "+" TO EXPAND]
@@ -351044,7 +351044,7 @@ stub094_7A endp
 ; Attributes: thunk
 
 stub094_84 proc	far
-jmp	ovr094_661	; Jump
+jmp	DrawAutomapWallLine_ovr094_661	; Jump
 stub094_84 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_SomethingWithXMIFiles_ovr094_158E. PRESS KEYPAD	"+" TO EXPAND]
@@ -351053,7 +351053,7 @@ stub094_84 endp
 ; Attributes: thunk
 
 stub094_8E proc	far
-jmp	ovr094_1201	; Jump
+jmp	SaveMapNotesToLevArk_ovr094_1201	; Jump
 stub094_8E endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_DisplayAutomap_ovr094_13FB. PRESS KEYPAD "+" TO	EXPAND]
@@ -351080,7 +351080,7 @@ j_UpdateAutomapTiles_ovr094_140	endp ; StartY_arg_2= word ptr  8
 ; Attributes: thunk
 
 stub094_9D proc	far
-jmp	ovr094_1379	; Jump
+jmp	DrawWorldSelectionPanel_ovr094_1379	; Jump
 stub094_9D endp
 
 
@@ -351088,7 +351088,7 @@ stub094_9D endp
 ; Attributes: thunk
 
 stub094_A2 proc	far
-jmp	ovr094_1598	; Jump
+jmp	GetMapPieceOctant_ovr094_1598	; Jump
 stub094_A2 endp
 
 
@@ -351096,7 +351096,7 @@ stub094_A2 endp
 ; Attributes: thunk
 
 stub094_A7 proc	far
-jmp	ovr094_155B	; Jump
+jmp	SwitchAutomapLevel_ovr094_155B	; Jump
 stub094_A7 endp
 
 stub094	ends
@@ -351156,7 +351156,7 @@ Plural_stub095_6B endp
 ; Attributes: thunk
 
 stub095_70 proc	far
-jmp	ovr095_2296	; Jump
+jmp	ConvoVMNoop_ovr095_2296	; Jump
 stub095_70 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_RESPOND_OP_ovr095_1F4A.	PRESS KEYPAD "+" TO EXPAND]
@@ -351167,7 +351167,7 @@ stub095_70 endp
 ; Attributes: thunk
 
 stub095_84 proc	far
-jmp	ovr095_ED7	; Jump
+jmp	InsertStringIntoConvoBuffer_ovr095_ED7	; Jump
 stub095_84 endp
 
 
@@ -351183,7 +351183,7 @@ j_LoadNPCConversation_ovr095_875 endp
 ; Attributes: thunk
 
 stub095_8E proc	far
-jmp	ovr095_E36	; Jump
+jmp	FindInConvoArray_ovr095_E36	; Jump
 stub095_8E endp
 
 
@@ -351202,7 +351202,7 @@ GetConvoMemoryVariable_stub095_93 endp
 ; Attributes: thunk
 
 stub095_A7 proc	far
-jmp	ovr095_21E	; Jump
+jmp	FreeConvoMemBlock_ovr095_21E	; Jump
 stub095_A7 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_Length_ovr095_E8D. PRESS KEYPAD	"+" TO EXPAND]
@@ -351219,7 +351219,7 @@ AddImportedFunction_stub095_B1 endp
 ; Attributes: thunk
 
 stub095_B6 proc	far
-jmp	ovr095_31	; Jump
+jmp	IsBlockInFreeList_ovr095_31	; Jump
 stub095_B6 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_CopyConversationCode_ovr095_14B1. PRESS	KEYPAD "+" TO EXPAND]
@@ -351249,7 +351249,7 @@ ReadConvoMemory_stub095_CA endp
 ; Attributes: thunk
 
 stub095_E3 proc	far
-jmp	ovr095_395	; Jump
+jmp	ReallocConvoMemBlock_ovr095_395	; Jump
 stub095_E3 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_TSTEQ_ovr095_1BD0. PRESS KEYPAD	"+" TO EXPAND]
@@ -351490,7 +351490,7 @@ j_do_judgement_ovr097_165B endp
 ; Attributes: thunk
 
 stub097_7A proc	far
-jmp	ovr097_6A2	; Jump
+jmp	ClickOnNPCTradeSlot_ovr097_6A2	; Jump
 stub097_7A endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_SomethingWithDrawingTradeSlots_ovr097_A91. PRESS KEYPAD	"+" TO EXPAND]
@@ -351501,7 +351501,7 @@ stub097_7A endp
 ; Attributes: thunk
 
 stub097_8E proc	far
-jmp	ovr097_4CB	; Jump
+jmp	ClickOnPlayerTradeSlot_ovr097_4CB	; Jump
 stub097_8E endp
 
 
@@ -351509,7 +351509,7 @@ stub097_8E endp
 ; Attributes: thunk
 
 stub097_93 proc	far
-jmp	ovr097_65E	; Jump
+jmp	RightClickOnPlayerTradeSlot_ovr097_65E	; Jump
 stub097_93 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_ObjectClickOnSlot_ovr097_D30. PRESS KEYPAD "+" TO EXPAND]
@@ -351518,7 +351518,7 @@ stub097_93 endp
 ; Attributes: thunk
 
 stub097_9D proc	far
-jmp	ovr097_CDB	; Jump
+jmp	PlaceObjectInTradeSlot_ovr097_CDB	; Jump
 stub097_9D endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_LikelyWorldInteractionRelated_ovr097_6E8. PRESS	KEYPAD "+" TO EXPAND]
@@ -351528,7 +351528,7 @@ stub097_9D endp
 ; Attributes: thunk
 
 stub097_AC proc	far
-jmp	ovr097_581	; Jump
+jmp	HitTestNPCTradeSlot_ovr097_581	; Jump
 stub097_AC endp
 
 
@@ -351560,7 +351560,7 @@ j_Find_INV_ovr097_1B9E endp
 ; Attributes: thunk
 
 stub097_C0 proc	far
-jmp	ovr097_512	; Jump
+jmp	HitTestPlayerTradeSlot_ovr097_512	; Jump
 stub097_C0 endp
 
 
@@ -351606,7 +351606,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub099_20 proc	far
-jmp	ovr099_17	; Jump
+jmp	StubNoOp4_ovr099_17	; Jump
 stub099_20 endp
 
 
@@ -351614,7 +351614,7 @@ stub099_20 endp
 ; Attributes: thunk
 
 stub099_25 proc	far
-jmp	ovr099_12	; Jump
+jmp	StubNoOp3_ovr099_12	; Jump
 stub099_25 endp
 
 
@@ -351622,7 +351622,7 @@ stub099_25 endp
 ; Attributes: thunk
 
 stub099_2A proc	far
-jmp	ovr099_21	; Jump
+jmp	StubNoOp5_ovr099_21	; Jump
 stub099_2A endp
 
 
@@ -351630,7 +351630,7 @@ stub099_2A endp
 ; Attributes: thunk
 
 stub099_2F proc	far
-jmp	ovr099_5	; Jump
+jmp	StubNoOp2_ovr099_5	; Jump
 stub099_2F endp
 
 
@@ -351638,7 +351638,7 @@ stub099_2F endp
 ; Attributes: thunk
 
 stub099_34 proc	far
-jmp	ovr099_0	; Jump
+jmp	StubNoOp1_ovr099_0	; Jump
 stub099_34 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_REFT_ovr099_1C.	PRESS KEYPAD "+" TO EXPAND]
@@ -351647,7 +351647,7 @@ stub099_34 endp
 ; Attributes: thunk
 
 stub099_3E proc	far
-jmp	ovr099_A	; Jump
+jmp	StubReturnTrue_ovr099_A	; Jump
 stub099_3E endp
 
 stub099	ends
@@ -351685,7 +351685,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub101_20 proc	far
-jmp	ovr101_18CB	; Jump
+jmp	UseObjectOnSlotIfValid_ovr101_18CB	; Jump
 stub101_20 endp
 
 
@@ -351693,7 +351693,7 @@ stub101_20 endp
 ; Attributes: thunk
 
 stub101_25 proc	far
-jmp	ovr101_BAF	; Jump
+jmp	ChargenOptionClickSelect_ovr101_BAF	; Jump
 stub101_25 endp
 
 
@@ -351701,7 +351701,7 @@ stub101_25 endp
 ; Attributes: thunk
 
 stub101_2A proc	far
-jmp	ovr101_18AD	; Jump
+jmp	InitialiseAndStartNewGame_ovr101_18AD	; Jump
 stub101_2A endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_MaybeAnImageUnpack_ovr101_15E5.	PRESS KEYPAD "+" TO EXPAND]
@@ -351822,7 +351822,7 @@ SelectConverstionOptionNo_stub103_7A endp
 ; Attributes: thunk
 
 stub103_84 proc	far
-jmp	ovr103_1A5	; Jump
+jmp	AdvancePortraitDataPointer_ovr103_1A5	; Jump
 stub103_84 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_babl_menu_ovr103_A13. PRESS KEYPAD "+" TO EXPAND]
@@ -351853,7 +351853,7 @@ j_find_barter_ovr103_122C endp
 ; Attributes: thunk
 
 stub103_B6 proc	far
-jmp	ovr103_94A	; Jump
+jmp	ConversationMenuInputLoop_ovr103_94A	; Jump
 stub103_B6 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_give_ptr_npc_ovr103_1512. PRESS	KEYPAD "+" TO EXPAND]
@@ -351883,7 +351883,7 @@ j_LoadCritersObjectDat_ovr104_0	endp
 ; Attributes: thunk
 
 stub104_25 proc	far
-jmp	ovr104_17	; Jump
+jmp	ReadCrittersObjectsDatFromFile_ovr104_17	; Jump
 stub104_25 endp
 
 
@@ -352062,7 +352062,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub108_20 proc	far
-jmp	ovr108_934	; Jump
+jmp	UpdatePaletteFadeTimers_ovr108_934	; Jump
 stub108_20 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_Cutscene_17_Unk_ovr108_1165. PRESS KEYPAD "+" TO EXPAND]
@@ -352080,7 +352080,7 @@ j_Cutscene_20_Unk_ovr108_12D3 endp
 ; Attributes: thunk
 
 stub108_34 proc	far
-jmp	ovr108_13D6	; Jump
+jmp	UpdateCutsceneAudioState_ovr108_13D6	; Jump
 stub108_34 endp
 
 
@@ -352088,7 +352088,7 @@ stub108_34 endp
 ; Attributes: thunk
 
 stub108_39 proc	far
-jmp	ovr108_140D	; Jump
+jmp	ResetCutsceneDataState_ovr108_140D	; Jump
 stub108_39 endp
 
 
@@ -352096,7 +352096,7 @@ stub108_39 endp
 ; Attributes: thunk
 
 stub108_3E proc	far
-jmp	ovr108_33A8	; Jump
+jmp	SetCutsceneDisplayParams_ovr108_33A8	; Jump
 stub108_3E endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_MaybeSoundRelated_ovr108_0. PRESS KEYPAD "+" TO	EXPAND]
@@ -352108,7 +352108,7 @@ stub108_3E endp
 ; Attributes: thunk
 
 stub108_57 proc	far
-jmp	ovr108_1693	; Jump
+jmp	RunCutscenePlaybackLoop_ovr108_1693	; Jump
 stub108_57 endp
 
 
@@ -352116,7 +352116,7 @@ stub108_57 endp
 ; Attributes: thunk
 
 stub108_5C proc	far
-jmp	ovr108_2359	; Jump
+jmp	RenderCutsceneAnimFrames_ovr108_2359	; Jump
 stub108_5C endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_Cutscene_9_FadeOut_ovr108_104C.	PRESS KEYPAD "+" TO EXPAND]
@@ -352126,7 +352126,7 @@ stub108_5C endp
 ; Attributes: thunk
 
 stub108_6B proc	far
-jmp	ovr108_157B	; Jump
+jmp	RenderCutsceneText_ovr108_157B	; Jump
 stub108_6B endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_FadingRelated_ovr108_B6D. PRESS	KEYPAD "+" TO EXPAND]
@@ -352135,7 +352135,7 @@ stub108_6B endp
 ; Attributes: thunk
 
 stub108_75 proc	far
-jmp	ovr108_28C7	; Jump
+jmp	LoadAndPlayCutsceneFile_ovr108_28C7	; Jump
 stub108_75 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_CutsceneBitmap_ovr108_33E0. PRESS KEYPAD "+" TO	EXPAND]
@@ -352144,7 +352144,7 @@ stub108_75 endp
 ; Attributes: thunk
 
 stub108_7F proc	far
-jmp	ovr108_3161	; Jump
+jmp	FireAndClearTimerCallback_ovr108_3161	; Jump
 stub108_7F endp
 
 
@@ -352152,7 +352152,7 @@ stub108_7F endp
 ; Attributes: thunk
 
 stub108_84 proc	far
-jmp	ovr108_667	; Jump
+jmp	SyncAnimationState_ovr108_667	; Jump
 stub108_84 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_DoesNothing_ovr108_2EA7. PRESS KEYPAD "+" TO EXPAND]
@@ -352161,7 +352161,7 @@ stub108_84 endp
 ; Attributes: thunk
 
 stub108_8E proc	far
-jmp	ovr108_671	; Jump
+jmp	UnpackBytesFromWord_ovr108_671	; Jump
 stub108_8E endp
 
 
@@ -352169,7 +352169,7 @@ stub108_8E endp
 ; Attributes: thunk
 
 stub108_93 proc	far
-jmp	ovr108_8C8	; Jump
+jmp	ConvertPaletteToVGA_ovr108_8C8	; Jump
 stub108_93 endp
 
 
@@ -352177,7 +352177,7 @@ stub108_93 endp
 ; Attributes: thunk
 
 stub108_98 proc	far
-jmp	ovr108_A55	; Jump
+jmp	DrawCutsceneForeground_ovr108_A55	; Jump
 stub108_98 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_Cutscene_19_Unk_ovr108_1229. PRESS KEYPAD "+" TO EXPAND]
@@ -352186,7 +352186,7 @@ stub108_98 endp
 ; Attributes: thunk
 
 stub108_A2 proc	far
-jmp	ovr108_2FF0	; Jump
+jmp	UpdateTimerCallbacks_ovr108_2FF0	; Jump
 stub108_A2 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_RunCutsceneCommands_ovr108_175F. PRESS KEYPAD "+" TO EXPAND]
@@ -352197,7 +352197,7 @@ stub108_A2 endp
 ; Attributes: thunk
 
 stub108_B6 proc	far
-jmp	ovr108_13CD	; Jump
+jmp	PumpAudioWrapper_ovr108_13CD	; Jump
 stub108_B6 endp
 
 
@@ -352205,7 +352205,7 @@ stub108_B6 endp
 ; Attributes: thunk
 
 stub108_BB proc	far
-jmp	ovr108_5F7	; Jump
+jmp	StopAudioPlayback_ovr108_5F7	; Jump
 stub108_BB endp
 
 
@@ -352213,7 +352213,7 @@ stub108_BB endp
 ; Attributes: thunk
 
 stub108_C0 proc	far
-jmp	ovr108_AC6	; Jump
+jmp	DrawCutsceneBackground_ovr108_AC6	; Jump
 stub108_C0 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_Cutscene_27_UNK_ovr108_9FE. PRESS KEYPAD "+" TO	EXPAND]
@@ -352222,7 +352222,7 @@ stub108_C0 endp
 ; Attributes: thunk
 
 stub108_CA proc	far
-jmp	ovr108_7BF	; Jump
+jmp	SeekAndReadFrameData_ovr108_7BF	; Jump
 stub108_CA endp
 
 
@@ -352230,7 +352230,7 @@ stub108_CA endp
 ; Attributes: thunk
 
 stub108_CF proc	far
-jmp	ovr108_5A8	; Jump
+jmp	IsAudioPlaybackDone_ovr108_5A8	; Jump
 stub108_CF endp
 
 
@@ -352238,7 +352238,7 @@ stub108_CF endp
 ; Attributes: thunk
 
 stub108_D4 proc	far
-jmp	ovr108_3333	; Jump
+jmp	UpdateViewportFromTimer_ovr108_3333	; Jump
 stub108_D4 endp
 
 
@@ -352246,7 +352246,7 @@ stub108_D4 endp
 ; Attributes: thunk
 
 stub108_D9 proc	far
-jmp	ovr108_162B	; Jump
+jmp	AdvanceCutsceneFrame_ovr108_162B	; Jump
 stub108_D9 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_Cutscene_13_TextAndSound_ovr108_FDA. PRESS KEYPAD "+" TO EXPAND]
@@ -352257,7 +352257,7 @@ stub108_D9 endp
 ; Attributes: thunk
 
 stub108_ED proc	far
-jmp	ovr108_819	; Jump
+jmp	ReadFrameDataChunk_ovr108_819	; Jump
 stub108_ED endp
 
 
@@ -352273,7 +352273,7 @@ j_PlayCutscene_ovr108_2DC5 endp
 ; Attributes: thunk
 
 stub108_F7 proc	far
-jmp	ovr108_6AD	; Jump
+jmp	BubbleSortByKey_ovr108_6AD	; Jump
 stub108_F7 endp
 
 
@@ -352281,7 +352281,7 @@ stub108_F7 endp
 ; Attributes: thunk
 
 stub108_FC proc	far
-jmp	ovr108_3148	; Jump
+jmp	FlushAllTimerCallbacks_ovr108_3148	; Jump
 stub108_FC endp
 
 
@@ -352289,7 +352289,7 @@ stub108_FC endp
 ; Attributes: thunk
 
 stub108_101 proc far
-jmp	ovr108_751	; Jump
+jmp	ReadAnimationHeader_ovr108_751	; Jump
 stub108_101 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_Cutscene_6_End_ovr108_F27. PRESS KEYPAD	"+" TO EXPAND]
@@ -352301,7 +352301,7 @@ stub108_101 endp
 ; Attributes: thunk
 
 stub108_11A proc far
-jmp	ovr108_3191	; Jump
+jmp	RegisterTimerCallback_ovr108_3191	; Jump
 stub108_11A endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_Cutscene_11_Unk_ovr108_10B4. PRESS KEYPAD "+" TO EXPAND]
@@ -352310,7 +352310,7 @@ stub108_11A endp
 ; Attributes: thunk
 
 stub108_124 proc far
-jmp	ovr108_32CC	; Jump
+jmp	InterpolatePaletteRange_ovr108_32CC	; Jump
 stub108_124 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_Cutscene_2_NOP_ovr108_E5C. PRESS KEYPAD	"+" TO EXPAND]
@@ -352320,7 +352320,7 @@ stub108_124 endp
 ; Attributes: thunk
 
 stub108_133 proc far
-jmp	ovr108_3241	; Jump
+jmp	ApplyTimerPaletteTransition_ovr108_3241	; Jump
 stub108_133 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_Cutscene_7_RepeatSeg_ovr108_F3B. PRESS KEYPAD "+" TO EXPAND]
@@ -352340,7 +352340,7 @@ j_Cutscene_0_DisplayString_ovr108_C38 endp
 ; Attributes: thunk
 
 stub108_151 proc far
-jmp	ovr108_14DF	; Jump
+jmp	HandleCutsceneInput_ovr108_14DF	; Jump
 stub108_151 endp
 
 
@@ -352348,7 +352348,7 @@ stub108_151 endp
 ; Attributes: thunk
 
 stub108_156 proc far
-jmp	ovr108_32B5	; Jump
+jmp	ClearTimerCallback_ovr108_32B5	; Jump
 stub108_156 endp
 
 
@@ -352356,7 +352356,7 @@ stub108_156 endp
 ; Attributes: thunk
 
 stub108_15B proc far
-jmp	ovr108_3620	; Jump
+jmp	GetCutsceneDataSegment_ovr108_3620	; Jump
 stub108_15B endp
 
 
@@ -352364,7 +352364,7 @@ stub108_15B endp
 ; Attributes: thunk
 
 stub108_160 proc far
-jmp	ovr108_3200	; Jump
+jmp	SwapTimerCallbackState_ovr108_3200	; Jump
 stub108_160 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_Cutscene_18_NOP_ovr108_1221. PRESS KEYPAD "+" TO EXPAND]
@@ -352373,7 +352373,7 @@ stub108_160 endp
 ; Attributes: thunk
 
 stub108_16A proc far
-jmp	ovr108_32F	; Jump
+jmp	PumpAudioBuffers_ovr108_32F	; Jump
 stub108_16A endp
 
 
@@ -352381,7 +352381,7 @@ stub108_16A endp
 ; Attributes: thunk
 
 stub108_16F proc far
-jmp	ovr108_613	; always sets ax to 3
+jmp	InitAnimationPageCount_ovr108_613	; always sets ax to 3
 stub108_16F endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_Cutscene_15_KLANG_ovr108_110B. PRESS KEYPAD "+"	TO EXPAND]
@@ -352390,7 +352390,7 @@ stub108_16F endp
 ; Attributes: thunk
 
 stub108_179 proc far
-jmp	ovr108_623	; Jump
+jmp	GetAnimationPageBuffer_ovr108_623	; Jump
 stub108_179 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_Cutscene_5_UNK_ovr108_F19. PRESS KEYPAD	"+" TO EXPAND]
@@ -352400,7 +352400,7 @@ stub108_179 endp
 ; Attributes: thunk
 
 stub108_188 proc far
-jmp	ovr108_B8E	; Jump
+jmp	AnimateViewportScroll_ovr108_B8E	; Jump
 stub108_188 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_Cutscene_1_ClearFlag_ovr108_E4D. PRESS KEYPAD "+" TO EXPAND]
@@ -352424,7 +352424,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub109_20 proc	far
-jmp	ovr109_0	; Jump
+jmp	RegisterInputEventHandlers_ovr109_0	; Jump
 stub109_20 endp
 
 
@@ -352432,7 +352432,7 @@ stub109_20 endp
 ; Attributes: thunk
 
 stub109_25 proc	far
-jmp	ovr109_31	; Jump
+jmp	NullStub_ovr109_31	; Jump
 stub109_25 endp
 
 stub109	ends
@@ -352676,7 +352676,7 @@ j_AddTimeToClock_ovr110_949 endp
 ; Attributes: thunk
 
 stub110_11A proc far
-jmp	ovr110_D08	; Jump
+jmp	AdjustObjectZPosForTileHeightChange_ovr110_D08	; Jump
 stub110_11A endp
 
 
@@ -352749,7 +352749,7 @@ j_GrowMushroomsInBritannia_ovr110_29BD endp
 ; Attributes: thunk
 
 stub110_16A proc far
-jmp	ovr110_23AB	; Jump
+jmp	IsPositionWithinPitFightingArena_ovr110_23AB	; Jump
 stub110_16A endp
 
 
@@ -352796,7 +352796,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub112_25 proc	far
-jmp	ovr112_1BF	; Jump
+jmp	ShutdownAndCleanup_ovr112_1BF	; Jump
 stub112_25 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_GameInitialisationMaybeStartovr112_36. PRESS KEYPAD "+"	TO EXPAND]
@@ -352806,7 +352806,7 @@ stub112_25 endp
 ; Attributes: thunk
 
 stub112_34 proc	far
-jmp	ovr112_2AC	; Jump
+jmp	ShowOptionsMenu_ovr112_2AC	; Jump
 stub112_34 endp
 
 
@@ -352814,7 +352814,7 @@ stub112_34 endp
 ; Attributes: thunk
 
 stub112_39 proc	far
-jmp	ovr112_657	; Jump
+jmp	SyncRenderTimestamp_ovr112_657	; Jump
 stub112_39 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_ResetMap_ovr112_2C6. PRESS KEYPAD "+" TO EXPAND]
@@ -352823,7 +352823,7 @@ stub112_39 endp
 ; Attributes: thunk
 
 stub112_43 proc	far
-jmp	ovr112_2BB	; Jump
+jmp	ClearQuitGameFlag_ovr112_2BB	; Jump
 stub112_43 endp
 
 
@@ -352852,7 +352852,7 @@ j_ShowMapAndOtherFullScreenUIs_stub112_4D endp ; 2 = map
 ; Attributes: thunk
 
 stub112_52 proc	far
-jmp	ovr112_396	; Jump
+jmp	RestoreGameplayScreen_ovr112_396	; Jump
 stub112_52 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_SplashPart2ovr112_1FF. PRESS KEYPAD "+"	TO EXPAND]
@@ -352861,7 +352861,7 @@ stub112_52 endp
 ; Attributes: thunk
 
 stub112_5C proc	far
-jmp	ovr112_389	; Jump
+jmp	GetGameLoopBitField_ovr112_389	; Jump
 stub112_5C endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_SetGameLoopForScreenMode_ovr112_2DF. PRESS KEYPAD "+" TO EXPAND]
@@ -352878,7 +352878,7 @@ j_CopyArkFilesToSaveFolder_ovr112_968 endp
 ; Attributes: thunk
 
 stub112_6B proc	far
-jmp	ovr112_45C	; Jump
+jmp	ResetActionTimers_ovr112_45C	; Jump
 stub112_6B endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_ResetCharacter_ovr112_485. PRESS KEYPAD	"+" TO EXPAND]
@@ -352897,7 +352897,7 @@ ReturnToMainMenu_stub112_7A endp
 ; Attributes: thunk
 
 stub112_84 proc	far
-jmp	ovr112_217	; Jump
+jmp	InitGameEnvironment_ovr112_217	; Jump
 stub112_84 endp
 
 stub112	ends
@@ -353045,7 +353045,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub114_2A proc	far
-jmp	ovr114_15D	; Jump
+jmp	FatalErrorWithMessage_ovr114_15D	; Jump
 stub114_2A endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_MaybeErrorHandler_ovr114_AB. PRESS KEYPAD "+" TO EXPAND]
@@ -353083,7 +353083,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub116_25 proc	far
-jmp	ovr116_194	; Jump
+jmp	WriteBytesToFileHandle_ovr116_194	; Jump
 stub116_25 endp
 
 
@@ -353091,7 +353091,7 @@ stub116_25 endp
 ; Attributes: thunk
 
 stub116_2A proc	far
-jmp	ovr116_2A3	; Jump
+jmp	LZWCompressToFile_ovr116_2A3	; Jump
 stub116_2A endp
 
 
@@ -353099,7 +353099,7 @@ stub116_2A endp
 ; Attributes: thunk
 
 stub116_2F proc	far
-jmp	ovr116_420	; Jump
+jmp	ReadNextScreenPixel_ovr116_420	; Jump
 stub116_2F endp
 
 stub116	ends
@@ -353123,7 +353123,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub117_25 proc	far
-jmp	ovr117_286	; Jump
+jmp	FindLeastRecentCritterAnimSlot_ovr117_286	; Jump
 stub117_25 endp
 
 
@@ -353131,7 +353131,7 @@ stub117_25 endp
 ; Attributes: thunk
 
 stub117_2A proc	far
-jmp	ovr117_111	; Jump
+jmp	ReleaseStaleCritterAnimSlots_ovr117_111	; Jump
 stub117_2A endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_CritterLoadRelated_ovr117_163. PRESS KEYPAD "+"	TO EXPAND]
@@ -353140,7 +353140,7 @@ stub117_2A endp
 ; Attributes: thunk
 
 stub117_34 proc	far
-jmp	ovr117_2FD	; Jump
+jmp	AllocateCritterAnimSlots_ovr117_2FD	; Jump
 stub117_34 endp
 
 stub117	ends
@@ -353164,7 +353164,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub118_25 proc	far
-jmp	ovr118_42F	; Jump
+jmp	RunScreenTransitionForward_ovr118_42F	; Jump
 stub118_25 endp
 
 
@@ -353172,7 +353172,7 @@ stub118_25 endp
 ; Attributes: thunk
 
 stub118_2A proc	far
-jmp	ovr118_54B	; Jump
+jmp	ShadeTransitionWithRestore_ovr118_54B	; Jump
 stub118_2A endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_GetPalette_ovr118_171. PRESS KEYPAD "+"	TO EXPAND]
@@ -353181,7 +353181,7 @@ stub118_2A endp
 ; Attributes: thunk
 
 stub118_34 proc	far
-jmp	ovr118_D3	; Jump
+jmp	ShutdownGraphics_ovr118_D3	; Jump
 stub118_34 endp
 
 
@@ -353189,7 +353189,7 @@ stub118_34 endp
 ; Attributes: thunk
 
 stub118_39 proc	far
-jmp	ovr118_534	; Jump
+jmp	ShadeTransitionForward_ovr118_534	; Jump
 stub118_39 endp
 
 
@@ -353197,7 +353197,7 @@ stub118_39 endp
 ; Attributes: thunk
 
 stub118_3E proc	far
-jmp	ovr118_1CA	; Jump
+jmp	CopyPaletteRangeAndApply_ovr118_1CA	; Jump
 stub118_3E endp
 
 
@@ -353205,7 +353205,7 @@ stub118_3E endp
 ; Attributes: thunk
 
 stub118_43 proc	far
-jmp	ovr118_51E	; Jump
+jmp	ColorMapTransitionWithRestore_ovr118_51E	; Jump
 stub118_43 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_CallSomeFunction_ovr118_472. PRESS KEYPAD "+" TO EXPAND]
@@ -353222,7 +353222,7 @@ j_OpenFont_ovr118_772BW_9B endp
 ; Attributes: thunk
 
 stub118_52 proc	far
-jmp	ovr118_508	; Jump
+jmp	ColorMapTransitionForward_ovr118_508	; Jump
 stub118_52 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_FlashColour_ovr118_562.	PRESS KEYPAD "+" TO EXPAND]
@@ -353232,7 +353232,7 @@ stub118_52 endp
 ; Attributes: thunk
 
 stub118_61 proc	far
-jmp	ovr118_330	; Jump
+jmp	FadeInPalette_ovr118_330	; Jump
 stub118_61 endp
 
 
@@ -353240,7 +353240,7 @@ stub118_61 endp
 ; Attributes: thunk
 
 stub118_66 proc	far
-jmp	ovr118_213	; Jump
+jmp	FadeOutPalette_ovr118_213	; Jump
 stub118_66 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_OpenPalsData_ovr118_772B_111. PRESS KEYPAD "+" TO EXPAND]
@@ -353250,7 +353250,7 @@ stub118_66 endp
 ; Attributes: thunk
 
 stub118_75 proc	far
-jmp	ovr118_0	; Jump
+jmp	InitGraphicsAndFont_ovr118_0	; Jump
 stub118_75 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_DrawBitMap_ovr118_E2. PRESS KEYPAD "+" TO EXPAND]
@@ -353303,7 +353303,7 @@ stub119_1F db	 0
 ; Attributes: thunk
 
 stub119_25 proc	far
-jmp	ovr119_66F	; Jump
+jmp	LoadFlatTextureObjectIcons_ovr119_66F	; Jump
 stub119_25 endp
 
 
@@ -353311,7 +353311,7 @@ stub119_25 endp
 ; Attributes: thunk
 
 stub119_2A proc	far
-jmp	ovr119_949	; Jump
+jmp	LoadSingleArtImageToIconSlot_ovr119_949	; Jump
 stub119_2A endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_ProbablyArtUnpackCode_ovr119_4EF. PRESS	KEYPAD "+" TO EXPAND]
@@ -353329,7 +353329,7 @@ j_OpenArtFiles_ovr119_9E8 endp
 ; Attributes: thunk
 
 stub119_3E proc	far
-jmp	ovr119_472	; Jump
+jmp	UnpackAndStoreGRArt_ovr119_472	; Jump
 stub119_3E endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_LoadDoorArt_ovr119_B6A.	PRESS KEYPAD "+" TO EXPAND]
@@ -353341,7 +353341,7 @@ stub119_3E endp
 ; Attributes: thunk
 
 stub119_57 proc	far
-jmp	ovr119_337	; Jump
+jmp	StoreTextureEntry_ovr119_337	; Jump
 stub119_57 endp
 
 
@@ -353349,7 +353349,7 @@ stub119_57 endp
 ; Attributes: thunk
 
 stub119_5C proc	far
-jmp	ovr119_377	; Jump
+jmp	StoreObjectIconEntry_ovr119_377	; Jump
 stub119_5C endp
 
 
@@ -353357,7 +353357,7 @@ stub119_5C endp
 ; Attributes: thunk
 
 stub119_61 proc	far
-jmp	ovr119_64B	; Jump
+jmp	LoadObjectIconsFile_ovr119_64B	; Jump
 stub119_61 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_LoadGRFile_ovr119_91B. PRESS KEYPAD "+"	TO EXPAND]
@@ -353368,7 +353368,7 @@ stub119_61 endp
 ; Attributes: thunk
 
 stub119_75 proc	far
-jmp	ovr119_1D5	; Jump
+jmp	CloseArtFile_ovr119_1D5	; Jump
 stub119_75 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_GetArtResourceDST_ovr119_466. PRESS KEYPAD "+" TO EXPAND]
@@ -353377,7 +353377,7 @@ stub119_75 endp
 ; Attributes: thunk
 
 stub119_7F proc	far
-jmp	ovr119_2A2	; Jump
+jmp	AllocateTextureMemoryPage_ovr119_2A2	; Jump
 stub119_7F endp
 
 
@@ -353385,7 +353385,7 @@ stub119_7F endp
 ; Attributes: thunk
 
 UnpackGR_stub119_84 proc far
-jmp	ovr119_2F6	; Jump
+jmp	GetTextureAddress_ovr119_2F6	; Jump
 UnpackGR_stub119_84 endp
 
 
@@ -353393,7 +353393,7 @@ UnpackGR_stub119_84 endp
 ; Attributes: thunk
 
 stub119_89 proc	far
-jmp	ovr119_0	; Jump
+jmp	ReadArtFileHeader_ovr119_0	; Jump
 stub119_89 endp
 
 
@@ -353413,7 +353413,7 @@ LoadPanelsResource_stub119_8E endp
 ; Attributes: thunk
 
 stub119_93 proc	far
-jmp	ovr119_3E6	; Jump
+jmp	StoreObjectIconEntryWithOffset_ovr119_3E6	; Jump
 stub119_93 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_LoadArtImage_ovr119_548. PRESS KEYPAD "+" TO EXPAND]
@@ -353466,7 +353466,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub121_20 proc	far
-jmp	ovr121_A73	; Jump
+jmp	RestoreInventoryAfterScroll_ovr121_A73	; Jump
 stub121_20 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_UseClass2ObjectFromInventory_ovr121_6B6. PRESS KEYPAD "+" TO EXPAND]
@@ -353475,7 +353475,7 @@ stub121_20 endp
 ; Attributes: thunk
 
 stub121_2A proc	far
-jmp	ovr121_E91	; Jump
+jmp	SwapObjectInInventorySlot_ovr121_E91	; Jump
 stub121_2A endp
 
 
@@ -353483,7 +353483,7 @@ stub121_2A endp
 ; Attributes: thunk
 
 stub121_2F proc	far
-jmp	ovr121_35B	; Jump
+jmp	NavigateBackInContainerStack_ovr121_35B	; Jump
 stub121_2F endp
 
 
@@ -353491,7 +353491,7 @@ stub121_2F endp
 ; Attributes: thunk
 
 stub121_34 proc	far
-jmp	ovr121_1EF	; Jump
+jmp	CloseAllOpenContainers_ovr121_1EF	; Jump
 stub121_34 endp
 
 
@@ -353508,7 +353508,7 @@ j_ClickOnInventorySlot_ovr121_0	endp
 ; Attributes: thunk
 
 stub121_43 proc	far
-jmp	ovr121_A98	; Jump
+jmp	ScrollContainerInventoryForward_ovr121_A98	; Jump
 stub121_43 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_UpdateInventorySlots_ovr121_4D8. PRESS KEYPAD "+" TO EXPAND]
@@ -353517,7 +353517,7 @@ stub121_43 endp
 ; Attributes: thunk
 
 stub121_4D proc	far
-jmp	ovr121_293	; Jump
+jmp	CloseCurrentContainerAndRefresh_ovr121_293	; Jump
 stub121_4D endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_MaybeAnInventoryRedraw_ovr121_424. PRESS KEYPAD	"+" TO EXPAND]
@@ -353558,7 +353558,7 @@ j_SaveLoadPlayerDatovr122_17C endp
 ; Attributes: thunk
 
 stub122_25 proc	far
-jmp	ovr122_0	; Jump
+jmp	ClearPlayerObjectAndPaperdoll_ovr122_0	; Jump
 stub122_25 endp
 
 
@@ -353574,7 +353574,7 @@ j_LoadPlayerDatovr122_68D endp
 ; Attributes: thunk
 
 stub122_2F proc	far
-jmp	ovr122_5C7	; Jump
+jmp	RestorePlayerFromCopyBuffer_ovr122_5C7	; Jump
 stub122_2F endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_ProbablyCopyObjectLists_ovr122_256. PRESS KEYPAD "+" TO	EXPAND]
@@ -353585,7 +353585,7 @@ stub122_2F endp
 ; Attributes: thunk
 
 stub122_43 proc	far
-jmp	ovr122_41B	; Jump
+jmp	RestoreObjectListFromCopyBuffer_ovr122_41B	; Jump
 stub122_43 endp
 
 
@@ -353593,7 +353593,7 @@ stub122_43 endp
 ; Attributes: thunk
 
 stub122_48 proc	far
-jmp	ovr122_38A	; Jump
+jmp	AllocateNextCopySlot_ovr122_38A	; Jump
 stub122_48 endp
 
 
@@ -353601,7 +353601,7 @@ stub122_48 endp
 ; Attributes: thunk
 
 stub122_4D proc	far
-jmp	ovr122_3C6	; Jump
+jmp	UpdateInventorySlotsFromRestoredObjects_ovr122_3C6	; Jump
 stub122_4D endp
 
 
@@ -353609,7 +353609,7 @@ stub122_4D endp
 ; Attributes: thunk
 
 stub122_52 proc	far
-jmp	ovr122_3A4	; Jump
+jmp	GetCopySlotAddress_ovr122_3A4	; Jump
 stub122_52 endp
 
 
@@ -353617,7 +353617,7 @@ stub122_52 endp
 ; Attributes: thunk
 
 stub122_57 proc	far
-jmp	ovr122_336	; Jump
+jmp	UpdateInventorySlotsFromCopiedObjects_ovr122_336	; Jump
 stub122_57 endp
 
 stub122	ends
@@ -353649,7 +353649,7 @@ j_PlayerAttemptsSpellCast_ovr123_387 endp
 ; Attributes: thunk
 
 stub123_2A proc	far
-jmp	ovr123_7D	; Jump
+jmp	DrawRuneStoneAtPosition_ovr123_7D	; Jump
 stub123_2A endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_AddRuneStonesToRuneBag_ovr123_0. PRESS KEYPAD "+" TO EXPAND]
@@ -353662,7 +353662,7 @@ stub123_2A endp
 ; Attributes: thunk
 
 stub123_48 proc	far
-jmp	ovr123_D5	; Jump
+jmp	DrawRuneBagContents_ovr123_D5	; Jump
 stub123_48 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_SpellFailureRelated_ovr123_471.	PRESS KEYPAD "+" TO EXPAND]
@@ -353704,7 +353704,7 @@ j_EquipmentDamage_ovr124_C26 endp
 ; Attributes: thunk
 
 stub124_2F proc	far
-jmp	ovr124_79F	; Jump
+jmp	RemoveAndRedrawInventorySlot_ovr124_79F	; Jump
 stub124_2F endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_FindAndRemoveFromPlayerInventory_ovr124_827. PRESS KEYPAD "+" TO EXPAND]
@@ -353734,7 +353734,7 @@ j_SearchInventoryForItem_ovr124_21C endp ; MinorClass_arg_2
 ; Attributes: thunk
 
 stub124_5C proc	far
-jmp	ovr124_5A4	; Jump
+jmp	GetObjectLinkedToSlot_ovr124_5A4	; Jump
 stub124_5C endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_FindObjectInInventorySlot_ovr124_14A. PRESS KEYPAD "+" TO EXPAND]
@@ -353755,7 +353755,7 @@ j_CheckIfEquipmentInValidSlot_ovr124_BB9 endp
 ; Attributes: thunk
 
 stub124_7F proc	far
-jmp	ovr124_2C	; Jump
+jmp	FindFirstEmptyContainerSlot_ovr124_2C	; Jump
 stub124_7F endp
 
 stub124	ends
@@ -353781,7 +353781,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub125_2F proc	far
-jmp	ovr125_19BA	; Jump
+jmp	HitTestInventorySlot_ovr125_19BA	; Jump
 stub125_2F endp
 
 
@@ -353790,7 +353790,7 @@ stub125_2F endp
 ; Attributes: thunk
 
 stub125_34 proc	far
-jmp	ovr125_1730	; Jump
+jmp	RedrawInventoryPanel_ovr125_1730	; Jump
 stub125_34 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_DoesNothing_ovr125_1E6.	PRESS KEYPAD "+" TO EXPAND]
@@ -353803,7 +353803,7 @@ stub125_34 endp
 ; Attributes: thunk
 
 stub125_52 proc	far
-jmp	ovr125_5B4	; Jump
+jmp	PickUpObjectInHand_ovr125_5B4	; Jump
 stub125_52 endp
 
 
@@ -353832,7 +353832,7 @@ j_ProbablyResetPaperdoll_ovr125_0 endp
 ; Attributes: thunk
 
 stub125_7A proc	far
-jmp	ovr125_9C2	; Jump
+jmp	RemoveObjectFromSlot_ovr125_9C2	; Jump
 stub125_7A endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_InventorySlotRelated_ovr125_1429. PRESS	KEYPAD "+" TO EXPAND]
@@ -353952,7 +353952,7 @@ j_InitialiseTileMapData_ovr128_0 endp
 ; Attributes: thunk
 
 stub128_2F proc	far
-jmp	ovr128_37	; Jump
+jmp	CopyTileMapDataFromSource_ovr128_37	; Jump
 stub128_2F endp
 
 
@@ -354082,7 +354082,7 @@ j_GetObjectDatForItem_ovr134_F5	endp
 ; Attributes: thunk
 
 stub134_2A proc	far
-jmp	ovr134_EE	; Jump
+jmp	NullReturnZero_ovr134_EE	; Jump
 stub134_2A endp
 
 stub134	ends
@@ -354153,7 +354153,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub136_20 proc	far
-jmp	ovr136_7DD	; Jump
+jmp	SetMenuDisplayViewport_ovr136_7DD	; Jump
 stub136_20 endp
 
 
@@ -354161,7 +354161,7 @@ stub136_20 endp
 ; Attributes: thunk
 
 stub136_25 proc	far
-jmp	ovr136_809	; Jump
+jmp	DrawOptionsPanelHeader_ovr136_809	; Jump
 stub136_25 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_ChangeDetailSetting_ovr136_2BC.	PRESS KEYPAD "+" TO EXPAND]
@@ -354170,7 +354170,7 @@ stub136_25 endp
 ; Attributes: thunk
 
 stub136_2F proc	far
-jmp	ovr136_52C	; Jump
+jmp	ShowSaveRestoreSlot_ovr136_52C	; Jump
 stub136_2F endp
 
 
@@ -354178,7 +354178,7 @@ stub136_2F endp
 ; Attributes: thunk
 
 stub136_34 proc	far
-jmp	ovr136_487	; Jump
+jmp	SelectFirstMenuItem_ovr136_487	; Jump
 stub136_34 endp
 
 
@@ -354186,7 +354186,7 @@ stub136_34 endp
 ; Attributes: thunk
 
 stub136_39 proc	far
-jmp	ovr136_482	; Jump
+jmp	MenuNullCallback2_ovr136_482	; Jump
 stub136_39 endp
 
 
@@ -354194,7 +354194,7 @@ stub136_39 endp
 ; Attributes: thunk
 
 stub136_3E proc	far
-jmp	ovr136_51E	; Jump
+jmp	SelectSoundEffectsItem_ovr136_51E	; Jump
 stub136_3E endp
 
 
@@ -354202,7 +354202,7 @@ stub136_3E endp
 ; Attributes: thunk
 
 stub136_43 proc	far
-jmp	ovr136_719	; Jump
+jmp	DrawMenuItemHighlight_ovr136_719	; Jump
 stub136_43 endp
 
 
@@ -354210,7 +354210,7 @@ stub136_43 endp
 ; Attributes: thunk
 
 stub136_48 proc	far
-jmp	ovr136_315	; Jump
+jmp	SignalMenuExit_ovr136_315	; Jump
 stub136_48 endp
 
 
@@ -354218,7 +354218,7 @@ stub136_48 endp
 ; Attributes: thunk
 
 stub136_4D proc	far
-jmp	ovr136_2A8	; Jump
+jmp	CloseOptionsMenu_ovr136_2A8	; Jump
 stub136_4D endp
 
 
@@ -354226,7 +354226,7 @@ stub136_4D endp
 ; Attributes: thunk
 
 stub136_52 proc	far
-jmp	ovr136_5D0	; Jump
+jmp	ExecuteMenuOption_ovr136_5D0	; Jump
 stub136_52 endp
 
 
@@ -354234,7 +354234,7 @@ stub136_52 endp
 ; Attributes: thunk
 
 stub136_57 proc	far
-jmp	ovr136_649	; Jump
+jmp	SetMenuSelection_ovr136_649	; Jump
 stub136_57 endp
 
 
@@ -354242,7 +354242,7 @@ stub136_57 endp
 ; Attributes: thunk
 
 stub136_5C proc	far
-jmp	ovr136_495	; Jump
+jmp	ShowDetailLevel_ovr136_495	; Jump
 stub136_5C endp
 
 
@@ -354250,7 +354250,7 @@ stub136_5C endp
 ; Attributes: thunk
 
 stub136_61 proc	far
-jmp	ovr136_3E9	; Jump
+jmp	SetSoundEffectsMenuMode_ovr136_3E9	; Jump
 stub136_61 endp
 
 
@@ -354258,7 +354258,7 @@ stub136_61 endp
 ; Attributes: thunk
 
 stub136_66 proc	far
-jmp	ovr136_4E0	; Jump
+jmp	DrawOptionIndicator_ovr136_4E0	; Jump
 stub136_66 endp
 
 
@@ -354266,7 +354266,7 @@ stub136_66 endp
 ; Attributes: thunk
 
 stub136_6B proc	far
-jmp	ovr136_232	; Jump
+jmp	NavigateMenuSelection_ovr136_232	; Jump
 stub136_6B endp
 
 
@@ -354274,7 +354274,7 @@ stub136_6B endp
 ; Attributes: thunk
 
 stub136_70 proc	far
-jmp	ovr136_5CB	; Jump
+jmp	MenuNullCallback3_ovr136_5CB	; Jump
 stub136_70 endp
 
 
@@ -354282,7 +354282,7 @@ stub136_70 endp
 ; Attributes: thunk
 
 stub136_75 proc	far
-jmp	ovr136_680	; Jump
+jmp	GetMenuItemFromMousePos_ovr136_680	; Jump
 stub136_75 endp
 
 
@@ -354290,7 +354290,7 @@ stub136_75 endp
 ; Attributes: thunk
 
 stub136_7A proc	far
-jmp	ovr136_2B	; Jump
+jmp	MenuInputLoop_ovr136_2B	; Jump
 stub136_7A endp
 
 
@@ -354306,7 +354306,7 @@ j_SoundMenu_ovr136_551 endp
 ; Attributes: thunk
 
 stub136_84 proc	far
-jmp	ovr136_4BB	; Jump
+jmp	DrawDetailOptionIndicator_ovr136_4BB	; Jump
 stub136_84 endp
 
 
@@ -354314,7 +354314,7 @@ stub136_84 endp
 ; Attributes: thunk
 
 stub136_89 proc	far
-jmp	ovr136_2A3	; Jump
+jmp	MenuNullCallback_ovr136_2A3	; Jump
 stub136_89 endp
 
 
@@ -354322,7 +354322,7 @@ stub136_89 endp
 ; Attributes: thunk
 
 stub136_8E proc	far
-jmp	ovr136_767	; Jump
+jmp	DrawMenuButton_ovr136_767	; Jump
 stub136_8E endp
 
 
@@ -354330,7 +354330,7 @@ stub136_8E endp
 ; Attributes: thunk
 
 stub136_93 proc	far
-jmp	ovr136_8F	; Jump
+jmp	OptionsMenuMain_ovr136_8F	; Jump
 stub136_93 endp
 
 
@@ -354338,7 +354338,7 @@ stub136_93 endp
 ; Attributes: thunk
 
 stub136_98 proc	far
-jmp	ovr136_38C	; Jump
+jmp	ExecuteSaveRestoreAction_ovr136_38C	; Jump
 stub136_98 endp
 
 
@@ -354346,7 +354346,7 @@ stub136_98 endp
 ; Attributes: thunk
 
 stub136_9D proc	far
-jmp	ovr136_6CF	; Jump
+jmp	OpenMenuPanel_ovr136_6CF	; Jump
 stub136_9D endp
 
 
@@ -354354,7 +354354,7 @@ stub136_9D endp
 ; Attributes: thunk
 
 stub136_A2 proc	far
-jmp	ovr136_0	; Jump
+jmp	IsMenuOptionAvailable_ovr136_0	; Jump
 stub136_A2 endp
 
 
@@ -354362,7 +354362,7 @@ stub136_A2 endp
 ; Attributes: thunk
 
 stub136_A7 proc	far
-jmp	ovr136_33C	; Jump
+jmp	SaveGamePrompt_ovr136_33C	; Jump
 stub136_A7 endp
 
 
@@ -354378,7 +354378,7 @@ j_SoundMenuOptions_ovr136_3F4 endp
 ; Attributes: thunk
 
 stub136_B1 proc	far
-jmp	ovr136_3DE	; Jump
+jmp	SetMusicMenuMode_ovr136_3DE	; Jump
 stub136_B1 endp
 
 
@@ -354386,7 +354386,7 @@ stub136_B1 endp
 ; Attributes: thunk
 
 stub136_B6 proc	far
-jmp	ovr136_320	; Jump
+jmp	HandleMusicToggleAction_ovr136_320	; Jump
 stub136_B6 endp
 
 
@@ -354394,7 +354394,7 @@ stub136_B6 endp
 ; Attributes: thunk
 
 stub136_BB proc	far
-jmp	ovr136_364	; Jump
+jmp	RestoreGamePrompt_ovr136_364	; Jump
 stub136_BB endp
 
 stub136	ends
@@ -354418,7 +354418,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub137_25 proc	far
-jmp	ovr137_367	; Jump
+jmp	EnterStatsPanelMode_ovr137_367	; Jump
 stub137_25 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_MaybeFlaskMessage_ovr137_14A. PRESS KEYPAD "+" TO EXPAND]
@@ -354427,7 +354427,7 @@ stub137_25 endp
 ; Attributes: thunk
 
 stub137_2F proc	far
-jmp	ovr137_3E6	; Jump
+jmp	CancelPlayerAction_ovr137_3E6	; Jump
 stub137_2F endp
 
 
@@ -354435,7 +354435,7 @@ stub137_2F endp
 ; Attributes: thunk
 
 stub137_34 proc	far
-jmp	ovr137_3B7	; Jump
+jmp	CheckPlayerBusyForOptions_ovr137_3B7	; Jump
 stub137_34 endp
 
 
@@ -354443,7 +354443,7 @@ stub137_34 endp
 ; Attributes: thunk
 
 stub137_39 proc	far
-jmp	ovr137_331	; Jump
+jmp	UnregisterStatsPanelClickAreas_ovr137_331	; Jump
 stub137_39 endp
 
 
@@ -354451,7 +354451,7 @@ stub137_39 endp
 ; Attributes: thunk
 
 stub137_3E proc	far
-jmp	ovr137_2A8	; Jump
+jmp	RegisterStatsPanelClickAreas_ovr137_2A8	; Jump
 stub137_3E endp
 
 
@@ -354467,7 +354467,7 @@ j_SwitchInventoryAndStats_ovr137_0 endp
 ; Attributes: thunk
 
 stub137_48 proc	far
-jmp	ovr137_3A9	; Jump
+jmp	ExitStatsPanelMode_ovr137_3A9	; Jump
 stub137_48 endp
 
 stub137	ends
@@ -354642,7 +354642,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub139_20 proc	far
-jmp	ovr139_0	; Jump
+jmp	InitMessageScrollWindow_ovr139_0	; Jump
 stub139_20 endp
 
 
@@ -354650,7 +354650,7 @@ stub139_20 endp
 ; Attributes: thunk
 
 stub139_25 proc	far
-jmp	ovr139_83C	; Jump
+jmp	ResetMessageScrollWindow_ovr139_83C	; Jump
 stub139_25 endp
 
 
@@ -354658,7 +354658,7 @@ stub139_25 endp
 ; Attributes: thunk
 
 stub139_2A proc	far
-jmp	ovr139_29	; Jump
+jmp	WaitForTimerOrInput_ovr139_29	; Jump
 stub139_2A endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_PlayerTypedInput_ovr139_251. PRESS KEYPAD "+" TO EXPAND]
@@ -354668,7 +354668,7 @@ stub139_2A endp
 ; Attributes: thunk
 
 stub139_39 proc	far
-jmp	ovr139_BD	; Jump
+jmp	ShowMorePromptAndWait_ovr139_BD	; Jump
 stub139_39 endp
 
 
@@ -354676,7 +354676,7 @@ stub139_39 endp
 ; Attributes: thunk
 
 stub139_3E proc	far
-jmp	ovr139_16C	; Jump
+jmp	WriteNumberToMessageScroll_ovr139_16C	; Jump
 stub139_3E endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_WaitForYesNoAnswer_ovr139_747. PRESS KEYPAD "+"	TO EXPAND]
@@ -354685,7 +354685,7 @@ stub139_3E endp
 ; Attributes: thunk
 
 stub139_48 proc	far
-jmp	ovr139_151	; Jump
+jmp	SetTextColorFromMouseState_ovr139_151	; Jump
 stub139_48 endp
 
 stub139	ends
@@ -354727,7 +354727,7 @@ j_MaybeLoadTextureMaps_ovr140_16C endp
 ; Attributes: thunk
 
 stub140_39 proc	far
-jmp	ovr140_4F	; Jump
+jmp	DrawScaledTextureToScreen_ovr140_4F	; Jump
 stub140_39 endp
 
 stub140	ends
@@ -354784,7 +354784,7 @@ j_RefreshPlayerStatus_ovr142_732 endp
 ; Attributes: thunk
 
 stub142_39 proc	far
-jmp	ovr142_27A	; Jump
+jmp	NullStub_ovr142_27A	; Jump
 stub142_39 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_InitAttributes_ovr142_102. PRESS KEYPAD	"+" TO EXPAND]
@@ -354855,7 +354855,7 @@ j_HackTrapCamera_ovr143_D5C endp
 ; Attributes: thunk
 
 stub143_3E proc	far
-jmp	ovr143_E09	; Jump
+jmp	CalculatePlayerDistanceAndHeading_ovr143_E09	; Jump
 stub143_3E endp
 
 
@@ -354863,7 +354863,7 @@ stub143_3E endp
 ; Attributes: thunk
 
 stub143_43 proc	far
-jmp	ovr143_722	; Jump
+jmp	RegisterCompassClickAreas_ovr143_722	; Jump
 stub143_43 endp
 
 
@@ -354871,7 +354871,7 @@ stub143_43 endp
 ; Attributes: thunk
 
 stub143_48 proc	far
-jmp	ovr143_F58	; Jump
+jmp	TurnLeftRight_ovr143_F58	; Jump
 stub143_48 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_LookUpDown_ovr143_F7D. PRESS KEYPAD "+"	TO EXPAND]
@@ -354880,7 +354880,7 @@ stub143_48 endp
 ; Attributes: thunk
 
 stub143_52 proc	far
-jmp	ovr143_EFD	; Jump
+jmp	AdjustPlayerMovementAxis_ovr143_EFD	; Jump
 stub143_52 endp
 
 
@@ -354888,7 +354888,7 @@ stub143_52 endp
 ; Attributes: thunk
 
 stub143_57 proc	far
-jmp	ovr143_C4D	; Jump
+jmp	SetCameraTarget_ovr143_C4D	; Jump
 stub143_57 endp
 
 
@@ -354912,7 +354912,7 @@ j_PrintPlayerPosition_ovr143_9ED endp
 ; Attributes: thunk
 
 stub143_66 proc	far
-jmp	ovr143_97F	; Jump
+jmp	UnregisterCompassClickAreas_ovr143_97F	; Jump
 stub143_66 endp
 
 stub143	ends
@@ -354965,7 +354965,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub146_20 proc	far
-jmp	ovr146_0	; Jump
+jmp	NullStub_ovr146_0	; Jump
 stub146_20 endp
 
 stub146	ends
@@ -354989,7 +354989,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub147_25 proc	far
-jmp	ovr147_53F	; Jump
+jmp	HandleMenuSelection_ovr147_53F	; Jump
 stub147_25 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_SomethingFontRelated_ovr147_76EE_72C. PRESS KEYPAD "+" TO EXPAND]
@@ -354998,7 +354998,7 @@ stub147_25 endp
 ; Attributes: thunk
 
 stub147_2F proc	far
-jmp	ovr147_22	; Jump
+jmp	RegisterMenuItemEntry_ovr147_22	; Jump
 stub147_2F endp
 
 
@@ -355006,7 +355006,7 @@ stub147_2F endp
 ; Attributes: thunk
 
 stub147_34 proc	far
-jmp	ovr147_0	; Jump
+jmp	AdvanceMemoryAllocPointer_ovr147_0	; Jump
 stub147_34 endp
 
 
@@ -355014,7 +355014,7 @@ stub147_34 endp
 ; Attributes: thunk
 
 stub147_39 proc	far
-jmp	ovr147_94	; Jump
+jmp	PlayIntroIfNoSaveGames_ovr147_94	; Jump
 stub147_39 endp
 
 
@@ -355022,7 +355022,7 @@ stub147_39 endp
 ; Attributes: thunk
 
 stub147_3E proc	far
-jmp	ovr147_CC	; Jump
+jmp	DrawMenuItems_ovr147_CC	; Jump
 stub147_3E endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_UnknownAutomapLoop_ovr147_A56. PRESS KEYPAD "+"	TO EXPAND]
@@ -355079,7 +355079,7 @@ j_MaybeCreateSaveGameFolder_ovr149_0 endp
 ; Attributes: thunk
 
 stub149_2F proc	far
-jmp	ovr149_358	; Jump
+jmp	ExecuteSaveOrRestoreGame_ovr149_358	; Jump
 stub149_2F endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_DeleteFiles_ovr149_66B.	PRESS KEYPAD "+" TO EXPAND]
@@ -355161,7 +355161,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub151_2A proc	far
-jmp	ovr151_6A3	; Jump
+jmp	InsertAndExecuteSingleSCDRow_ovr151_6A3	; Jump
 stub151_2A endp
 
 
@@ -355169,7 +355169,7 @@ stub151_2A endp
 ; Attributes: thunk
 
 stub151_2F proc	far
-jmp	ovr151_6BB	; Jump
+jmp	GetSCDDirtyFlag_ovr151_6BB	; Jump
 stub151_2F endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_DeleteSCDRecord_ovr151_5DB. PRESS KEYPAD "+" TO	EXPAND]
@@ -355181,7 +355181,7 @@ stub151_2F endp
 ; Attributes: thunk
 
 stub151_48 proc	far
-jmp	ovr151_12C	; Jump
+jmp	ProcessAllSCDRows_ovr151_12C	; Jump
 stub151_48 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_ProbablyCopyEventRow_ovr151_666. PRESS KEYPAD "+" TO EXPAND]
@@ -355190,7 +355190,7 @@ stub151_48 endp
 ; Attributes: thunk
 
 stub151_52 proc	far
-jmp	ovr151_457	; Jump
+jmp	ExecuteSCDBlockForCurrentLevel_ovr151_457	; Jump
 stub151_52 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_SCD_ProcessXClock_ovr151_32E. PRESS KEYPAD "+" TO EXPAND]
@@ -355199,7 +355199,7 @@ stub151_52 endp
 ; Attributes: thunk
 
 stub151_5C proc	far
-jmp	ovr151_47C	; Jump
+jmp	InsertAndExecuteSCDRows_ovr151_47C	; Jump
 stub151_5C endp
 
 
@@ -355304,7 +355304,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub154_20 proc	far
-jmp	ovr154_1401	; Jump
+jmp	DropObjectInHandOnDeath_ovr154_1401	; Jump
 stub154_20 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_PlayerResurrectRestorationEvent_ovr154_11CC. PRESS KEYPAD "+" TO EXPAND]
@@ -355791,7 +355791,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub162_20 proc	far
-jmp	ovr162_0	; Jump
+jmp	LoadTriggerObjectDat_ovr162_0	; Jump
 stub162_20 endp
 
 stub162	ends
@@ -355863,7 +355863,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub165_20 proc	far
-jmp	ovr165_E	; Jump
+jmp	NullStub_ovr165_E	; Jump
 stub165_20 endp
 
 
@@ -355871,7 +355871,7 @@ stub165_20 endp
 ; Attributes: thunk
 
 stub165_25 proc	far
-jmp	ovr165_0	; Jump
+jmp	ShowEncryptionUI_ovr165_0	; Jump
 stub165_25 endp
 
 stub165	ends
@@ -356025,7 +356025,7 @@ db 10h dup(0)		; workarea
 ; Attributes: thunk
 
 stub167_2A proc	far
-jmp	ovr167_674	; Jump
+jmp	GenerateEncryptionKeyTable_ovr167_674	; Jump
 stub167_2A endp
 
 
@@ -356052,7 +356052,7 @@ j_SaveFileEncryption_ovr167_7DD	endp
 ; Attributes: thunk
 
 stub167_48 proc	far
-jmp	ovr167_252	; Jump
+jmp	DrawAutoMapMarker_ovr167_252	; Jump
 stub167_48 endp
 
 ; [00000005 BYTES: COLLAPSED FUNCTION j_SaveDecrypt_ovr167_70F.	PRESS KEYPAD "+" TO EXPAND]
@@ -356061,7 +356061,7 @@ stub167_48 endp
 ; Attributes: thunk
 
 stub167_52 proc	far
-jmp	ovr167_0	; Jump
+jmp	ToggleBooleanFlag_ovr167_0	; Jump
 stub167_52 endp
 
 
@@ -356069,7 +356069,7 @@ stub167_52 endp
 ; Attributes: thunk
 
 stub167_57 proc	far
-jmp	ovr167_17	; Jump
+jmp	GetCoarseDirectionFromDeltas_ovr167_17	; Jump
 stub167_57 endp
 
 
@@ -356077,7 +356077,7 @@ stub167_57 endp
 ; Attributes: thunk
 
 ListDataFolderContents_stub167_5C proc far
-jmp	ovr167_421	; Jump
+jmp	VerifyRequiredDirectories_ovr167_421	; Jump
 ListDataFolderContents_stub167_5C endp
 
 
@@ -356085,7 +356085,7 @@ ListDataFolderContents_stub167_5C endp
 ; Attributes: thunk
 
 stub167_61 proc	far
-jmp	ovr167_463	; Jump
+jmp	CheckSufficientMemory_ovr167_463	; Jump
 stub167_61 endp
 
 
@@ -356105,7 +356105,7 @@ ReadFileToAddress_stub167_66 endp
 ; Attributes: thunk
 
 stub167_6B proc	far
-jmp	ovr167_531	; Jump
+jmp	SaveDataToFile_ovr167_531	; Jump
 stub167_6B endp
 
 
@@ -361052,7 +361052,7 @@ dseg_67d6_2218 dd seg048MaybeGraphics_5046
 dseg_67d6_221C dd seg048MaybeGraphics_36A2
 dseg_67d6_2220 dw 0
 dseg_67d6_2222 dw 0
-dseg_67d6_2224 dw offset seg005_105F_30FE
+dseg_67d6_2224 dw offset WriteErrorMsgToStderr_seg005_105F_30FE
 dseg_67d6_2226 dw offset seg005_105F_3103
 dseg_67d6_2228 dw offset seg005_105F_3103
 dseg_67d6_222A dw offset seg005_105F_3103
@@ -387630,7 +387630,7 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; Attributes: bp-based frame
 
-ovr092_0 proc far
+StubNoOp1_ovr092_0 proc far
 push	bp
 
 ovr092_1:
@@ -387641,13 +387641,13 @@ pop	bp
 
 ovr092_4:		; Return Far from Procedure
 retf
-ovr092_0 endp
+StubNoOp1_ovr092_0 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr092_5 proc far
+StubShowBarterUI_ovr092_5 proc far
 push	bp
 
 ovr092_6:
@@ -387672,13 +387672,13 @@ pop	bp
 
 ovr092_12:		; Return Far from Procedure
 retf
-ovr092_5 endp ;	sp = -2
+StubShowBarterUI_ovr092_5 endp ;	sp = -2
 
 
 
 ; Attributes: bp-based frame
 
-ovr092_13 proc far
+StubNoOp2_ovr092_13 proc far
 push	bp
 
 ovr092_14:
@@ -387689,13 +387689,13 @@ pop	bp
 
 ovr092_17:		; Return Far from Procedure
 retf
-ovr092_13 endp
+StubNoOp2_ovr092_13 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr092_18 proc far
+StubNoOp3_ovr092_18 proc far
 push	bp
 
 ovr092_19:
@@ -387706,13 +387706,13 @@ pop	bp
 
 ovr092_1C:		; Return Far from Procedure
 retf
-ovr092_18 endp
+StubNoOp3_ovr092_18 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr092_1D proc far
+StubNoOp4_ovr092_1D proc far
 push	bp
 
 ovr092_1E:
@@ -387723,13 +387723,13 @@ pop	bp
 
 ovr092_21:		; Return Far from Procedure
 retf
-ovr092_1D endp
+StubNoOp4_ovr092_1D endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr092_22 proc far
+StubNoOp5_ovr092_22 proc far
 push	bp
 
 ovr092_23:
@@ -387740,7 +387740,7 @@ pop	bp
 
 ovr092_26:		; Return Far from Procedure
 retf
-ovr092_22 endp
+StubNoOp5_ovr092_22 endp
 
 
 
@@ -388147,7 +388147,7 @@ MaybeSeekToOffset_ovr093_0 endp
 
 ; Attributes: bp-based frame
 
-ovr093_128 proc	far
+WriteArkDataBlockHeaders_ovr093_128 proc	far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -388418,7 +388418,7 @@ leave			; High Level Procedure Exit
 
 ovr093_21B:		; Return Far from Procedure
 retf
-ovr093_128 endp
+WriteArkDataBlockHeaders_ovr093_128 endp
 
 
 
@@ -388769,7 +388769,7 @@ BuildArkDataFileName_ovr093_779D_2BA endp
 
 ; Attributes: bp-based frame
 
-ovr093_339 proc	far
+CopyDataBetweenFileHandles_ovr093_339 proc	far
 
 var_6A=	word ptr -6Ah
 var_6= word ptr	-6
@@ -388910,7 +388910,7 @@ leave
 
 ovr093_3A5:		; Return Far from Procedure
 retf
-ovr093_339 endp
+CopyDataBetweenFileHandles_ovr093_339 endp
 
 
 
@@ -389605,7 +389605,7 @@ push	[bp+TmpFileHandle_var_22]
 ovr093_6C0:
 push	di_handle
 push	cs
-call	near ptr ovr093_339 ; Call Procedure
+call	near ptr CopyDataBetweenFileHandles_ovr093_339 ; Call Procedure
 add	sp, 6		; Add
 mov	si, ax
 
@@ -389737,7 +389737,7 @@ push	di_handle
 push	cs
 
 ovr093_768:		; Call Procedure
-call	near ptr ovr093_339
+call	near ptr CopyDataBetweenFileHandles_ovr093_339
 add	sp, 6		; Add
 jmp	short ovr093_782 ; Jump
 
@@ -390222,7 +390222,7 @@ ovr093_9BE:
 push	cs
 
 ovr093_9BF:		; Call Procedure
-call	near ptr ovr093_339
+call	near ptr CopyDataBetweenFileHandles_ovr093_339
 
 ovr093_9C2:		; Add
 add	sp, 6
@@ -390480,7 +390480,7 @@ push	si
 push	cs
 
 ovr093_B36:		; Call Procedure
-call	near ptr ovr093_128
+call	near ptr WriteArkDataBlockHeaders_ovr093_128
 add	sp, 4		; Add
 or	ax, ax		; Logical Inclusive OR
 
@@ -391113,18 +391113,18 @@ ReadDataFileBlock_ovr093_D48 endp
 
 ; Attributes: bp-based frame
 
-ovr093_DBC proc	far
+DoNothing_ovr093_DBC proc	far
 push	bp
 mov	bp, sp
 pop	bp
 retf			; Return Far from Procedure
-ovr093_DBC endp
+DoNothing_ovr093_DBC endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr093_DC1 proc	far
+ReadFileHeaderWord_ovr093_DC1 proc	far
 
 var_3= byte ptr	-3
 var_2= word ptr	-2
@@ -391238,7 +391238,7 @@ ovr093_E2C:
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr093_DC1 endp
+ReadFileHeaderWord_ovr093_DC1 endp
 
 ovr093 ends
 
@@ -391989,7 +391989,7 @@ SetALTo1_ovr094_2A1 endp
 
 ; Attributes: bp-based frame
 
-ovr094_2A8 proc	far
+RefreshFullAutomap_ovr094_2A8 proc	far
 push	bp
 
 ovr094_2A9:
@@ -392032,7 +392032,7 @@ ovr094_2C8:
 push	cs
 
 ovr094_2C9:		; Call Procedure
-call	near ptr ovr094_427
+call	near ptr DrawAutomapWalls_ovr094_427
 
 ovr094_2CC:		; Call Procedure
 call	seg015_1D7C_C0
@@ -392040,7 +392040,7 @@ call	seg015_1D7C_C0
 ovr094_2D1:
 pop	bp
 retf			; Return Far from Procedure
-ovr094_2A8 endp
+RefreshFullAutomap_ovr094_2A8 endp
 
 
 
@@ -392281,7 +392281,7 @@ LoadAutoMap_ovr094_328 endp
 
 ; Attributes: bp-based frame
 
-ovr094_39F proc	far
+CloseAutomapAndRestore_ovr094_39F proc	far
 push	bp
 
 ovr094_3A0:
@@ -392302,7 +392302,7 @@ nop			; No Operation
 push	cs
 
 ovr094_3B6:		; Call Procedure
-call	near ptr ovr094_1201
+call	near ptr SaveMapNotesToLevArk_ovr094_1201
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -392377,7 +392377,7 @@ call	seg015_1D7C_C0	; Call Procedure
 ovr094_410:
 pop	bp
 retf			; Return Far from Procedure
-ovr094_39F endp	; sp = -8
+CloseAutomapAndRestore_ovr094_39F endp	; sp = -8
 
 
 
@@ -392407,7 +392407,7 @@ ClearAutomap_ovr094_412	endp
 
 ; Attributes: bp-based frame
 
-ovr094_427 proc	far
+DrawAutomapWalls_ovr094_427 proc	far
 
 var_E= word ptr	-0Eh
 var_A= word ptr	-0Ah
@@ -392521,7 +392521,7 @@ nop			; No Operation
 push	cs
 
 ovr094_4A9:		; Call Procedure
-call	near ptr ovr094_569
+call	near ptr CheckAndDrawAdjacentWall_ovr094_569
 
 ovr094_4AC:		; Add
 add	sp, 6
@@ -392549,7 +392549,7 @@ nop			; No Operation
 
 ovr094_4C2:
 push	cs
-call	near ptr ovr094_569 ; Call Procedure
+call	near ptr CheckAndDrawAdjacentWall_ovr094_569 ; Call Procedure
 add	sp, 6		; Add
 
 ovr094_4C9:
@@ -392570,7 +392570,7 @@ nop			; No Operation
 push	cs
 
 ovr094_4DB:		; Call Procedure
-call	near ptr ovr094_569
+call	near ptr CheckAndDrawAdjacentWall_ovr094_569
 
 ovr094_4DE:		; Add
 add	sp, 6
@@ -392655,7 +392655,7 @@ ovr094_540:
 push	cs
 
 ovr094_541:		; Call Procedure
-call	near ptr ovr094_661
+call	near ptr DrawAutomapWallLine_ovr094_661
 add	sp, 8		; Add
 
 ovr094_547:		; Increment by 1
@@ -392692,13 +392692,13 @@ leave			; High Level Procedure Exit
 
 ovr094_568:		; Return Far from Procedure
 retf
-ovr094_427 endp
+DrawAutomapWalls_ovr094_427 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr094_569 proc	far
+CheckAndDrawAdjacentWall_ovr094_569 proc	far
 
 var_8= word ptr	-8
 var_6= word ptr	-6
@@ -392848,7 +392848,7 @@ add	ax, si
 push	ax
 nop			; No Operation
 push	cs
-call	near ptr ovr094_661 ; Call Procedure
+call	near ptr DrawAutomapWallLine_ovr094_661 ; Call Procedure
 
 ovr094_619:		; Add
 add	sp, 8
@@ -392888,7 +392888,7 @@ ovr094_63E:
 push	cs
 
 ovr094_63F:		; Call Procedure
-call	near ptr ovr094_661
+call	near ptr DrawAutomapWallLine_ovr094_661
 
 ovr094_642:		; Add
 add	sp, 8
@@ -392906,7 +392906,7 @@ pop	di
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr094_569 endp
+CheckAndDrawAdjacentWall_ovr094_569 endp
 
 ovr094_651 dw offset ovr094_5FF	; jump table for switch	statement
 dw offset ovr094_624
@@ -392920,7 +392920,7 @@ dw offset ovr094_5AC
 
 ; Attributes: bp-based frame
 
-ovr094_661 proc	far
+DrawAutomapWallLine_ovr094_661 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -392952,7 +392952,7 @@ ovr094_674:
 push	[bp+arg_0]
 
 ovr094_677:		; Call Procedure
-call	seg003_0272_475E
+call	DrawFilledRectFar_seg003_0272_475E
 
 ovr094_67C:		; Add
 add	sp, 4
@@ -392998,7 +392998,7 @@ ovr094_6AC:
 push	[bp+arg_0]
 
 ovr094_6AF:		; Call Procedure
-call	seg003_0272_475E
+call	DrawFilledRectFar_seg003_0272_475E
 
 ovr094_6B4:		; Add
 add	sp, 4
@@ -393024,7 +393024,7 @@ pop	bp
 
 ovr094_6CC:		; Return Far from Procedure
 retf
-ovr094_661 endp
+DrawAutomapWallLine_ovr094_661 endp
 
 
 
@@ -393342,7 +393342,7 @@ ovr094_802:
 push	cs
 
 ovr094_803:		; Call Procedure
-call	near ptr ovr094_661
+call	near ptr DrawAutomapWallLine_ovr094_661
 
 ovr094_806:		; Add
 add	sp, 8
@@ -393421,7 +393421,7 @@ push	ax
 push	cs
 
 ovr094_858:		; Call Procedure
-call	near ptr ovr094_661
+call	near ptr DrawAutomapWallLine_ovr094_661
 add	sp, 8		; Add
 inc	si		; Increment by 1
 
@@ -393519,7 +393519,7 @@ nop
 push	cs
 
 ovr094_8C8:		; Call Procedure
-call	near ptr ovr094_8DA
+call	near ptr DrawAutomapDoorIndicator_ovr094_8DA
 
 ovr094_8CB:		; Add
 add	sp, 8
@@ -393543,7 +393543,7 @@ dw offset ovr094_7CC
 
 ; Attributes: bp-based frame
 
-ovr094_8DA proc	far
+DrawAutomapDoorIndicator_ovr094_8DA proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -393575,7 +393575,7 @@ ovr094_8F1:
 push	cs
 
 ovr094_8F2:		; Call Procedure
-call	near ptr ovr094_661
+call	near ptr DrawAutomapWallLine_ovr094_661
 
 ovr094_8F5:		; Add
 add	sp, 8
@@ -393727,7 +393727,7 @@ push	dx
 push	cs
 
 ovr094_98D:		; Call Procedure
-call	near ptr ovr094_661
+call	near ptr DrawAutomapWallLine_ovr094_661
 
 ovr094_990:		; Add
 add	sp, 8
@@ -393780,7 +393780,7 @@ push	dx
 push	cs
 
 ovr094_9B8:		; Call Procedure
-call	near ptr ovr094_661
+call	near ptr DrawAutomapWallLine_ovr094_661
 add	sp, 8		; Add
 jmp	short ovr094_9CE ; Jump
 
@@ -393803,13 +393803,13 @@ pop	bp
 
 ovr094_9D1:		; Return Far from Procedure
 retf
-ovr094_8DA endp
+DrawAutomapDoorIndicator_ovr094_8DA endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr094_9D2 proc	far
+DrawAutomapDiagonalWall_ovr094_9D2 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -393878,7 +393878,7 @@ push	di
 push	cs
 
 ovr094_A0F:		; Call Procedure
-call	near ptr ovr094_661
+call	near ptr DrawAutomapWallLine_ovr094_661
 
 ovr094_A12:		; Add
 add	sp, 8
@@ -393888,13 +393888,13 @@ pop	di
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr094_9D2 endp
+DrawAutomapDiagonalWall_ovr094_9D2 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr094_A19 proc	far
+FindNearestMapNote_ovr094_A19 proc	far
 
 var_38=	word ptr -38h
 var_6= word ptr	-6
@@ -394129,13 +394129,13 @@ leave
 
 ovr094_B10:		; Return Far from Procedure
 retf
-ovr094_A19 endp
+FindNearestMapNote_ovr094_A19 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr094_B11 proc	far
+GetAutomapRegionFromClick_ovr094_B11 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -394395,7 +394395,7 @@ pop	bp
 
 ovr094_BDE:		; Return Far from Procedure
 retf
-ovr094_B11 endp
+GetAutomapRegionFromClick_ovr094_B11 endp
 
 
 
@@ -394747,7 +394747,7 @@ push	[bp+var_2]
 push	cs
 
 ovr094_D4E:		; Call Procedure
-call	near ptr ovr094_B11
+call	near ptr GetAutomapRegionFromClick_ovr094_B11
 
 ovr094_D51:		; Add
 add	sp, 4
@@ -394958,7 +394958,7 @@ jg	short ovr094_E9B
 push	si
 
 ovr094_E4B:		; Call Procedure
-call	seg005_105F_142C
+call	CharToUpper_seg005_105F_142C
 
 ovr094_E50:		; Increment by 1
 inc	sp
@@ -395097,7 +395097,7 @@ ovr094_EC1:
 push	106h
 
 ovr094_EC4:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -395125,7 +395125,7 @@ ovr094_EE2:
 push	word ptr es:[bx+32h]
 
 ovr094_EE6:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 ovr094_EEB:		; Add
 add	sp, 8
@@ -395418,7 +395418,7 @@ ovr094_1027:
 push	cs
 
 ovr094_1028:		; Call Procedure
-call	near ptr ovr094_A19
+call	near ptr FindNearestMapNote_ovr094_A19
 
 ovr094_102B:		; Add
 add	sp, 0Ch
@@ -395500,7 +395500,7 @@ ovr094_108C:
 push	106h
 
 ovr094_108F:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 inc	sp		; Increment by 1
 
 ovr094_1095:		; Increment by 1
@@ -395524,7 +395524,7 @@ ovr094_10AD:
 push	word ptr es:[bx+32h]
 
 ovr094_10B1:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 ovr094_10B6:		; Add
 add	sp, 8
@@ -395646,7 +395646,7 @@ ovr094_112A:
 push	cs
 
 ovr094_112B:		; Call Procedure
-call	near ptr ovr094_155B
+call	near ptr SwitchAutomapLevel_ovr094_155B
 
 ovr094_112E:		; Increment by 1
 inc	sp
@@ -395862,7 +395862,7 @@ WriteMapNotesToScreen_ovr094_1147 endp
 
 ; Attributes: bp-based frame
 
-ovr094_1201 proc far
+SaveMapNotesToLevArk_ovr094_1201 proc far
 
 LevelNo_arg_0= word ptr	 6
 
@@ -395999,7 +395999,7 @@ ovr094_12C3:
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr094_1201 endp ; sp =	-2
+SaveMapNotesToLevArk_ovr094_1201 endp ; sp =	-2
 
 
 
@@ -396065,7 +396065,7 @@ LoadMapNotesData_ovr094_12C6 endp
 
 ; Attributes: bp-based frame
 
-ovr094_1317 proc far
+DrawWorldSelectionIcon_ovr094_1317 proc far
 
 var_12=	word ptr -12h
 arg_0= word ptr	 6
@@ -396146,13 +396146,13 @@ pop	di
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr094_1317 endp
+DrawWorldSelectionIcon_ovr094_1317 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr094_1379 proc far
+DrawWorldSelectionPanel_ovr094_1379 proc far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -396198,7 +396198,7 @@ jz	short ovr094_13C2 ; Jump if Zero (ZF=1)
 push	1
 push	[bp+var_2]
 push	cs
-call	near ptr ovr094_1317 ; Call Procedure
+call	near ptr DrawWorldSelectionIcon_ovr094_1317 ; Call Procedure
 add	sp, 4		; Add
 
 ovr094_13C2:		; Increment by 1
@@ -396233,7 +396233,7 @@ ovr094_13E1:
 push	2
 push	si
 push	cs
-call	near ptr ovr094_1317 ; Call Procedure
+call	near ptr DrawWorldSelectionIcon_ovr094_1317 ; Call Procedure
 add	sp, 4		; Add
 mov	ax, seg	seg048MaybeGraphics
 
@@ -396244,7 +396244,7 @@ mov	es:seg048MaybeGraphics_DC5, dl
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr094_1379 endp
+DrawWorldSelectionPanel_ovr094_1379 endp
 
 
 
@@ -396301,10 +396301,10 @@ jmp	ovr094_153F	; Jump
 
 ovr094_1449:
 push	cs
-call	near ptr ovr094_427 ; Call Procedure
+call	near ptr DrawAutomapWalls_ovr094_427 ; Call Procedure
 push	[bp+LevelToView_arg_0]
 push	cs
-call	near ptr ovr094_1379 ; Call Procedure
+call	near ptr DrawWorldSelectionPanel_ovr094_1379 ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 mov	ax, [bp+LevelToView_arg_0]
@@ -396395,7 +396395,7 @@ inc	sp		; Increment by 1
 call	GraphicsCall_seg003_0272_46E6 ;	Call Procedure
 
 ovr094_14E2:		; Call Procedure
-call	seg003_0272_4B1B
+call	FlushPaletteFar_seg003_0272_4B1B
 push	[bp+LevelToView_arg_0]
 push	cs
 call	near ptr LoadMapNotesData_ovr094_12C6 ;	Call Procedure
@@ -396471,7 +396471,7 @@ call	GraphicsCall_seg003_0272_46E6
 ovr094_1544:		; Call Procedure
 call	seg015_1D7C_C0
 push	cs
-call	near ptr ovr094_39F ; Call Procedure
+call	near ptr CloseAutomapAndRestore_ovr094_39F ; Call Procedure
 
 ovr094_154D:		; Call Procedure
 call	seg042_35ED_233
@@ -396490,7 +396490,7 @@ DisplayAutomapText_ovr094_13FB endp
 
 ; Attributes: bp-based frame
 
-ovr094_155B proc far
+SwitchAutomapLevel_ovr094_155B proc far
 
 arg_0= word ptr	 6
 
@@ -396506,7 +396506,7 @@ push	CurrentAutomapLevel_dseg_67d6_36FA
 push	cs
 
 ovr094_1567:		; Call Procedure
-call	near ptr ovr094_1201
+call	near ptr SaveMapNotesToLevArk_ovr094_1201
 
 ovr094_156A:		; Increment by 1
 inc	sp
@@ -396548,7 +396548,7 @@ ovr094_158B:
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr094_155B endp ; sp =	-4
+SwitchAutomapLevel_ovr094_155B endp ; sp =	-4
 
 
 
@@ -396572,7 +396572,7 @@ SomethingWithXMIFiles_ovr094_158E endp
 
 ; Attributes: bp-based frame
 
-ovr094_1598 proc far
+GetMapPieceOctant_ovr094_1598 proc far
 
 var_2= word ptr	-2
 arg_0= word ptr	 6
@@ -396744,7 +396744,7 @@ pop	di
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr094_1598 endp
+GetMapPieceOctant_ovr094_1598 endp
 
 
 
@@ -396832,7 +396832,7 @@ push	ax
 push	cs
 
 ovr094_1678:		; Call Procedure
-call	near ptr ovr094_1598
+call	near ptr GetMapPieceOctant_ovr094_1598
 add	sp, 4		; Add
 
 ovr094_167E:
@@ -397151,7 +397151,7 @@ mov	ax, [bp+var_14]
 add	ax, 0FFE0h	; Add
 push	ax
 push	cs
-call	near ptr ovr094_1598 ; Call Procedure
+call	near ptr GetMapPieceOctant_ovr094_1598 ; Call Procedure
 add	sp, 4		; Add
 
 ovr094_1812:
@@ -397218,7 +397218,7 @@ push	[bp+DungeonLevel_arg_2]
 push	cs
 
 ovr094_185D:		; Call Procedure
-call	near ptr ovr094_1201
+call	near ptr SaveMapNotesToLevArk_ovr094_1201
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -397353,7 +397353,7 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; Attributes: bp-based frame
 
-ovr095_0 proc far
+InitConvoFreeMemBlock_ovr095_0 proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -397398,13 +397398,13 @@ pop	bp
 
 ovr095_30:		; Return Far from Procedure
 retf
-ovr095_0 endp
+InitConvoFreeMemBlock_ovr095_0 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr095_31 proc far
+IsBlockInFreeList_ovr095_31 proc far
 
 var_8= dword ptr -8
 var_4= dword ptr -4
@@ -397506,7 +397506,7 @@ mov	al, 0
 ovr095_84:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr095_31 endp
+IsBlockInFreeList_ovr095_31 endp
 
 
 
@@ -397856,7 +397856,7 @@ MaybeAllocateSpace_ovr095_86 endp
 
 ; Attributes: bp-based frame
 
-ovr095_21E proc	far
+FreeConvoMemBlock_ovr095_21E proc	far
 
 var_C= dword ptr -0Ch
 var_8= dword ptr -8
@@ -397879,7 +397879,7 @@ ovr095_22C:
 push	cs
 
 ovr095_22D:		; Call Procedure
-call	near ptr ovr095_31
+call	near ptr IsBlockInFreeList_ovr095_31
 add	sp, 6		; Add
 mov	ah, 0
 or	ax, ax		; Logical Inclusive OR
@@ -398133,13 +398133,13 @@ mov	word ptr es:[bx+6], 0
 ovr095_393:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr095_21E endp
+FreeConvoMemBlock_ovr095_21E endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr095_395 proc	far
+ReallocConvoMemBlock_ovr095_395 proc	far
 
 var_1C=	dword ptr -1Ch
 var_18=	word ptr -18h
@@ -398669,7 +398669,7 @@ push	[bp+var_10]
 push	cs
 
 ovr095_664:		; Call Procedure
-call	near ptr ovr095_21E
+call	near ptr FreeConvoMemBlock_ovr095_21E
 add	sp, 4		; Add
 
 ovr095_66A:
@@ -398678,7 +398678,7 @@ mov	ax, [bp+var_14]
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr095_395 endp
+ReallocConvoMemBlock_ovr095_395 endp
 
 
 
@@ -399175,7 +399175,7 @@ push	[bp+arg_4]
 ovr095_87F:
 push	[bp+arg_2]
 push	cs
-call	near ptr ovr095_0 ; Call Procedure
+call	near ptr InitConvoFreeMemBlock_ovr095_0 ; Call Procedure
 
 ovr095_886:		; Add
 add	sp, 4
@@ -399331,7 +399331,7 @@ push	[bp+ConvArkdata_var_8]
 
 ovr095_938:
 push	cs
-call	near ptr ovr095_21E ; Call Procedure
+call	near ptr FreeConvoMemBlock_ovr095_21E ; Call Procedure
 add	sp, 4		; Add
 mov	ax, NoOfMemorySlotsFromCNV_ARK_dseg_67d6_472C
 add	ax, 800h	; 2048d	(a 2k stack??)
@@ -399718,7 +399718,7 @@ push	[bp+var_C]
 push	cs
 
 ovr095_B64:		; Call Procedure
-call	near ptr ovr095_21E
+call	near ptr FreeConvoMemBlock_ovr095_21E
 
 ovr095_B67:		; Add
 add	sp, 4
@@ -399743,7 +399743,7 @@ push	[bp+var_10]
 
 ovr095_B80:
 push	cs
-call	near ptr ovr095_21E ; Call Procedure
+call	near ptr FreeConvoMemBlock_ovr095_21E ; Call Procedure
 add	sp, 4		; Add
 
 ovr095_B87:		; Logical Inclusive OR
@@ -400365,7 +400365,7 @@ Copy_ovr095_DC7	endp
 
 ; Attributes: bp-based frame
 
-ovr095_E36 proc	far
+FindInConvoArray_ovr095_E36 proc	far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -400451,7 +400451,7 @@ pop	di
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr095_E36 endp
+FindInConvoArray_ovr095_E36 endp
 
 
 
@@ -400537,7 +400537,7 @@ Val_ovr095_EB2 endp ; sp = -4
 
 ; Attributes: bp-based frame
 
-ovr095_ED7 proc	far
+InsertStringIntoConvoBuffer_ovr095_ED7 proc	far
 
 var_2= word ptr	-2
 arg_0= word ptr	 6
@@ -400603,7 +400603,7 @@ push	word ptr [si]
 
 ovr095_F1A:
 push	cs
-call	near ptr ovr095_395 ; Call Procedure
+call	near ptr ReallocConvoMemBlock_ovr095_395 ; Call Procedure
 add	sp, 8		; Add
 mov	[si], ax
 
@@ -400640,7 +400640,7 @@ pop	di
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr095_ED7 endp
+InsertStringIntoConvoBuffer_ovr095_ED7 endp
 
 
 
@@ -400956,7 +400956,7 @@ push	word ptr [bp+StringSegment_var_C]
 lea	ax, [bp+ProbablyOutputString_var_8] ; Load Effective Address
 push	ax
 push	cs
-call	near ptr ovr095_ED7 ; Call Procedure
+call	near ptr InsertStringIntoConvoBuffer_ovr095_ED7 ; Call Procedure
 add	sp, 0Ch		; Add
 jmp	short ovr095_1150 ; Jump
 
@@ -401002,7 +401002,7 @@ push	word ptr [bp+StringSegment_var_C]
 lea	ax, [bp+ProbablyOutputString_var_8] ; Load Effective Address
 push	ax
 push	cs
-call	near ptr ovr095_ED7 ; Call Procedure
+call	near ptr InsertStringIntoConvoBuffer_ovr095_ED7 ; Call Procedure
 add	sp, 0Ch		; Add
 
 ovr095_1133:
@@ -401019,7 +401019,7 @@ ovr095_1143:
 push	[bp+var_10]
 push	[bp+var_12]
 push	cs
-call	near ptr ovr095_21E ; Call Procedure
+call	near ptr FreeConvoMemBlock_ovr095_21E ; Call Procedure
 add	sp, 4		; Add
 
 ovr095_1150:
@@ -401070,7 +401070,7 @@ push	[bp+ProbablyOutputString_var_6]
 ovr095_11A9:
 push	[bp+ProbablyOutputString_var_8]
 push	cs
-call	near ptr ovr095_395 ; Call Procedure
+call	near ptr ReallocConvoMemBlock_ovr095_395 ; Call Procedure
 add	sp, 8		; Add
 mov	[bp+ProbablyOutputString_var_8], ax
 mov	[bp+ProbablyOutputString_var_6], dx
@@ -403374,7 +403374,7 @@ ovr095_1E4B:
 push	[bp+var_A]
 push	[bp+var_C]
 push	cs
-call	near ptr ovr095_21E ; Call Procedure
+call	near ptr FreeConvoMemBlock_ovr095_21E ; Call Procedure
 add	sp, 4		; Add
 
 ovr095_1E58:
@@ -403391,7 +403391,7 @@ ovr095_1E68:
 push	[bp+var_E]
 push	[bp+var_10]
 push	cs
-call	near ptr ovr095_21E ; Call Procedure
+call	near ptr FreeConvoMemBlock_ovr095_21E ; Call Procedure
 
 ovr095_1E72:		; Add
 add	sp, 4
@@ -403527,7 +403527,7 @@ push	[bp+var_A]
 ovr095_1F3E:
 push	[bp+var_C]
 push	cs
-call	near ptr ovr095_21E ; Call Procedure
+call	near ptr FreeConvoMemBlock_ovr095_21E ; Call Procedure
 add	sp, 4		; Add
 
 ovr095_1F48:		; High Level Procedure Exit
@@ -403666,7 +403666,7 @@ push	[bp+ConvertedString_var_A]
 ovr095_1FE6:
 push	[bp+ConvertedString_var_C]
 push	cs
-call	near ptr ovr095_21E ; Call Procedure
+call	near ptr FreeConvoMemBlock_ovr095_21E ; Call Procedure
 add	sp, 4		; Add
 
 ovr095_1FF0:		; High Level Procedure Exit
@@ -404276,14 +404276,14 @@ dw offset ovr095_2214
 
 ; Attributes: bp-based frame
 
-ovr095_2296 proc far
+ConvoVMNoop_ovr095_2296 proc far
 push	bp
 mov	bp, sp
 pop	bp
 
 ovr095_229A:		; Return Far from Procedure
 retf
-ovr095_2296 endp
+ConvoVMNoop_ovr095_2296 endp
 
 ovr095 ends
 
@@ -410560,7 +410560,7 @@ end_barter_ovr097_3E3 endp ; sp	= -6
 
 ; Attributes: bp-based frame
 
-ovr097_4CB proc	far
+ClickOnPlayerTradeSlot_ovr097_4CB proc	far
 
 var_2= word ptr	-2
 
@@ -410605,7 +410605,7 @@ nop			; No Operation
 push	cs
 
 ovr097_4EC:		; Call Procedure
-call	near ptr ovr097_512
+call	near ptr HitTestPlayerTradeSlot_ovr097_512
 
 ovr097_4EF:		; Add
 add	sp, 4
@@ -410657,13 +410657,13 @@ leave
 
 ovr097_511:		; Return Far from Procedure
 retf
-ovr097_4CB endp
+ClickOnPlayerTradeSlot_ovr097_4CB endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr097_512 proc	far
+HitTestPlayerTradeSlot_ovr097_512 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -410814,13 +410814,13 @@ pop	bp
 
 ovr097_580:		; Return Far from Procedure
 retf
-ovr097_512 endp
+HitTestPlayerTradeSlot_ovr097_512 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr097_581 proc	far
+HitTestNPCTradeSlot_ovr097_581 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -410969,13 +410969,13 @@ pop	bp
 
 ovr097_5EF:		; Return Far from Procedure
 retf
-ovr097_581 endp
+HitTestNPCTradeSlot_ovr097_581 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr097_5F0 proc	far
+IdentifyTradeSlotAtPosition_ovr097_5F0 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -411006,7 +411006,7 @@ ovr097_5FE:
 push	cs
 
 ovr097_5FF:		; Call Procedure
-call	near ptr ovr097_512
+call	near ptr HitTestPlayerTradeSlot_ovr097_512
 
 ovr097_602:		; Add
 add	sp, 4
@@ -411057,7 +411057,7 @@ ovr097_62E:
 push	cs
 
 ovr097_62F:		; Call Procedure
-call	near ptr ovr097_581
+call	near ptr HitTestNPCTradeSlot_ovr097_581
 
 ovr097_632:		; Add
 add	sp, 4
@@ -411110,13 +411110,13 @@ pop	si
 ovr097_65C:
 pop	bp
 retf			; Return Far from Procedure
-ovr097_5F0 endp
+IdentifyTradeSlotAtPosition_ovr097_5F0 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr097_65E proc	far
+RightClickOnPlayerTradeSlot_ovr097_65E proc	far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -411160,7 +411160,7 @@ ovr097_67B:
 push	cs
 
 ovr097_67C:		; Call Procedure
-call	near ptr ovr097_512
+call	near ptr HitTestPlayerTradeSlot_ovr097_512
 
 ovr097_67F:		; Add
 add	sp, 4
@@ -411203,13 +411203,13 @@ pop	si
 ovr097_6A0:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr097_65E endp
+RightClickOnPlayerTradeSlot_ovr097_65E endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr097_6A2 proc	far
+ClickOnNPCTradeSlot_ovr097_6A2 proc	far
 
 var_2= word ptr	-2
 
@@ -411247,7 +411247,7 @@ push	di
 ovr097_6BE:
 push	[bp+var_2]
 push	cs
-call	near ptr ovr097_581 ; Call Procedure
+call	near ptr HitTestNPCTradeSlot_ovr097_581 ; Call Procedure
 
 ovr097_6C5:		; Add
 add	sp, 4
@@ -411289,7 +411289,7 @@ pop	si
 ovr097_6E6:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr097_6A2 endp
+ClickOnNPCTradeSlot_ovr097_6A2 endp
 
 
 
@@ -411929,7 +411929,7 @@ ovr097_92F:
 push	cs
 
 ovr097_930:		; Call Procedure
-call	near ptr ovr097_5F0
+call	near ptr IdentifyTradeSlotAtPosition_ovr097_5F0
 
 ovr097_933:		; Add
 add	sp, 0Ch
@@ -412011,7 +412011,7 @@ ovr097_977:
 push	cs
 
 ovr097_978:		; Call Procedure
-call	near ptr ovr097_CDB
+call	near ptr PlaceObjectInTradeSlot_ovr097_CDB
 
 ovr097_97B:		; Add
 add	sp, 6
@@ -413032,7 +413032,7 @@ SetObjectInHand_ovr097_C39 endp
 
 ; Attributes: bp-based frame
 
-ovr097_CDB proc	far
+PlaceObjectInTradeSlot_ovr097_CDB proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -413141,7 +413141,7 @@ pop	bp
 
 ovr097_D2F:		; Return Far from Procedure
 retf
-ovr097_CDB endp
+PlaceObjectInTradeSlot_ovr097_CDB endp
 
 
 
@@ -413637,7 +413637,7 @@ ovr097_EDE:
 push	[bp+var_2]
 
 ovr097_EE1:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 ovr097_EE6:		; Increment by 1
 inc	sp
@@ -413669,7 +413669,7 @@ ovr097_EF3:
 push	ax
 
 ovr097_EF4:		; Call Procedure
-call	seg003_0272_4C1F
+call	DrawVLineFar_seg003_0272_4C1F
 
 ovr097_EF9:		; Add
 add	sp, 6
@@ -413704,7 +413704,7 @@ ovr097_F14:
 push	si
 
 ovr097_F15:		; Call Procedure
-call	seg003_0272_47E2
+call	DrawLineFar_seg003_0272_47E2
 
 ovr097_F1A:		; Add
 add	sp, 4
@@ -413746,7 +413746,7 @@ ovr097_F3C:
 push	[bp+var_2]
 
 ovr097_F3F:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 ovr097_F44:		; Increment by 1
 inc	sp
@@ -413776,7 +413776,7 @@ ovr097_F4E:
 push	ax
 
 ovr097_F4F:		; Call Procedure
-call	seg003_0272_4C1F
+call	DrawVLineFar_seg003_0272_4C1F
 
 ovr097_F54:		; Add
 add	sp, 6
@@ -413801,7 +413801,7 @@ ovr097_F5F:
 push	si
 
 ovr097_F60:		; Call Procedure
-call	seg003_0272_4CAB
+call	AllocVRAMFar_seg003_0272_4CAB
 
 ovr097_F65:		; Add
 add	sp, 6
@@ -417523,7 +417523,7 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; Attributes: bp-based frame
 
-ovr099_0 proc far
+StubNoOp1_ovr099_0 proc far
 push	bp
 
 ovr099_1:
@@ -417534,13 +417534,13 @@ pop	bp
 
 ovr099_4:		; Return Far from Procedure
 retf
-ovr099_0 endp
+StubNoOp1_ovr099_0 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr099_5 proc far
+StubNoOp2_ovr099_5 proc far
 push	bp
 
 ovr099_6:
@@ -417551,13 +417551,13 @@ pop	bp
 
 ovr099_9:		; Return Far from Procedure
 retf
-ovr099_5 endp
+StubNoOp2_ovr099_5 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr099_A proc far
+StubReturnTrue_ovr099_A proc far
 push	bp
 
 ovr099_B:
@@ -417571,13 +417571,13 @@ pop	bp
 
 ovr099_11:		; Return Far from Procedure
 retf
-ovr099_A endp
+StubReturnTrue_ovr099_A endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr099_12 proc far
+StubNoOp3_ovr099_12 proc far
 push	bp
 
 ovr099_13:
@@ -417588,13 +417588,13 @@ pop	bp
 
 ovr099_16:		; Return Far from Procedure
 retf
-ovr099_12 endp
+StubNoOp3_ovr099_12 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr099_17 proc far
+StubNoOp4_ovr099_17 proc far
 push	bp
 
 ovr099_18:
@@ -417605,7 +417605,7 @@ pop	bp
 
 ovr099_1B:		; Return Far from Procedure
 retf
-ovr099_17 endp
+StubNoOp4_ovr099_17 endp
 
 
 
@@ -417628,7 +417628,7 @@ REFT_ovr099_1C endp
 
 ; Attributes: bp-based frame
 
-ovr099_21 proc far
+StubNoOp5_ovr099_21 proc far
 push	bp
 
 ovr099_22:
@@ -417639,7 +417639,7 @@ pop	bp
 
 ovr099_25:		; Return Far from Procedure
 retf
-ovr099_21 endp
+StubNoOp5_ovr099_21 endp
 
 ovr099 ends
 
@@ -418538,7 +418538,7 @@ ovr101_386:
 push	106h
 
 ovr101_389:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 ovr101_38E:		; Increment by 1
 inc	sp
@@ -418559,7 +418559,7 @@ ovr101_398:
 push	5Dh ; ']'
 
 ovr101_39A:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 ovr101_39F:		; Add
 add	sp, 8
@@ -418824,7 +418824,7 @@ ovr101_4D6:
 push	si_skill
 push	di
 push	106h
-call	seg003_0272_48F4 ; Call	Procedure
+call	ClearScreenFar_seg003_0272_48F4 ; Call	Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -418835,7 +418835,7 @@ push	43h ; 'C'
 push	1Eh
 
 ovr101_4EA:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 ovr101_4EF:		; Add
 add	sp, 8
@@ -420275,7 +420275,7 @@ MaybePrintChargenQuestion_ovr101_983 endp
 
 ; Attributes: bp-based frame
 
-ovr101_BAF proc	far
+ChargenOptionClickSelect_ovr101_BAF proc	far
 
 var_14=	dword ptr -14h
 var_10=	word ptr -10h
@@ -420664,7 +420664,7 @@ pop	di
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr101_BAF endp
+ChargenOptionClickSelect_ovr101_BAF endp
 
 
 
@@ -421228,7 +421228,7 @@ push	word ptr [bp+ChargenHeaderRecord_arg_0]
 push	cs
 
 ovr101_FAA:		; Call Procedure
-call	near ptr ovr101_BAF
+call	near ptr ChargenOptionClickSelect_ovr101_BAF
 
 ovr101_FAD:		; Add
 add	sp, 6
@@ -421492,7 +421492,7 @@ mov	es:[bx+6Eh], ax	; ptr to var40
 
 ovr101_10AF:		; Call Procedure
 call	seg015_1D7C_D6
-call	seg003_0272_4B1B ; Call	Procedure
+call	FlushPaletteFar_seg003_0272_4B1B ; Call	Procedure
 call	seg015_1D7C_C0	; Call Procedure
 
 ovr101_10BE:		; default
@@ -421527,7 +421527,7 @@ call	GraphicsCall_seg003_0272_46E6
 push	106h
 
 ovr101_10E8:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -421538,7 +421538,7 @@ ovr101_10F2:
 push	8Eh ; 'é'
 push	0
 push	11h
-call	seg003_0272_4CF2 ; Call	Procedure
+call	SetDisplayPageFar_seg003_0272_4CF2 ; Call	Procedure
 
 ovr101_10FE:		; Add
 add	sp, 8
@@ -422221,7 +422221,7 @@ ovr101_149E:
 push	106h
 
 ovr101_14A1:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 inc	sp		; Increment by 1
 
 ovr101_14A7:		; Increment by 1
@@ -422236,7 +422236,7 @@ ovr101_14B0:
 push	11h
 
 ovr101_14B2:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 ovr101_14B7:		; Add
 add	sp, 8
@@ -422440,7 +422440,7 @@ ovr101_1590:
 push	106h
 
 ovr101_1593:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 inc	sp		; Increment by 1
 
 ovr101_1599:		; Increment by 1
@@ -422457,7 +422457,7 @@ ovr101_15A2:
 push	0A0h ; '†'
 
 ovr101_15A5:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 ovr101_15AA:		; Add
 add	sp, 8
@@ -423070,7 +423070,7 @@ StartNewGame_ovr101_1624 endp
 
 ; Attributes: bp-based frame
 
-ovr101_18AD proc far
+InitialiseAndStartNewGame_ovr101_18AD proc far
 
 var_2= byte ptr	-2
 var_1= byte ptr	-1
@@ -423105,13 +423105,13 @@ ovr101_18C6:
 mov	al, [bp+var_1]
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr101_18AD endp
+InitialiseAndStartNewGame_ovr101_18AD endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr101_18CB proc far
+UseObjectOnSlotIfValid_ovr101_18CB proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -423141,7 +423141,7 @@ pop	bp
 
 ovr101_18E8:		; Return Far from Procedure
 retf
-ovr101_18CB endp
+UseObjectOnSlotIfValid_ovr101_18CB endp
 
 ovr101 ends
 
@@ -424080,7 +424080,7 @@ TalkTo_ovr103_0	endp
 
 ; Attributes: bp-based frame
 
-ovr103_1A5 proc	far
+AdvancePortraitDataPointer_ovr103_1A5 proc	far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -424113,7 +424113,7 @@ mov	ax, [bp+var_4]
 ovr103_1C5:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr103_1A5 endp
+AdvancePortraitDataPointer_ovr103_1A5 endp
 
 
 
@@ -424186,7 +424186,7 @@ ovr103_1F6:
 mov	[bp+DidArtLoad_var_2], 0
 
 ovr103_1FA:		; Call Procedure
-call	seg000_330
+call	ProcessDirtyRegions_seg000_330
 
 ovr103_1FF:		; Call Procedure
 call	seg042_35ED_176
@@ -424636,7 +424636,7 @@ add	sp, 8
 
 ovr103_450:
 push	106h
-call	seg003_0272_48F4 ; Call	Procedure
+call	ClearScreenFar_seg003_0272_48F4 ; Call	Procedure
 
 ovr103_458:		; Increment by 1
 inc	sp
@@ -424651,7 +424651,7 @@ push	43h ; 'C'       ; 67d
 push	0F8h ; '¯'      ; 248d
 
 ovr103_464:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 ovr103_469:		; Add
 add	sp, 8
@@ -424813,14 +424813,14 @@ EndConversationMode_ovr103_4C8 endp ; sp = -6
 
 ; Attributes: bp-based frame
 
-ovr103_537 proc	far
+DoNothing_ovr103_537 proc	far
 push	bp
 
 ovr103_538:
 mov	bp, sp
 pop	bp
 retf			; Return Far from Procedure
-ovr103_537 endp
+DoNothing_ovr103_537 endp
 
 
 
@@ -425480,7 +425480,7 @@ InitConversation_ovr103_53C endp
 
 ; Attributes: bp-based frame
 
-ovr103_94A proc	far
+ConversationMenuInputLoop_ovr103_94A proc	far
 
 String_arg_0= word ptr -0A2h
 var_A0=	byte ptr -0A0h
@@ -425637,7 +425637,7 @@ jmp	ovr103_954	; Jump
 ovr103_A11:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr103_94A endp
+ConversationMenuInputLoop_ovr103_94A endp
 
 
 
@@ -425998,7 +425998,7 @@ mov	dseg_67d6_982, 1
 push	cs
 
 ovr103_BE8:		; Call Procedure
-call	near ptr ovr103_94A
+call	near ptr ConversationMenuInputLoop_ovr103_94A
 mov	ax, SelectedConversationOption_dseg_67d6_486C
 pop	di_count
 pop	si
@@ -426402,7 +426402,7 @@ mov	dseg_67d6_982, 1
 push	cs
 
 ovr103_E05:		; Call Procedure
-call	near ptr ovr103_94A
+call	near ptr ConversationMenuInputLoop_ovr103_94A
 mov	bx, SelectedConversationOption_dseg_67d6_486C
 
 ovr103_E0C:		; Shift	Logical	Left
@@ -429168,14 +429168,14 @@ jz	short ovr103_1B8E ; Jump if Zero (ZF=1)
 
 ovr103_1B51:
 push	1
-call	seg003_0272_48F4 ; Call	Procedure
+call	ClearScreenFar_seg003_0272_48F4 ; Call	Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 push	7Ch ; '|'
 push	98h ; 'ò'
 push	81h ; 'Å'
 push	47h ; 'G'
-call	seg003_0272_4D3C ; Call	Procedure
+call	InitDisplayFar_seg003_0272_4D3C ; Call	Procedure
 
 ovr103_1B69:		; Add
 add	sp, 8
@@ -429274,7 +429274,7 @@ LoadCrittersObjectsDat_ovr104_0	endp
 
 ; Attributes: bp-based frame
 
-ovr104_17 proc far
+ReadCrittersObjectsDatFromFile_ovr104_17 proc far
 
 arg_0= word ptr	 6
 
@@ -429306,7 +429306,7 @@ pop	bp
 
 ovr104_2D:		; Return Far from Procedure
 retf
-ovr104_17 endp
+ReadCrittersObjectsDatFromFile_ovr104_17 endp
 
 
 
@@ -436858,7 +436858,7 @@ ovr108_16B:
 push	AudioFileHandle_dseg_67d6_590E
 
 ovr108_16F:		; Call Procedure
-call	seg005_105F_17BB
+call	IsAtEndOfFile_seg005_105F_17BB
 inc	sp		; Increment by 1
 
 ovr108_175:		; Increment by 1
@@ -437231,7 +437231,7 @@ PlayCutsceneAudio_ovr108_0 endp
 
 ; Attributes: bp-based frame
 
-ovr108_32F proc	far
+PumpAudioBuffers_ovr108_32F proc	far
 
 var_C= word ptr	-0Ch
 var_A= word ptr	-0Ah
@@ -437756,13 +437756,13 @@ leave			; High Level Procedure Exit
 
 ovr108_5A7:		; Return Far from Procedure
 retf
-ovr108_32F endp
+PumpAudioBuffers_ovr108_32F endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_5A8 proc	far
+IsAudioPlaybackDone_ovr108_5A8 proc	far
 push	bp
 mov	bp, sp
 push	si
@@ -437825,13 +437825,13 @@ pop	di
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr108_5A8 endp
+IsAudioPlaybackDone_ovr108_5A8 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_5F7 proc	far
+StopAudioPlayback_ovr108_5F7 proc	far
 push	bp
 mov	bp, sp
 
@@ -437844,14 +437844,14 @@ inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 pop	bp
 retf			; Return Far from Procedure
-ovr108_5F7 endp	; sp = -2
+StopAudioPlayback_ovr108_5F7 endp	; sp = -2
 
 
 
 ; always sets ax to 3
 ; Attributes: bp-based frame
 
-ovr108_613 proc	far
+InitAnimationPageCount_ovr108_613 proc	far
 push	bp
 mov	bp, sp
 call	seg042_35ED_12B	; Call Procedure
@@ -437859,13 +437859,13 @@ mov	ax, 3
 mov	dseg_67d6_5912,	ax
 pop	bp
 retf			; Return Far from Procedure
-ovr108_613 endp
+InitAnimationPageCount_ovr108_613 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_623 proc	far
+GetAnimationPageBuffer_ovr108_623 proc	far
 
 arg_0= word ptr	 6
 
@@ -437921,13 +437921,13 @@ pop	bp
 
 ovr108_666:		; Return Far from Procedure
 retf
-ovr108_623 endp
+GetAnimationPageBuffer_ovr108_623 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_667 proc	far
+SyncAnimationState_ovr108_667 proc	far
 push	bp
 
 ovr108_668:
@@ -437935,13 +437935,13 @@ mov	bp, sp
 call	seg042_35ED_12B	; Call Procedure
 pop	bp
 retf			; Return Far from Procedure
-ovr108_667 endp
+SyncAnimationState_ovr108_667 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_671 proc	far
+UnpackBytesFromWord_ovr108_671 proc	far
 
 var_2= word ptr	-2
 arg_0= word ptr	 6
@@ -437986,13 +437986,13 @@ mov	ax, si
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr108_671 endp
+UnpackBytesFromWord_ovr108_671 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_6AD proc	far
+BubbleSortByKey_ovr108_6AD proc	far
 
 var_3= byte ptr	-3
 var_2= word ptr	-2
@@ -438133,13 +438133,13 @@ leave			; High Level Procedure Exit
 
 ovr108_750:		; Return Far from Procedure
 retf
-ovr108_6AD endp
+BubbleSortByKey_ovr108_6AD endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_751 proc	far
+ReadAnimationHeader_ovr108_751 proc	far
 
 ActualFileSize_var_4= word ptr -4
 TargetFileSize_var_2= word ptr -2
@@ -438244,13 +438244,13 @@ leave			; High Level Procedure Exit
 
 ovr108_7BE:		; Return Far from Procedure
 retf
-ovr108_751 endp
+ReadAnimationHeader_ovr108_751 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_7BF proc	far
+SeekAndReadFrameData_ovr108_7BF proc	far
 
 arg_0= word ptr	 6
 arg_2= dword ptr  8
@@ -438330,13 +438330,13 @@ pop	di
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr108_7BF endp
+SeekAndReadFrameData_ovr108_7BF endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_819 proc	far
+ReadFrameDataChunk_ovr108_819 proc	far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -438476,13 +438476,13 @@ pop	di
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr108_819 endp
+ReadFrameDataChunk_ovr108_819 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_8C8 proc	far
+ConvertPaletteToVGA_ovr108_8C8 proc	far
 
 var_8= dword ptr -8
 var_4= dword ptr -4
@@ -438574,13 +438574,13 @@ jl	short ovr108_8EB
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr108_8C8 endp
+ConvertPaletteToVGA_ovr108_8C8 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_934 proc	far
+UpdatePaletteFadeTimers_ovr108_934 proc	far
 
 var_2= byte ptr	-2
 var_1= byte ptr	-1
@@ -438689,7 +438689,7 @@ mov	al, es:[bx+6]
 push	ax
 
 ovr108_9B6:		; Call Procedure
-call	seg023_9
+call	RotatePaletteEntry_seg023_9
 
 ovr108_9BB:		; Add
 add	sp, 6
@@ -438751,7 +438751,7 @@ pop	di
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr108_934 endp
+UpdatePaletteFadeTimers_ovr108_934 endp
 
 
 
@@ -438814,20 +438814,20 @@ ovr108_A3C:
 push	cs
 
 ovr108_A3D:		; Call Procedure
-call	near ptr ovr108_5F7
+call	near ptr StopAudioPlayback_ovr108_5F7
 
 ovr108_A40:		; Jump
 jmp	short ovr108_A50
 
 ovr108_A42:
 push	cs
-call	near ptr ovr108_32F ; Call Procedure
+call	near ptr PumpAudioBuffers_ovr108_32F ; Call Procedure
 
 ovr108_A46:
 push	cs
 
 ovr108_A47:		; Call Procedure
-call	near ptr ovr108_5A8
+call	near ptr IsAudioPlaybackDone_ovr108_5A8
 mov	ah, 0
 or	ax, ax		; Logical Inclusive OR
 jz	short ovr108_A25 ; Jump	if Zero	(ZF=1)
@@ -438842,7 +438842,7 @@ Cutscene_27_UNK_ovr108_9FE endp
 
 ; Attributes: bp-based frame
 
-ovr108_A55 proc	far
+DrawCutsceneForeground_ovr108_A55 proc	far
 
 arg_0= word ptr	 6
 
@@ -438855,7 +438855,7 @@ mov	si, [bp+arg_0]
 push	0F0h ; ''
 
 ovr108_A5F:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 push	0
@@ -438864,7 +438864,7 @@ push	CutsRelated_dseg_67d6_107C
 push	0
 
 ovr108_A71:		; Call Procedure
-call	seg003_0272_4D3C
+call	InitDisplayFar_seg003_0272_4D3C
 
 ovr108_A76:		; Add
 add	sp, 8
@@ -438906,7 +438906,7 @@ ovr108_AA9:
 push	si
 nop			; No Operation
 push	cs
-call	near ptr ovr108_14DF ; Call Procedure
+call	near ptr HandleCutsceneInput_ovr108_14DF ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -438922,13 +438922,13 @@ ovr108_AC3:
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr108_A55 endp	; sp = -4
+DrawCutsceneForeground_ovr108_A55 endp	; sp = -4
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_AC6 proc	far
+DrawCutsceneBackground_ovr108_AC6 proc	far
 
 CutsFilenameAndData_arg_0= word	ptr  6
 
@@ -438973,7 +438973,7 @@ nop			; No Operation
 push	cs
 
 ovr108_B00:		; Call Procedure
-call	near ptr ovr108_14DF
+call	near ptr HandleCutsceneInput_ovr108_14DF
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 and	byte ptr [si_cutsfiledata+5Bh],	0FDh ; Logical AND
@@ -438989,7 +438989,7 @@ ovr108_B17:
 pop	si_cutsfiledata
 pop	bp
 retf			; Return Far from Procedure
-ovr108_AC6 endp	; sp = -2
+DrawCutsceneBackground_ovr108_AC6 endp	; sp = -2
 
 
 
@@ -439007,14 +439007,14 @@ mov	si, [bp+CutsFilenameAndData_arg_0]
 
 ovr108_B21:
 push	1Bh
-call	seg003_0272_48F4 ; Call	Procedure
+call	ClearScreenFar_seg003_0272_48F4 ; Call	Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 push	0
 push	13Fh
 push	CutsRelated_dseg_67d6_107C
 push	0
-call	seg003_0272_4D3C ; Call	Procedure
+call	InitDisplayFar_seg003_0272_4D3C ; Call	Procedure
 add	sp, 8		; Add
 mov	al, [si+5Bh]
 and	ax, 1		; Logical AND
@@ -439028,7 +439028,7 @@ ovr108_B4E:
 push	cs
 
 ovr108_B4F:		; Call Procedure
-call	near ptr ovr108_A55
+call	near ptr DrawCutsceneForeground_ovr108_A55
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 jmp	short ovr108_B6A ; Jump
@@ -439079,7 +439079,7 @@ jle	short ovr108_B8B
 ovr108_B84:		;  when	[si+49h] >=0
 push	si
 push	cs
-call	near ptr ovr108_AC6 ; Call Procedure
+call	near ptr DrawCutsceneBackground_ovr108_AC6 ; Call Procedure
 inc	sp		; Increment by 1
 
 ovr108_B8A:		; Increment by 1
@@ -439095,7 +439095,7 @@ FadingRelated_ovr108_B6D endp ;	sp = -2
 
 ; Attributes: bp-based frame
 
-ovr108_B8E proc	far
+AnimateViewportScroll_ovr108_B8E proc	far
 
 arg_0= word ptr	 6
 
@@ -439154,7 +439154,7 @@ ovr108_BD7:
 push	dseg_67d6_1078
 
 ovr108_BDB:		; Call Procedure
-call	seg003_0272_4A7F
+call	SetViewportFar_seg003_0272_4A7F
 
 ovr108_BE0:		; Add
 add	sp, 4
@@ -439164,7 +439164,7 @@ pop	bp
 
 ovr108_BE8:		; Return Far from Procedure
 retf
-ovr108_B8E endp
+AnimateViewportScroll_ovr108_B8E endp
 
 
 
@@ -440482,7 +440482,7 @@ nop			; No Operation
 push	cs
 
 ovr108_1182:		; Call Procedure
-call	near ptr ovr108_3191
+call	near ptr RegisterTimerCallback_ovr108_3191
 
 ovr108_1185:		; Add
 add	sp, 8
@@ -440626,7 +440626,7 @@ push	offset stub108_133
 ovr108_1244:		; No Operation
 nop
 push	cs
-call	near ptr ovr108_3191 ; Call Procedure
+call	near ptr RegisterTimerCallback_ovr108_3191 ; Call Procedure
 add	sp, 8		; Add
 mov	[bp+var_2], ax
 
@@ -440673,7 +440673,7 @@ jnz	short ovr108_12B7 ; Jump if Not	Zero (ZF=0)
 push	[bp+var_2]
 nop			; No Operation
 push	cs
-call	near ptr ovr108_32B5 ; Call Procedure
+call	near ptr ClearTimerCallback_ovr108_32B5 ; Call Procedure
 inc	sp		; Increment by 1
 
 ovr108_12B4:		; Increment by 1
@@ -440747,7 +440747,7 @@ push	word ptr es:[bx+2]
 push	word ptr es:[bx]
 nop			; No Operation
 push	cs
-call	near ptr ovr108_33A8 ; Call Procedure
+call	near ptr SetCutsceneDisplayParams_ovr108_33A8 ; Call Procedure
 add	sp, 6		; Add
 les	bx, [bp+arg_0]	; Load Full Pointer to ES:xx
 cmp	word ptr es:[bx], 140h ; 320d
@@ -440829,7 +440829,7 @@ ovr108_1355:
 push	word ptr es:[bx]
 
 ovr108_1358:		; Call Procedure
-call	seg003_0272_4A7F
+call	SetViewportFar_seg003_0272_4A7F
 add	sp, 4		; Add
 les	bx, [bp+arg_0]	; Load Full Pointer to ES:xx
 
@@ -440936,20 +440936,20 @@ Cutscene_23_Unk_ovr108_1393 endp
 
 ; Attributes: bp-based frame
 
-ovr108_13CD proc far
+PumpAudioWrapper_ovr108_13CD proc far
 push	bp
 mov	bp, sp
 push	cs
-call	near ptr ovr108_32F ; Call Procedure
+call	near ptr PumpAudioBuffers_ovr108_32F ; Call Procedure
 pop	bp
 retf			; Return Far from Procedure
-ovr108_13CD endp
+PumpAudioWrapper_ovr108_13CD endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_13D6 proc far
+UpdateCutsceneAudioState_ovr108_13D6 proc far
 
 arg_0= word ptr	 6
 
@@ -440973,9 +440973,9 @@ ovr108_13EF:		; Compare Two Operands
 cmp	word ptr [si_arg0+45h],	0FFFFh
 jz	short ovr108_140A ; Jump if Zero (ZF=1)
 push	cs
-call	near ptr ovr108_32F ; Call Procedure
+call	near ptr PumpAudioBuffers_ovr108_32F ; Call Procedure
 push	cs
-call	near ptr ovr108_5A8 ; Call Procedure
+call	near ptr IsAudioPlaybackDone_ovr108_5A8 ; Call Procedure
 
 ovr108_13FD:		; Logical Inclusive OR
 or	al, al
@@ -440989,13 +440989,13 @@ ovr108_140A:
 pop	si_arg0
 pop	bp
 retf			; Return Far from Procedure
-ovr108_13D6 endp
+UpdateCutsceneAudioState_ovr108_13D6 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_140D proc far
+ResetCutsceneDataState_ovr108_140D proc far
 
 CutsceneFileName_arg_0=	word ptr  6
 
@@ -441068,7 +441068,7 @@ mov	ax, si_filename
 pop	si_filename
 pop	bp
 retf			; Return Far from Procedure
-ovr108_140D endp
+ResetCutsceneDataState_ovr108_140D endp
 
 
 
@@ -441162,7 +441162,7 @@ GetCutsceneFileName_ovr108_148C	endp
 
 ; Attributes: bp-based frame
 
-ovr108_14DF proc far
+HandleCutsceneInput_ovr108_14DF proc far
 
 var_2= word ptr	-2
 CutsFilenameAndData_arg_0= word	ptr  6
@@ -441262,7 +441262,7 @@ ovr108_1543:
 push	cs
 
 ovr108_1544:		; Call Procedure
-call	near ptr ovr108_5F7
+call	near ptr StopAudioPlayback_ovr108_5F7
 
 ovr108_1547:		; Logical Inclusive OR
 or	byte ptr [si_cutsfiledata+5Bh],	2
@@ -441312,13 +441312,13 @@ pop	si_cutsfiledata
 ovr108_1579:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr108_14DF endp
+HandleCutsceneInput_ovr108_14DF endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_157B proc far
+RenderCutsceneText_ovr108_157B proc far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -441342,7 +441342,7 @@ ovr108_1588:
 push	0F0h ; ''
 
 ovr108_158B:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 ovr108_1590:		; Increment by 1
 inc	sp
@@ -441359,7 +441359,7 @@ ovr108_159B:
 push	0
 
 ovr108_159D:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 ovr108_15A2:		; Add
 add	sp, 8
@@ -441475,13 +441475,13 @@ pop	di
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr108_157B endp
+RenderCutsceneText_ovr108_157B endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_162B proc far
+AdvanceCutsceneFrame_ovr108_162B proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -441502,13 +441502,13 @@ ovr108_1634:
 push	[bp+arg_4]
 push	ax
 push	cs
-call	near ptr ovr108_934 ; Call Procedure
+call	near ptr UpdatePaletteFadeTimers_ovr108_934 ; Call Procedure
 add	sp, 4		; Add
 
 ovr108_163F:
 push	[bp+arg_0]
 push	cs
-call	near ptr ovr108_13D6 ; Call Procedure
+call	near ptr UpdateCutsceneAudioState_ovr108_13D6 ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -441546,7 +441546,7 @@ mov	es:seg049_3EE2_32, ax
 push	0
 nop			; No Operation
 push	cs
-call	near ptr ovr108_2FF0 ; Call Procedure
+call	near ptr UpdateTimerCallbacks_ovr108_2FF0 ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -441554,13 +441554,13 @@ ovr108_168F:		; Logical Exclusive OR
 xor	ax, ax
 pop	bp
 retf			; Return Far from Procedure
-ovr108_162B endp ; sp =	-4
+AdvanceCutsceneFrame_ovr108_162B endp ; sp =	-4
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_1693 proc far
+RunCutscenePlaybackLoop_ovr108_1693 proc far
 
 var_8= word ptr	-8
 var_6= word ptr	-6
@@ -441612,7 +441612,7 @@ push	si
 
 ovr108_16DC:
 push	cs
-call	near ptr ovr108_14DF ; Call Procedure
+call	near ptr HandleCutsceneInput_ovr108_14DF ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 mov	di, ax
@@ -441643,7 +441643,7 @@ ovr108_1709:
 push	cs
 
 ovr108_170A:		; Call Procedure
-call	near ptr ovr108_162B
+call	near ptr AdvanceCutsceneFrame_ovr108_162B
 add	sp, 6		; Add
 
 ovr108_1710:		; Compare Two Operands
@@ -441703,7 +441703,7 @@ leave			; High Level Procedure Exit
 
 ovr108_175E:		; Return Far from Procedure
 retf
-ovr108_1693 endp
+RunCutscenePlaybackLoop_ovr108_1693 endp
 
 
 
@@ -443715,7 +443715,7 @@ DRAW_RELATED_ovr108_189F endp
 
 ; Attributes: bp-based frame
 
-ovr108_2359 proc far
+RenderCutsceneAnimFrames_ovr108_2359 proc far
 
 var_24=	word ptr -24h
 var_22=	dword ptr -22h
@@ -443763,7 +443763,7 @@ mov	ax, seg	seg049_3EE2
 mov	es, ax
 push	es:seg049_3EE2_8
 push	cs
-call	near ptr ovr108_623 ; Call Procedure
+call	near ptr GetAnimationPageBuffer_ovr108_623 ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 mov	[bp+var_4], ax
@@ -443913,7 +443913,7 @@ mov	es, ax
 assume es:seg049_3EE2
 push	es:seg049_3EE2_8
 push	cs
-call	near ptr ovr108_623 ; Call Procedure
+call	near ptr GetAnimationPageBuffer_ovr108_623 ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 mov	[bp+var_4], ax
@@ -443964,7 +443964,7 @@ cmp	word ptr [si_arg0+59h],	0 ; Compare Two	Operands
 jz	short ovr108_24F5 ; Jump if Zero (ZF=1)
 push	si_arg0
 push	cs
-call	near ptr ovr108_B8E ; Call Procedure
+call	near ptr AnimateViewportScroll_ovr108_B8E ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -444215,7 +444215,7 @@ mov	es, ax
 ovr108_268D:
 push	es:seg049_3EE2_10
 push	cs
-call	near ptr ovr108_623 ; Call Procedure
+call	near ptr GetAnimationPageBuffer_ovr108_623 ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 mov	[bp+var_8], ax
@@ -444277,7 +444277,7 @@ mov	al, es:[bx]
 mov	ah, 0
 push	ax
 push	cs
-call	near ptr ovr108_819 ; Call Procedure
+call	near ptr ReadFrameDataChunk_ovr108_819 ; Call Procedure
 add	sp, 0Ch		; Add
 
 ovr108_26FB:
@@ -444295,7 +444295,7 @@ push	word ptr [bp+arg_2+2]
 push	word ptr [bp+arg_2]
 push	si_arg0
 push	cs
-call	near ptr ovr108_162B ; Call Procedure
+call	near ptr AdvanceCutsceneFrame_ovr108_162B ; Call Procedure
 
 ovr108_2710:		; Add
 add	sp, 6
@@ -444303,7 +444303,7 @@ push	si_arg0
 push	cs
 
 ovr108_2715:		; Call Procedure
-call	near ptr ovr108_14DF
+call	near ptr HandleCutsceneInput_ovr108_14DF
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 cmp	word ptr [si_arg0+41h],	0 ; Compare Two	Operands
@@ -444336,13 +444336,13 @@ push	word ptr [bp+arg_2+2]
 push	word ptr [bp+arg_2]
 push	si_arg0
 push	cs
-call	near ptr ovr108_162B ; Call Procedure
+call	near ptr AdvanceCutsceneFrame_ovr108_162B ; Call Procedure
 
 ovr108_274F:		; Add
 add	sp, 6
 push	si_arg0
 push	cs
-call	near ptr ovr108_14DF ; Call Procedure
+call	near ptr HandleCutsceneInput_ovr108_14DF ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -444405,7 +444405,7 @@ push	si_arg0
 push	cs
 
 ovr108_27BD:		; Call Procedure
-call	near ptr ovr108_157B
+call	near ptr RenderCutsceneText_ovr108_157B
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 mov	word ptr [si_arg0+39h],	0
@@ -444435,7 +444435,7 @@ push	word ptr [bp+arg_2]
 ovr108_27EC:
 push	si_arg0
 push	cs
-call	near ptr ovr108_1693 ; Call Procedure
+call	near ptr RunCutscenePlaybackLoop_ovr108_1693 ; Call Procedure
 add	sp, 6		; Add
 
 ovr108_27F4:
@@ -444530,7 +444530,7 @@ pop	di
 pop	si_arg0
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr108_2359 endp
+RenderCutsceneAnimFrames_ovr108_2359 endp
 
 
 
@@ -444592,7 +444592,7 @@ InitCutsceneFlags_ovr108_287B endp
 
 ; Attributes: bp-based frame
 
-ovr108_28C7 proc far
+LoadAndPlayCutsceneFile_ovr108_28C7 proc far
 
 var_12=	word ptr -12h
 var_10=	word ptr -10h
@@ -444621,7 +444621,7 @@ ovr108_28D7:
 push	1
 nop			; No Operation
 push	cs
-call	near ptr ovr108_2FF0 ; Call Procedure
+call	near ptr UpdateTimerCallbacks_ovr108_2FF0 ; Call Procedure
 
 ovr108_28DE:		; Increment by 1
 inc	sp
@@ -444742,7 +444742,7 @@ ovr108_296B:
 push	cs
 
 ovr108_296C:		; Call Procedure
-call	near ptr ovr108_751
+call	near ptr ReadAnimationHeader_ovr108_751
 
 ovr108_296F:		; Add
 add	sp, 4
@@ -444782,7 +444782,7 @@ push	ax
 push	cs
 
 ovr108_2996:		; Call Procedure
-call	near ptr ovr108_8C8
+call	near ptr ConvertPaletteToVGA_ovr108_8C8
 add	sp, 8		; Add
 
 ovr108_299C:
@@ -444810,7 +444810,7 @@ push	[bp+var_10]
 
 ovr108_29B8:
 push	cs
-call	near ptr ovr108_6AD ; Call Procedure
+call	near ptr BubbleSortByKey_ovr108_6AD ; Call Procedure
 
 ovr108_29BC:		; Add
 add	sp, 0Ah
@@ -444831,7 +444831,7 @@ ovr108_29CA:
 push	cs
 
 ovr108_29CB:		; Call Procedure
-call	near ptr ovr108_623
+call	near ptr GetAnimationPageBuffer_ovr108_623
 
 ovr108_29CE:		; Increment by 1
 inc	sp
@@ -444917,7 +444917,7 @@ ovr108_2A11:
 push	cs
 
 ovr108_2A12:		; Call Procedure
-call	near ptr ovr108_7BF
+call	near ptr SeekAndReadFrameData_ovr108_7BF
 
 ovr108_2A15:		; Add
 add	sp, 0Ah
@@ -445055,7 +445055,7 @@ push	si_filename
 push	cs
 
 ovr108_2AB7:		; Call Procedure
-call	near ptr ovr108_2359
+call	near ptr RenderCutsceneAnimFrames_ovr108_2359
 add	sp, 0Ah		; Add
 mov	[bp+var_12], ax
 
@@ -445167,7 +445167,7 @@ pop	di
 pop	si_filename
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr108_28C7 endp
+LoadAndPlayCutsceneFile_ovr108_28C7 endp
 
 
 
@@ -445204,7 +445204,7 @@ push	si_cutsNo
 mov	si_cutsNo, [bp+CutsNo_arg_0]
 push	0
 push	cs
-call	near ptr ovr108_14DF ; Call Procedure
+call	near ptr HandleCutsceneInput_ovr108_14DF ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 mov	dseg_67d6_1078,	0
@@ -445283,7 +445283,7 @@ mov	es:seg049_3EE2_24, 0
 ovr108_2C15:
 mov	es:seg049_3EE2_26, ax
 push	cs
-call	near ptr ovr108_613 ; always sets ax to	3
+call	near ptr InitAnimationPageCount_ovr108_613 ; always sets ax to	3
 cmp	ax, 3		; Compare Two Operands
 jge	short ovr108_2C25 ; jump when ax>=3 (this will always happen!)
 jmp	ovr108_2D90	; Jump
@@ -445370,7 +445370,7 @@ mov	word ptr es:CutsceneCodePtr_seg049_3EE2_1C+2, ax
 lea	ax, [bp+CutsceneFileNameAndData_var_60]	; Load Effective Address
 push	ax
 push	cs
-call	near ptr ovr108_140D ; Call Procedure
+call	near ptr ResetCutsceneDataState_ovr108_140D ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 push	300h
@@ -445433,12 +445433,12 @@ ovr108_2D03:		; Load Effective Address
 lea	ax, [bp+CutsceneFileNameAndData_var_60]
 push	ax
 push	cs
-call	near ptr ovr108_28C7 ; Call Procedure
+call	near ptr LoadAndPlayCutsceneFile_ovr108_28C7 ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 nop			; No Operation
 push	cs
-call	near ptr ovr108_3148 ; Call Procedure
+call	near ptr FlushAllTimerCallbacks_ovr108_3148 ; Call Procedure
 
 ovr108_2D12:
 mov	al, [bp+var_5]
@@ -445453,7 +445453,7 @@ cmp	[bp+var_1B], 0FFFFh
 ovr108_2D23:		; Jump if Zero (ZF=1)
 jz	short ovr108_2D29
 push	cs
-call	near ptr ovr108_5F7 ; Call Procedure
+call	near ptr StopAudioPlayback_ovr108_5F7 ; Call Procedure
 
 ovr108_2D29:		; Compare Two Operands
 cmp	[bp+var_45], 0
@@ -445486,13 +445486,13 @@ push	0C8h ; '»'
 push	140h
 nop			; No Operation
 push	cs
-call	near ptr ovr108_33A8 ; Call Procedure
+call	near ptr SetCutsceneDisplayParams_ovr108_33A8 ; Call Procedure
 add	sp, 6		; Add
 
 ovr108_2D62:
 push	0C7h ; '«'
 push	0
-call	seg003_0272_4A7F ; Call	Procedure
+call	SetViewportFar_seg003_0272_4A7F ; Call	Procedure
 add	sp, 4		; Add
 
 ovr108_2D6F:
@@ -445510,7 +445510,7 @@ call	j_DrawBitMap_ovr118_E2
 
 ovr108_2D8C:
 push	cs
-call	near ptr ovr108_667 ; Call Procedure
+call	near ptr SyncAnimationState_ovr108_667 ; Call Procedure
 
 ovr108_2D90:		; Call Procedure
 call	seg016_1E73_2FBA
@@ -445560,7 +445560,7 @@ mov	si_CutsNo, [bp+CutsceneNo_arg_0]
 mov	dseg_67d6_5CF4,	si_CutsNo
 call	seg016_1E73_284	; Call Procedure
 push	cs
-call	near ptr ovr108_5F7 ; Call Procedure
+call	near ptr StopAudioPlayback_ovr108_5F7 ; Call Procedure
 
 ovr108_2DDD:		; Compare Two Operands
 cmp	si_CutsNo, 100h
@@ -445927,7 +445927,7 @@ OpenCutsFile_ovr108_2EAC endp
 
 ; Attributes: bp-based frame
 
-ovr108_2FF0 proc far
+UpdateTimerCallbacks_ovr108_2FF0 proc far
 
 var_6= word ptr	-6
 var_4= word ptr	-4
@@ -446124,7 +446124,7 @@ add	sp, 4
 push	si
 nop			; No Operation
 push	cs
-call	near ptr ovr108_32B5 ; Call Procedure
+call	near ptr ClearTimerCallback_ovr108_32B5 ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 jmp	short ovr108_3144 ; Jump
@@ -446163,13 +446163,13 @@ pop	di
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr108_2FF0 endp
+UpdateTimerCallbacks_ovr108_2FF0 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_3148 proc far
+FlushAllTimerCallbacks_ovr108_3148 proc far
 push	bp
 mov	bp, sp
 push	si
@@ -446184,7 +446184,7 @@ nop			; No Operation
 push	cs
 
 ovr108_3153:		; Call Procedure
-call	near ptr ovr108_3161
+call	near ptr FireAndClearTimerCallback_ovr108_3161
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 inc	si		; Increment by 1
@@ -446197,13 +446197,13 @@ jl	short ovr108_3150
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr108_3148 endp ; sp =	-2
+FlushAllTimerCallbacks_ovr108_3148 endp ; sp =	-2
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_3161 proc far
+FireAndClearTimerCallback_ovr108_3161 proc far
 
 arg_0= word ptr	 6
 
@@ -446231,7 +446231,7 @@ add	sp, 4		; Add
 push	si
 nop			; No Operation
 push	cs
-call	near ptr ovr108_32B5 ; Call Procedure
+call	near ptr ClearTimerCallback_ovr108_32B5 ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -446239,13 +446239,13 @@ ovr108_318E:
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr108_3161 endp ; sp =	-2
+FireAndClearTimerCallback_ovr108_3161 endp ; sp =	-2
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_3191 proc far
+RegisterTimerCallback_ovr108_3191 proc far
 
 CodeToRun_arg_0= word ptr  6
 arg_2= word ptr	 8
@@ -446316,13 +446316,13 @@ pop	si
 ovr108_31FE:
 pop	bp
 retf			; Return Far from Procedure
-ovr108_3191 endp
+RegisterTimerCallback_ovr108_3191 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_3200 proc far
+SwapTimerCallbackState_ovr108_3200 proc far
 
 arg_0= word ptr	 6
 
@@ -446355,13 +446355,13 @@ mov	dseg_67d6_5994[bx], dx
 mov	dseg_67d6_5996[bx], ax
 pop	bp
 retf			; Return Far from Procedure
-ovr108_3200 endp
+SwapTimerCallbackState_ovr108_3200 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_3241 proc far
+ApplyTimerPaletteTransition_ovr108_3241 proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -446423,20 +446423,20 @@ push	word ptr [bx+5914h]
 ovr108_32AA:		; No Operation
 nop
 push	cs
-call	near ptr ovr108_32CC ; Call Procedure
+call	near ptr InterpolatePaletteRange_ovr108_32CC ; Call Procedure
 add	sp, 0Ch		; Add
 pop	si
 pop	bp
 
 ovr108_32B4:		; Return Far from Procedure
 retf
-ovr108_3241 endp
+ApplyTimerPaletteTransition_ovr108_3241 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_32B5 proc far
+ClearTimerCallback_ovr108_32B5 proc far
 
 arg_0= word ptr	 6
 
@@ -446452,13 +446452,13 @@ ovr108_32C4:
 mov	word ptr [bx+58CEh], 0
 pop	bp
 retf			; Return Far from Procedure
-ovr108_32B5 endp
+ClearTimerCallback_ovr108_32B5 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_32CC proc far
+InterpolatePaletteRange_ovr108_32CC proc far
 
 var_2= word ptr	-2
 arg_0= word ptr	 6
@@ -446537,13 +446537,13 @@ ovr108_3330:
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr108_32CC endp
+InterpolatePaletteRange_ovr108_32CC endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_3333 proc far
+UpdateViewportFromTimer_ovr108_3333 proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -446604,19 +446604,19 @@ add	dx, ax		; Add
 mov	dseg_67d6_107A,	dx
 push	dseg_67d6_107A
 push	dseg_67d6_1078
-call	seg003_0272_4A7F ; Call	Procedure
+call	SetViewportFar_seg003_0272_4A7F ; Call	Procedure
 add	sp, 4		; Add
 pop	di
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr108_3333 endp
+UpdateViewportFromTimer_ovr108_3333 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr108_33A8 proc far
+SetCutsceneDisplayParams_ovr108_33A8 proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -446641,14 +446641,14 @@ mov	CutsRelated_dseg_67d6_107C, ax
 push	CutsRelated_dseg_67d6_107C
 push	[bp+arg_2]
 push	[bp+arg_0]
-call	seg003_0272_4A3A ; Call	Procedure
+call	SetPixelFar_seg003_0272_4A3A ; Call	Procedure
 add	sp, 6		; Add
 
 ovr108_33DB:
 mov	ax, 1
 pop	bp
 retf			; Return Far from Procedure
-ovr108_33A8 endp
+SetCutsceneDisplayParams_ovr108_33A8 endp
 
 
 
@@ -446747,7 +446747,7 @@ mov	ax, [bp+arg_2]
 mov	[bp+Height_var_8], ax
 push	[bp+Height_var_8]
 push	[bp+var_6]
-call	seg003_0272_4A7F ; Call	Procedure
+call	SetViewportFar_seg003_0272_4A7F ; Call	Procedure
 
 ovr108_346E:		; Add
 add	sp, 4
@@ -446808,7 +446808,7 @@ mov	ax, [bp+arg_2]
 mov	[bp+Height_var_8], ax
 push	[bp+Height_var_8]
 push	[bp+var_6]
-call	seg003_0272_4A7F ; Call	Procedure
+call	SetViewportFar_seg003_0272_4A7F ; Call	Procedure
 add	sp, 4		; Add
 mov	[bp+Y_var_A], 0
 mov	[bp+Height_var_C], 0C7h	; '«'
@@ -446880,7 +446880,7 @@ sub	dx, ax		; Integer Subtraction
 mov	[bp+Height_var_8], dx
 push	[bp+Height_var_8]
 push	[bp+var_6]
-call	seg003_0272_4A7F ; Call	Procedure
+call	SetViewportFar_seg003_0272_4A7F ; Call	Procedure
 add	sp, 4		; Add
 
 ovr108_3574:
@@ -446953,7 +446953,7 @@ assume es:seg048MaybeGraphics
 mov	es:seg048MaybeGraphics_DC4, 0
 push	dseg_67d6_107A
 push	dseg_67d6_1078
-call	seg003_0272_4A7F ; Call	Procedure
+call	SetViewportFar_seg003_0272_4A7F ; Call	Procedure
 add	sp, 4		; Add
 push	0
 push	13Fh
@@ -446972,14 +446972,14 @@ CutsceneBitmap_ovr108_33E0 endp
 
 ; Attributes: bp-based frame
 
-ovr108_3620 proc far
+GetCutsceneDataSegment_ovr108_3620 proc far
 push	bp
 mov	bp, sp
 mov	dx, seg	seg051
 mov	ax, 0
 pop	bp
 retf			; Return Far from Procedure
-ovr108_3620 endp
+GetCutsceneDataSegment_ovr108_3620 endp
 
 ovr108 ends
 
@@ -446992,7 +446992,7 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; Attributes: bp-based frame
 
-ovr109_0 proc far
+RegisterInputEventHandlers_ovr109_0 proc far
 push	bp
 
 ovr109_1:
@@ -447045,13 +447045,13 @@ pop	bp
 
 ovr109_30:		; Return Far from Procedure
 retf
-ovr109_0 endp
+RegisterInputEventHandlers_ovr109_0 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr109_31 proc far
+NullStub_ovr109_31 proc far
 push	bp
 
 ovr109_32:
@@ -447062,7 +447062,7 @@ pop	bp
 
 ovr109_35:		; Return Far from Procedure
 retf
-ovr109_31 endp
+NullStub_ovr109_31 endp
 
 ovr109 ends
 
@@ -449494,7 +449494,7 @@ nop			; No Operation
 push	cs
 
 ovr110_B5E:		; maybe	headings?
-call	near ptr ovr110_23AB
+call	near ptr IsPositionWithinPitFightingArena_ovr110_23AB
 add	sp, 4		; Add
 mov	ah, 0
 or	ax, ax		; Logical Inclusive OR
@@ -449840,7 +449840,7 @@ ChangeZposOfObjectInChangingTile_ovr110_BD3 endp
 
 ; Attributes: bp-based frame
 
-ovr110_D08 proc	far
+AdjustObjectZPosForTileHeightChange_ovr110_D08 proc	far
 
 LinkedObject_var_6= dword ptr -6
 var_1= byte ptr	-1
@@ -450057,7 +450057,7 @@ ovr110_E10:
 pop	si_newHeight
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr110_D08 endp
+AdjustObjectZPosForTileHeightChange_ovr110_D08 endp
 
 
 
@@ -450856,7 +450856,7 @@ push	[bp+Tile_var_16]
 ovr110_11BC:
 push	[bp+Tile_var_18]
 push	cs
-call	near ptr ovr110_D08 ; Call Procedure
+call	near ptr AdjustObjectZPosForTileHeightChange_ovr110_D08 ; Call Procedure
 add	sp, 14h		; Add
 jmp	short ovr110_11D9 ; Jump
 
@@ -454084,7 +454084,7 @@ RunScheduleTriggersInTile_15_29_ovr110_227E endp
 
 ; Attributes: bp-based frame
 
-ovr110_23AB proc far
+IsPositionWithinPitFightingArena_ovr110_23AB proc far
 
 TileArray_var_4= word ptr -4
 TileX_arg_0= word ptr  6
@@ -454196,7 +454196,7 @@ pop	si
 ovr110_2422:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr110_23AB endp
+IsPositionWithinPitFightingArena_ovr110_23AB endp
 
 
 
@@ -460988,7 +460988,7 @@ ovr112_2C:
 push	cs
 
 ovr112_2D:		; Call Procedure
-call	near ptr ovr112_1BF
+call	near ptr ShutdownAndCleanup_ovr112_1BF
 
 ovr112_30:		; Increment by 1
 inc	sp
@@ -461339,7 +461339,7 @@ ovr112_170:
 push	cs
 
 ovr112_171:		; Call Procedure
-call	near ptr ovr112_217
+call	near ptr InitGameEnvironment_ovr112_217
 add	sp, 4		; Add
 
 ovr112_177:		; Call Procedure
@@ -461406,7 +461406,7 @@ SplashPart1_ovr112_36 endp ; sp	= -18h
 
 ; Attributes: bp-based frame
 
-ovr112_1BF proc	far
+ShutdownAndCleanup_ovr112_1BF proc	far
 
 arg_0= byte ptr	 6
 
@@ -461458,7 +461458,7 @@ pop	bp
 
 ovr112_1FE:		; Return Far from Procedure
 retf
-ovr112_1BF endp	; sp = -4
+ShutdownAndCleanup_ovr112_1BF endp	; sp = -4
 
 
 
@@ -461488,7 +461488,7 @@ SplashPart2ovr112_1FF endp ; sp	= -2
 
 ; Attributes: bp-based frame
 
-ovr112_217 proc	far
+InitGameEnvironment_ovr112_217 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -461580,13 +461580,13 @@ ovr112_2A5:
 mov	word ptr [bx+8], 0
 pop	bp
 retf			; Return Far from Procedure
-ovr112_217 endp
+InitGameEnvironment_ovr112_217 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr112_2AC proc	far
+ShowOptionsMenu_ovr112_2AC proc	far
 push	bp
 mov	bp, sp
 
@@ -461601,13 +461601,13 @@ ovr112_2B8:		; Increment by 1
 inc	sp
 pop	bp
 retf			; Return Far from Procedure
-ovr112_2AC endp	; sp = -2
+ShowOptionsMenu_ovr112_2AC endp	; sp = -2
 
 
 
 ; Attributes: bp-based frame
 
-ovr112_2BB proc	far
+ClearQuitGameFlag_ovr112_2BB proc	far
 push	bp
 mov	bp, sp
 
@@ -461615,7 +461615,7 @@ ovr112_2BE:
 mov	MaybeQuitGameLoop_dseg_67d6_5D68, 0
 pop	bp
 retf			; Return Far from Procedure
-ovr112_2BB endp
+ClearQuitGameFlag_ovr112_2BB endp
 
 
 
@@ -461834,7 +461834,7 @@ ShowMapAndOtherFullScreenUIs_ovr112_31A	endp ; sp = -2
 
 ; Attributes: bp-based frame
 
-ovr112_389 proc	far
+GetGameLoopBitField_ovr112_389 proc	far
 
 arg_0= word ptr	 6
 
@@ -461851,13 +461851,13 @@ pop	bp
 
 ovr112_395:		; Return Far from Procedure
 retf
-ovr112_389 endp
+GetGameLoopBitField_ovr112_389 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr112_396 proc	far
+RestoreGameplayScreen_ovr112_396 proc	far
 
 var_300= word ptr -300h
 
@@ -461992,7 +461992,7 @@ call	stub118_61
 add	sp, 8		; Add
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr112_396 endp
+RestoreGameplayScreen_ovr112_396 endp
 
 
 
@@ -462018,7 +462018,7 @@ MaybeSetupConversationUI_ovr112_448 endp
 
 ; Attributes: bp-based frame
 
-ovr112_45C proc	far
+ResetActionTimers_ovr112_45C proc	far
 push	bp
 mov	bp, sp
 xor	ax, ax		; Logical Exclusive OR
@@ -462037,7 +462037,7 @@ mov	dseg_67d6_19DF,	dx
 mov	dseg_67d6_19E1,	ax
 pop	bp
 retf			; Return Far from Procedure
-ovr112_45C endp
+ResetActionTimers_ovr112_45C endp
 
 
 
@@ -462066,7 +462066,7 @@ call	LoadVOCSoundFile_seg016_1E73_260
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 push	cs
-call	near ptr ovr112_45C ; Call Procedure
+call	near ptr ResetActionTimers_ovr112_45C ; Call Procedure
 call	stub122_25	; Call Procedure
 
 ovr112_4B1:		; Call Procedure
@@ -462321,13 +462321,13 @@ ReturnToMainMenu_ovr112_57C endp
 
 ; Attributes: bp-based frame
 
-ovr112_657 proc	far
+SyncRenderTimestamp_ovr112_657 proc	far
 push	bp
 mov	bp, sp
 call	seg032_2E9B_355	; Call Procedure
 pop	bp
 retf			; Return Far from Procedure
-ovr112_657 endp
+SyncRenderTimestamp_ovr112_657 endp
 
 
 
@@ -462373,7 +462373,7 @@ call	MoveDataBySize_seg005_105F_1DF9	; SrcData_arg_2
 add	sp, 0Ah		; Add
 push	1
 push	cs
-call	near ptr ovr112_1BF ; Call Procedure
+call	near ptr ShutdownAndCleanup_ovr112_1BF ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 pushf			; Push Flags Register onto the Stack
@@ -462642,7 +462642,7 @@ ovr112_853:		; "UWHOME"
 push	offset aUwhome
 
 ovr112_856:		; Call Procedure
-call	seg005_105F_28FB
+call	CompareStringsCaseInsensitive_seg005_105F_28FB
 add	sp, 6		; Add
 or	ax, ax		; Logical Inclusive OR
 jnz	short ovr112_8B0 ; Jump	if Not Zero (ZF=0)
@@ -462747,7 +462747,7 @@ ovr112_8E0:		; "h\x01ò\x01b"
 push	offset SaveGameFolder_seg052_5D1E
 
 ovr112_8E3:		; Call Procedure
-call	seg005_105F_2862
+call	CompareStrings_seg005_105F_2862
 
 ovr112_8E8:		; Add
 add	sp, 4
@@ -466485,7 +466485,7 @@ ErrorCanNoLongerRun_ovr114_D1 endp
 
 ; Attributes: bp-based frame
 
-ovr114_15D proc	far
+FatalErrorWithMessage_ovr114_15D proc	far
 
 arg_0= word ptr	 6
 
@@ -466556,7 +466556,7 @@ ovr114_19B:
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr114_15D endp	; sp = -6
+FatalErrorWithMessage_ovr114_15D endp	; sp = -6
 
 ovr114 ends
 
@@ -466897,7 +466897,7 @@ ovr116_128:
 push	cs
 
 ovr116_129:		; Call Procedure
-call	near ptr ovr116_2A3
+call	near ptr LZWCompressToFile_ovr116_2A3
 
 ovr116_12C:		; Add
 add	sp, 4
@@ -466944,7 +466944,7 @@ MaybeSaveScreenshot_ovr116_0 endp
 
 ; Attributes: bp-based frame
 
-ovr116_149 proc	far
+InitLZWDictionary_ovr116_149 proc	far
 
 arg_0= word ptr	 6
 
@@ -467029,13 +467029,13 @@ jl	short ovr116_17B
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr116_149 endp
+InitLZWDictionary_ovr116_149 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr116_194 proc	far
+WriteBytesToFileHandle_ovr116_194 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -467092,13 +467092,13 @@ pop	bp
 
 ovr116_1C2:		; Return Far from Procedure
 retf
-ovr116_194 endp
+WriteBytesToFileHandle_ovr116_194 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr116_1C3 proc	far
+OutputLZWCode_ovr116_1C3 proc	far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -467148,7 +467148,7 @@ ovr116_1EA:
 push	cs
 
 ovr116_1EB:		; Call Procedure
-call	near ptr ovr116_194
+call	near ptr WriteBytesToFileHandle_ovr116_194
 
 ovr116_1EE:		; Add
 add	sp, 4
@@ -467295,13 +467295,13 @@ leave			; High Level Procedure Exit
 
 ovr116_2A2:		; Return Far from Procedure
 retf
-ovr116_1C3 endp
+OutputLZWCode_ovr116_1C3 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr116_2A3 proc	far
+LZWCompressToFile_ovr116_2A3 proc	far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -467340,7 +467340,7 @@ push	[bp+arg_2]
 push	cs
 
 ovr116_2C6:		; Call Procedure
-call	near ptr ovr116_149
+call	near ptr InitLZWDictionary_ovr116_149
 
 ovr116_2C9:		; Increment by 1
 inc	sp
@@ -467354,7 +467354,7 @@ push	[bp+arg_0]
 push	cs
 
 ovr116_2D3:		; Call Procedure
-call	near ptr ovr116_1C3
+call	near ptr OutputLZWCode_ovr116_1C3
 
 ovr116_2D6:		; Add
 add	sp, 4
@@ -467366,7 +467366,7 @@ ovr116_2DA:
 push	cs
 
 ovr116_2DB:		; Call Procedure
-call	near ptr ovr116_420
+call	near ptr ReadNextScreenPixel_ovr116_420
 
 ovr116_2DE:
 mov	di, ax
@@ -467431,7 +467431,7 @@ ovr116_310:
 push	cs
 
 ovr116_311:		; Call Procedure
-call	near ptr ovr116_1C3
+call	near ptr OutputLZWCode_ovr116_1C3
 add	sp, 4		; Add
 
 ovr116_317:
@@ -467511,7 +467511,7 @@ push	[bp+arg_0]
 push	cs
 
 ovr116_372:		; Call Procedure
-call	near ptr ovr116_1C3
+call	near ptr OutputLZWCode_ovr116_1C3
 
 ovr116_375:		; Add
 add	sp, 4
@@ -467523,7 +467523,7 @@ ovr116_37B:
 push	cs
 
 ovr116_37C:		; Call Procedure
-call	near ptr ovr116_149
+call	near ptr InitLZWDictionary_ovr116_149
 
 ovr116_37F:		; Increment by 1
 inc	sp
@@ -467610,7 +467610,7 @@ ovr116_3CA:
 push	cs
 
 ovr116_3CB:		; Call Procedure
-call	near ptr ovr116_420
+call	near ptr ReadNextScreenPixel_ovr116_420
 
 ovr116_3CE:
 mov	[bp+var_2], ax
@@ -467634,7 +467634,7 @@ ovr116_3DD:
 push	cs
 
 ovr116_3DE:		; Call Procedure
-call	near ptr ovr116_1C3
+call	near ptr OutputLZWCode_ovr116_1C3
 add	sp, 4		; Add
 
 ovr116_3E4:
@@ -467645,7 +467645,7 @@ push	[bp+arg_0]
 push	cs
 
 ovr116_3EC:		; Call Procedure
-call	near ptr ovr116_1C3
+call	near ptr OutputLZWCode_ovr116_1C3
 
 ovr116_3EF:		; Add
 add	sp, 4
@@ -467675,7 +467675,7 @@ push	ax
 ovr116_406:
 push	[bp+arg_0]
 push	cs
-call	near ptr ovr116_194 ; Call Procedure
+call	near ptr WriteBytesToFileHandle_ovr116_194 ; Call Procedure
 
 ovr116_40D:		; Add
 add	sp, 4
@@ -467686,7 +467686,7 @@ push	0
 ovr116_412:
 push	[bp+arg_0]
 push	cs
-call	near ptr ovr116_194 ; Call Procedure
+call	near ptr WriteBytesToFileHandle_ovr116_194 ; Call Procedure
 add	sp, 4		; Add
 pop	di
 pop	si
@@ -467696,13 +467696,13 @@ leave
 
 ovr116_41F:		; Return Far from Procedure
 retf
-ovr116_2A3 endp
+LZWCompressToFile_ovr116_2A3 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr116_420 proc	far
+ReadNextScreenPixel_ovr116_420 proc	far
 push	bp
 
 ovr116_421:
@@ -467804,7 +467804,7 @@ mov	ah, 0
 ovr116_4A5:
 pop	bp
 retf			; Return Far from Procedure
-ovr116_420 endp
+ReadNextScreenPixel_ovr116_420 endp
 
 ovr116 ends
 
@@ -468135,7 +468135,7 @@ LoadCritterAnimations_ovr117_0 endp ; sp = -6
 
 ; Attributes: bp-based frame
 
-ovr117_111 proc	far
+ReleaseStaleCritterAnimSlots_ovr117_111 proc	far
 push	bp
 
 ovr117_112:
@@ -468221,7 +468221,7 @@ ovr117_160:
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr117_111 endp
+ReleaseStaleCritterAnimSlots_ovr117_111 endp
 
 
 
@@ -468505,7 +468505,7 @@ CritterLoadRelated_ovr117_163 endp
 
 ; Attributes: bp-based frame
 
-ovr117_286 proc	far
+FindLeastRecentCritterAnimSlot_ovr117_286 proc	far
 push	bp
 
 ovr117_287:
@@ -468623,13 +468623,13 @@ pop	si
 ovr117_2FB:
 pop	bp
 retf			; Return Far from Procedure
-ovr117_286 endp
+FindLeastRecentCritterAnimSlot_ovr117_286 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr117_2FD proc	far
+AllocateCritterAnimSlots_ovr117_2FD proc	far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -468660,7 +468660,7 @@ ovr117_309:
 push	cs
 
 ovr117_30A:		; Call Procedure
-call	near ptr ovr117_286
+call	near ptr FindLeastRecentCritterAnimSlot_ovr117_286
 
 ovr117_30D:
 mov	[bp+var_2], ax
@@ -468840,7 +468840,7 @@ pop	si
 ovr117_3B4:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr117_2FD endp
+AllocateCritterAnimSlots_ovr117_2FD endp
 
 ovr117 ends
 
@@ -468853,7 +468853,7 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; Attributes: bp-based frame
 
-ovr118_0 proc far
+InitGraphicsAndFont_ovr118_0 proc far
 push	bp
 
 ovr118_1:
@@ -468863,7 +468863,7 @@ ovr118_3:		; Call Procedure
 call	seg021_22FD_755
 
 ovr118_8:		; Call Procedure
-call	seg003_0272_4629
+call	DrawSpriteFar_seg003_0272_4629
 
 ovr118_D:
 push	0
@@ -468887,7 +468887,7 @@ ovr118_1F:		; Call Procedure
 call	GraphicsCall_seg003_0272_46E6
 
 ovr118_24:		; Call Procedure
-call	seg003_0272_4933
+call	SetPaletteFar_seg003_0272_4933
 
 ovr118_29:
 push	1
@@ -468912,7 +468912,7 @@ pop	bp
 
 ovr118_33:		; Return Far from Procedure
 retf
-ovr118_0 endp ;	sp = -2
+InitGraphicsAndFont_ovr118_0 endp ;	sp = -2
 
 
 
@@ -469028,7 +469028,7 @@ ovr118_90:		; Increment by 1
 inc	sp
 
 ovr118_91:		; Call Procedure
-call	seg003_0272_4431
+call	InitFontTableFar_seg003_0272_4431
 
 ovr118_96:
 mov	al, 1
@@ -469115,7 +469115,7 @@ OpenFont_ovr118_772BW_9B endp ;	sp = -2
 
 ; Attributes: bp-based frame
 
-ovr118_D3 proc far
+ShutdownGraphics_ovr118_D3 proc far
 push	bp
 mov	bp, sp
 
@@ -469130,7 +469130,7 @@ pop	bp
 
 ovr118_E1:		; Return Far from Procedure
 retf
-ovr118_D3 endp
+ShutdownGraphics_ovr118_D3 endp
 
 
 
@@ -469167,7 +469167,7 @@ ovr118_FC:
 push	0
 
 ovr118_FE:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 ovr118_103:		; Increment by 1
 inc	sp
@@ -469176,7 +469176,7 @@ ovr118_104:		; Increment by 1
 inc	sp
 
 ovr118_105:		; Call Procedure
-call	seg003_0272_4D86
+call	UpdateDisplayFar_seg003_0272_4D86
 
 ovr118_10A:		; Call Procedure
 call	seg015_1D7C_C0
@@ -469430,7 +469430,7 @@ ApplyCutscenePalette_ovr118_19F	endp
 
 ; Attributes: bp-based frame
 
-ovr118_1CA proc	far
+CopyPaletteRangeAndApply_ovr118_1CA proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -469512,13 +469512,13 @@ pop	bp
 
 ovr118_212:		; Return Far from Procedure
 retf
-ovr118_1CA endp
+CopyPaletteRangeAndApply_ovr118_1CA endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr118_213 proc	far
+FadeOutPalette_ovr118_213 proc	far
 
 var_E= word ptr	-0Eh
 var_C= word ptr	-0Ch
@@ -469836,13 +469836,13 @@ pop	si
 ovr118_32E:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr118_213 endp
+FadeOutPalette_ovr118_213 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr118_330 proc	far
+FadeInPalette_ovr118_330 proc	far
 
 var_E= word ptr	-0Eh
 var_C= word ptr	-0Ch
@@ -470112,13 +470112,13 @@ pop	si
 ovr118_42D:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr118_330 endp
+FadeInPalette_ovr118_330 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr118_42F proc	far
+RunScreenTransitionForward_ovr118_42F proc	far
 
 arg_0= word ptr	 6
 FunctionToCall_arg_2= dword ptr	 8
@@ -470196,7 +470196,7 @@ pop	bp
 
 ovr118_471:		; Return Far from Procedure
 retf
-ovr118_42F endp	; sp = -2
+RunScreenTransitionForward_ovr118_42F endp	; sp = -2
 
 
 
@@ -470362,7 +470362,7 @@ CallSomeFunction_ovr118_472 endp
 
 ; Attributes: bp-based frame
 
-ovr118_508 proc	far
+ColorMapTransitionForward_ovr118_508 proc	far
 push	bp
 mov	bp, sp
 
@@ -470378,19 +470378,19 @@ push	0Ch
 
 ovr118_515:
 push	cs
-call	near ptr ovr118_42F ; Call Procedure
+call	near ptr RunScreenTransitionForward_ovr118_42F ; Call Procedure
 
 ovr118_519:		; Add
 add	sp, 8
 pop	bp
 retf			; Return Far from Procedure
-ovr118_508 endp
+ColorMapTransitionForward_ovr118_508 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr118_51E proc	far
+ColorMapTransitionWithRestore_ovr118_51E proc	far
 push	bp
 
 ovr118_51F:
@@ -470414,13 +470414,13 @@ add	sp, 8		; Add
 ovr118_532:
 pop	bp
 retf			; Return Far from Procedure
-ovr118_51E endp
+ColorMapTransitionWithRestore_ovr118_51E endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr118_534 proc	far
+ShadeTransitionForward_ovr118_534 proc	far
 
 arg_0= word ptr	 6
 
@@ -470443,7 +470443,7 @@ ovr118_542:
 push	cs
 
 ovr118_543:		; Call Procedure
-call	near ptr ovr118_42F
+call	near ptr RunScreenTransitionForward_ovr118_42F
 
 ovr118_546:		; Add
 add	sp, 8
@@ -470451,13 +470451,13 @@ add	sp, 8
 ovr118_549:
 pop	bp
 retf			; Return Far from Procedure
-ovr118_534 endp
+ShadeTransitionForward_ovr118_534 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr118_54B proc	far
+ShadeTransitionWithRestore_ovr118_54B proc	far
 
 arg_0= word ptr	 6
 
@@ -470486,7 +470486,7 @@ pop	bp
 
 ovr118_561:		; Return Far from Procedure
 retf
-ovr118_54B endp
+ShadeTransitionWithRestore_ovr118_54B endp
 
 
 
@@ -470565,7 +470565,7 @@ push	5
 push	cs
 
 ovr118_5A7:		; Call Procedure
-call	near ptr ovr118_508
+call	near ptr ColorMapTransitionForward_ovr118_508
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -470577,7 +470577,7 @@ push	5
 push	cs
 
 ovr118_5B4:		; Call Procedure
-call	near ptr ovr118_51E
+call	near ptr ColorMapTransitionWithRestore_ovr118_51E
 
 ovr118_5B7:		; Increment by 1
 inc	sp
@@ -470595,7 +470595,7 @@ push	5
 push	cs
 
 ovr118_5CA:		; Call Procedure
-call	near ptr ovr118_508
+call	near ptr ColorMapTransitionForward_ovr118_508
 
 ovr118_5CD:		; Increment by 1
 inc	sp
@@ -470619,7 +470619,7 @@ ovr118_5DF:
 push	cs
 
 ovr118_5E0:		; Call Procedure
-call	near ptr ovr118_51E
+call	near ptr ColorMapTransitionWithRestore_ovr118_51E
 inc	sp		; Increment by 1
 
 ovr118_5E4:		; Increment by 1
@@ -470641,7 +470641,7 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; Attributes: bp-based frame
 
-ovr119_0 proc far
+ReadArtFileHeader_ovr119_0 proc far
 push	bp
 
 ovr119_1:
@@ -470699,7 +470699,7 @@ ovr119_30:
 push	ax
 
 ovr119_31:		; Call Procedure
-call	ProbablyGetAnArrayReference_seg005_105F_37AF
+call	NearHeapMalloc_seg005_105F_37AF
 
 ovr119_36:		; Increment by 1
 inc	sp
@@ -470805,7 +470805,7 @@ pop	bp
 
 ovr119_88:		; Return Far from Procedure
 retf
-ovr119_0 endp
+ReadArtFileHeader_ovr119_0 endp
 
 
 
@@ -471010,7 +471010,7 @@ jnz	short ovr119_14E
 push	cs
 
 ovr119_147:		; Call Procedure
-call	near ptr ovr119_0
+call	near ptr ReadArtFileHeader_ovr119_0
 
 ovr119_14A:		; Logical Inclusive OR
 or	al, al
@@ -471162,7 +471162,7 @@ LoadArtFileData_ovr119_89 endp
 
 ; Attributes: bp-based frame
 
-ovr119_1D5 proc	far
+CloseArtFile_ovr119_1D5 proc	far
 push	bp
 mov	bp, sp
 
@@ -471179,7 +471179,7 @@ pop	bp
 
 ovr119_1E4:		; Return Far from Procedure
 retf
-ovr119_1D5 endp	; sp = -2
+CloseArtFile_ovr119_1D5 endp	; sp = -2
 
 
 
@@ -471276,7 +471276,7 @@ ovr119_226:
 push	FileTableRow_dseg_6942
 
 ovr119_22A:		; Call Procedure
-call	seg005_105F_A6D
+call	GetFilePosition_seg005_105F_A6D
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -471383,7 +471383,7 @@ ReadArtDataToLocation_ovr119_1E5 endp
 
 ; Attributes: bp-based frame
 
-ovr119_2A2 proc	far
+AllocateTextureMemoryPage_ovr119_2A2 proc	far
 
 arg_0= word ptr	 6
 
@@ -471466,13 +471466,13 @@ pop	bp
 
 ovr119_2F5:		; Return Far from Procedure
 retf
-ovr119_2A2 endp
+AllocateTextureMemoryPage_ovr119_2A2 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr119_2F6 proc	far
+GetTextureAddress_ovr119_2F6 proc	far
 push	bp
 
 ovr119_2F7:
@@ -471541,13 +471541,13 @@ ovr119_334:
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr119_2F6 endp
+GetTextureAddress_ovr119_2F6 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr119_337 proc	far
+StoreTextureEntry_ovr119_337 proc	far
 
 arg_4= word ptr	 0Ah
 arg_6= word ptr	 0Ch
@@ -471620,13 +471620,13 @@ mov	al, 1
 ovr119_375:
 pop	bp
 retf			; Return Far from Procedure
-ovr119_337 endp
+StoreTextureEntry_ovr119_337 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr119_377 proc	far
+StoreObjectIconEntry_ovr119_377 proc	far
 
 arg_4= word ptr	 0Ah
 arg_6= word ptr	 0Ch
@@ -471743,13 +471743,13 @@ pop	bp
 
 ovr119_3E5:		; Return Far from Procedure
 retf
-ovr119_377 endp
+StoreObjectIconEntry_ovr119_377 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr119_3E6 proc	far
+StoreObjectIconEntryWithOffset_ovr119_3E6 proc	far
 
 arg_4= word ptr	 0Ah
 arg_6= word ptr	 0Ch
@@ -471858,7 +471858,7 @@ ovr119_458:
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr119_3E6 endp
+StoreObjectIconEntryWithOffset_ovr119_3E6 endp
 
 
 
@@ -471896,7 +471896,7 @@ GetArtResourceDST_ovr119_466 endp
 
 ; Attributes: bp-based frame
 
-ovr119_472 proc	far
+UnpackAndStoreGRArt_ovr119_472 proc	far
 
 arg_0= dword ptr  6
 arg_4= word ptr	 0Ah
@@ -472015,7 +472015,7 @@ pop	si
 ovr119_4ED:
 pop	bp
 retf			; Return Far from Procedure
-ovr119_472 endp
+UnpackAndStoreGRArt_ovr119_472 endp
 
 
 
@@ -472340,7 +472340,7 @@ jmp	ovr119_57F
 
 ovr119_612:
 push	cs
-call	near ptr ovr119_1D5 ; Call Procedure
+call	near ptr CloseArtFile_ovr119_1D5 ; Call Procedure
 
 ovr119_616:
 mov	al, [bp+var_7]
@@ -472419,7 +472419,7 @@ LoadArtFile_ovr119_61D endp
 
 ; Attributes: bp-based frame
 
-ovr119_64B proc	far
+LoadObjectIconsFile_ovr119_64B proc	far
 
 var_2= byte ptr	-2
 arg_0= word ptr	 6
@@ -472468,13 +472468,13 @@ ovr119_66A:
 mov	[bp-1],	al
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr119_64B endp
+LoadObjectIconsFile_ovr119_64B endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr119_66F proc	far
+LoadFlatTextureObjectIcons_ovr119_66F proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -472519,7 +472519,7 @@ ovr119_690:		; Add
 add	sp, 0Eh
 pop	bp
 retf			; Return Far from Procedure
-ovr119_66F endp
+LoadFlatTextureObjectIcons_ovr119_66F endp
 
 
 
@@ -472886,7 +472886,7 @@ ovr119_7F0:
 push	cs
 
 ovr119_7F1:		; Call Procedure
-call	near ptr ovr119_1D5
+call	near ptr CloseArtFile_ovr119_1D5
 cmp	si, 40h	; '@'   ; Compare Two Operands
 
 ovr119_7F7:		; Jump if Not Zero (ZF=0)
@@ -473122,7 +473122,7 @@ push	seg seg050
 push	offset seg050_0
 
 ovr119_8DD:		; Call Procedure
-call	seg009_3F2
+call	ScaleBitmapToBuffer_seg009_3F2
 
 ovr119_8E2:		; Add
 add	sp, 0Ah
@@ -473171,7 +473171,7 @@ ovr119_911:
 push	cs
 
 ovr119_912:		; Call Procedure
-call	near ptr ovr119_1D5
+call	near ptr CloseArtFile_ovr119_1D5
 
 ovr119_915:
 mov	ax, si
@@ -473252,7 +473252,7 @@ LoadGRFile_ovr119_91B endp
 
 ; Attributes: bp-based frame
 
-ovr119_949 proc	far
+LoadSingleArtImageToIconSlot_ovr119_949 proc	far
 
 var_2= byte ptr	-2
 arg_0= word ptr	 6
@@ -473332,7 +473332,7 @@ leave
 
 ovr119_985:		; Return Far from Procedure
 retf
-ovr119_949 endp
+LoadSingleArtImageToIconSlot_ovr119_949 endp
 
 
 
@@ -473586,7 +473586,7 @@ push	offset aObjects
 push	cs
 
 ovr119_A47:		; Call Procedure
-call	near ptr ovr119_64B
+call	near ptr LoadObjectIconsFile_ovr119_64B
 
 ovr119_A4A:		; Increment by 1
 inc	sp
@@ -473685,7 +473685,7 @@ push	offset aTmflat	; "tmflat"
 push	cs
 
 ovr119_AAE:		; Call Procedure
-call	near ptr ovr119_66F
+call	near ptr LoadFlatTextureObjectIcons_ovr119_66F
 add	sp, 6		; Add
 and	[bp+var_1], al	; Logical AND
 
@@ -474265,7 +474265,7 @@ ovr121_31:
 push	cs
 
 ovr121_32:		; Call Procedure
-call	near ptr ovr121_A73
+call	near ptr RestoreInventoryAfterScroll_ovr121_A73
 
 ovr121_35:		; Jump
 jmp	ovr121_15E
@@ -474277,7 +474277,7 @@ ovr121_39:
 push	cs
 
 ovr121_3A:		; Call Procedure
-call	near ptr ovr121_A98
+call	near ptr ScrollContainerInventoryForward_ovr121_A98
 
 ovr121_3D:		; Jump
 jmp	ovr121_15E
@@ -474289,7 +474289,7 @@ ovr121_41:
 push	cs
 
 ovr121_42:		; Call Procedure
-call	near ptr ovr121_35B
+call	near ptr NavigateBackInContainerStack_ovr121_35B
 
 ovr121_45:		; Jump
 jmp	ovr121_15E
@@ -474724,7 +474724,7 @@ ChangeFClassToClosedContainer_ovr121_1A2 endp
 
 ; Attributes: bp-based frame
 
-ovr121_1EF proc	far
+CloseAllOpenContainers_ovr121_1EF proc	far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -474771,7 +474771,7 @@ ovr121_215:
 push	word ptr PaperDollArray_dseg_67d6_1622
 
 ovr121_219:		; Call Procedure
-call	seg005_105F_325E
+call	FarHeapFree_seg005_105F_325E
 
 ovr121_21E:		; Add
 add	sp, 4
@@ -474832,7 +474832,7 @@ ovr121_263:
 push	word ptr PaperDollArray_dseg_67d6_1622
 
 ovr121_267:		; Call Procedure
-call	seg005_105F_325E
+call	FarHeapFree_seg005_105F_325E
 
 ovr121_26C:		; Add
 add	sp, 4
@@ -474867,13 +474867,13 @@ ovr121_290:
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr121_1EF endp
+CloseAllOpenContainers_ovr121_1EF endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr121_293 proc	far
+CloseCurrentContainerAndRefresh_ovr121_293 proc	far
 
 var_2= word ptr	-2
 
@@ -474903,7 +474903,7 @@ ovr121_2A5:
 push	cs
 
 ovr121_2A6:		; Call Procedure
-call	near ptr ovr121_1EF
+call	near ptr CloseAllOpenContainers_ovr121_1EF
 
 ovr121_2A9:		; Logical AND
 and	SomeInventoryObjectList_dseg_67d6_6ABE,	3Fh
@@ -475078,13 +475078,13 @@ ovr121_358:
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr121_293 endp
+CloseCurrentContainerAndRefresh_ovr121_293 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr121_35B proc	far
+NavigateBackInContainerStack_ovr121_35B proc	far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -475172,7 +475172,7 @@ ovr121_3B0:
 push	[bp+var_4]
 
 ovr121_3B3:		; Call Procedure
-call	seg005_105F_325E
+call	FarHeapFree_seg005_105F_325E
 
 ovr121_3B8:		; Add
 add	sp, 4
@@ -475261,12 +475261,12 @@ ovr121_41E:
 push	cs
 
 ovr121_41F:		; Call Procedure
-call	near ptr ovr121_293
+call	near ptr CloseCurrentContainerAndRefresh_ovr121_293
 
 ovr121_422:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr121_35B endp
+NavigateBackInContainerStack_ovr121_35B endp
 
 
 
@@ -475996,7 +475996,7 @@ jnz	short ovr121_75F
 
 ovr121_758:
 push	cs
-call	near ptr ovr121_293 ; Call Procedure
+call	near ptr CloseCurrentContainerAndRefresh_ovr121_293 ; Call Procedure
 
 ovr121_75C:		; Jump
 jmp	ovr121_A6F
@@ -476028,7 +476028,7 @@ ovr121_77F:
 push	cs
 
 ovr121_780:		; Call Procedure
-call	near ptr ovr121_1EF
+call	near ptr CloseAllOpenContainers_ovr121_1EF
 
 ovr121_783:		; Jump
 jmp	ovr121_896
@@ -476279,7 +476279,7 @@ ovr121_898:
 push	0Ch
 
 ovr121_89A:		; Call Procedure
-call	seg005_105F_3344
+call	FarHeapMalloc_seg005_105F_3344
 
 ovr121_89F:		; Add
 add	sp, 4
@@ -476693,7 +476693,7 @@ UseClass2ContainerFromInventory_ovr121_6B6 endp
 
 ; Attributes: bp-based frame
 
-ovr121_A73 proc	far
+RestoreInventoryAfterScroll_ovr121_A73 proc	far
 push	bp
 mov	bp, sp
 
@@ -476737,13 +476737,13 @@ pop	bp
 
 ovr121_A97:		; Return Far from Procedure
 retf
-ovr121_A73 endp
+RestoreInventoryAfterScroll_ovr121_A73 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr121_A98 proc	far
+ScrollContainerInventoryForward_ovr121_A98 proc	far
 
 var_C= word ptr	-0Ch
 var_A= word ptr	-0Ah
@@ -476954,7 +476954,7 @@ pop	si
 ovr121_B74:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr121_A98 endp
+ScrollContainerInventoryForward_ovr121_A98 endp
 
 
 
@@ -477639,7 +477639,7 @@ AddItemToContainer_ovr121_B76 endp
 
 ; Attributes: bp-based frame
 
-ovr121_E91 proc	far
+SwapObjectInInventorySlot_ovr121_E91 proc	far
 
 var_11=	byte ptr -11h
 var_10=	dword ptr -10h
@@ -477976,7 +477976,7 @@ leave			; High Level Procedure Exit
 
 ovr121_1018:		; Return Far from Procedure
 retf
-ovr121_E91 endp
+SwapObjectInInventorySlot_ovr121_E91 endp
 
 
 
@@ -478153,7 +478153,7 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; Attributes: bp-based frame
 
-ovr122_0 proc far
+ClearPlayerObjectAndPaperdoll_ovr122_0 proc far
 push	bp
 
 ovr122_1:
@@ -478194,7 +478194,7 @@ pop	bp
 
 ovr122_21:		; Return Far from Procedure
 retf
-ovr122_0 endp
+ClearPlayerObjectAndPaperdoll_ovr122_0 endp
 
 
 
@@ -478777,7 +478777,7 @@ nop
 push	cs
 
 ovr122_261:		; Call Procedure
-call	near ptr ovr122_38A
+call	near ptr AllocateNextCopySlot_ovr122_38A
 
 ovr122_264:
 mov	[bp+var_8], ax
@@ -478818,7 +478818,7 @@ nop			; No Operation
 push	cs
 
 ovr122_2A0:		; Call Procedure
-call	near ptr ovr122_336
+call	near ptr UpdateInventorySlotsFromCopiedObjects_ovr122_336
 
 ovr122_2A3:		; Add
 add	sp, 8
@@ -478953,7 +478953,7 @@ ProbablyCopyObjectLists_ovr122_256 endp
 
 ; Attributes: bp-based frame
 
-ovr122_336 proc	far
+UpdateInventorySlotsFromCopiedObjects_ovr122_336 proc	far
 
 arg_0= dword ptr  6
 arg_4= dword ptr  0Ah
@@ -479044,13 +479044,13 @@ pop	bp
 
 ovr122_389:		; Return Far from Procedure
 retf
-ovr122_336 endp
+UpdateInventorySlotsFromCopiedObjects_ovr122_336 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr122_38A proc	far
+AllocateNextCopySlot_ovr122_38A proc	far
 push	bp
 mov	bp, sp
 
@@ -479075,13 +479075,13 @@ pop	bx
 add	ax, bx		; Add
 pop	bp
 retf			; Return Far from Procedure
-ovr122_38A endp
+AllocateNextCopySlot_ovr122_38A endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr122_3A4 proc	far
+GetCopySlotAddress_ovr122_3A4 proc	far
 
 arg_0= word ptr	 6
 
@@ -479123,13 +479123,13 @@ pop	bp
 
 ovr122_3C5:		; Return Far from Procedure
 retf
-ovr122_3A4 endp
+GetCopySlotAddress_ovr122_3A4 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr122_3C6 proc	far
+UpdateInventorySlotsFromRestoredObjects_ovr122_3C6 proc	far
 
 arg_0= dword ptr  6
 arg_4= dword ptr  0Ah
@@ -479222,13 +479222,13 @@ jle	short ovr122_3CE
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr122_3C6 endp
+UpdateInventorySlotsFromRestoredObjects_ovr122_3C6 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr122_41B proc	far
+RestoreObjectListFromCopyBuffer_ovr122_41B proc	far
 
 var_10=	dword ptr -10h
 var_C= word ptr	-0Ch
@@ -479315,7 +479315,7 @@ push	word ptr [bp+arg_0]
 push	cs
 
 ovr122_473:		; Call Procedure
-call	near ptr ovr122_3C6
+call	near ptr UpdateInventorySlotsFromRestoredObjects_ovr122_3C6
 
 ovr122_476:		; Add
 add	sp, 8
@@ -479406,7 +479406,7 @@ push	[bp+var_A]
 ovr122_4DE:
 push	[bp+var_C]
 push	cs
-call	near ptr ovr122_41B ; Call Procedure
+call	near ptr RestoreObjectListFromCopyBuffer_ovr122_41B ; Call Procedure
 
 ovr122_4E5:		; Add
 add	sp, 8
@@ -479420,7 +479420,7 @@ ovr122_4F1:		; Logical AND
 and	ax, 3FFh
 push	ax
 push	cs
-call	near ptr ovr122_3A4 ; Call Procedure
+call	near ptr GetCopySlotAddress_ovr122_3A4 ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 mov	word ptr [bp+var_8], ax
@@ -479435,7 +479435,7 @@ jmp	ovr122_424	; Jump
 ovr122_50C:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr122_41B endp
+RestoreObjectListFromCopyBuffer_ovr122_41B endp
 
 
 
@@ -479601,7 +479601,7 @@ ClearObjectList_ovr122_50E endp
 
 ; Attributes: bp-based frame
 
-ovr122_5C7 proc	far
+RestorePlayerFromCopyBuffer_ovr122_5C7 proc	far
 
 var_8= dword ptr -8
 var_4= word ptr	-4
@@ -479679,7 +479679,7 @@ push	ax
 push	cs
 
 ovr122_62C:		; Call Procedure
-call	near ptr ovr122_41B
+call	near ptr RestoreObjectListFromCopyBuffer_ovr122_41B
 
 ovr122_62F:		; Add
 add	sp, 8
@@ -479741,7 +479741,7 @@ ovr122_67F:
 push	word ptr ObjectInHand_dseg_6B0C+2
 push	ax
 push	cs
-call	near ptr ovr122_41B ; Call Procedure
+call	near ptr RestoreObjectListFromCopyBuffer_ovr122_41B ; Call Procedure
 
 ovr122_688:		; Add
 add	sp, 8
@@ -479749,7 +479749,7 @@ add	sp, 8
 ovr122_68B:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr122_5C7 endp
+RestorePlayerFromCopyBuffer_ovr122_5C7 endp
 
 
 
@@ -479791,7 +479791,7 @@ ovr122_6AF:
 push	cs
 
 ovr122_6B0:		; Call Procedure
-call	near ptr ovr122_0
+call	near ptr ClearPlayerObjectAndPaperdoll_ovr122_0
 mov	ax, PlayerDatObjectCopy_dseg_67d6_6A90
 
 ovr122_6B6:		; Logical Inclusive OR
@@ -479939,7 +479939,7 @@ push	PlayerDatObjectCopy_dseg_67d6_6A92
 ovr122_764:
 push	PlayerDatObjectCopy_dseg_67d6_6A90
 push	cs
-call	near ptr ovr122_5C7 ; Call Procedure
+call	near ptr RestorePlayerFromCopyBuffer_ovr122_5C7 ; Call Procedure
 add	sp, 4		; Add
 call	j_RefreshPlayerStatus_ovr142_732 ; Call	Procedure
 
@@ -480180,7 +480180,7 @@ ClearRuneBag_ovr123_64 endp
 
 ; Attributes: bp-based frame
 
-ovr123_7D proc far
+DrawRuneStoneAtPosition_ovr123_7D proc far
 
 arg_0= word ptr	 6
 
@@ -480298,13 +480298,13 @@ ovr123_D2:
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr123_7D endp
+DrawRuneStoneAtPosition_ovr123_7D endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr123_D5 proc far
+DrawRuneBagContents_ovr123_D5 proc far
 
 var_2= word ptr	-2
 
@@ -480382,7 +480382,7 @@ ovr123_115:
 push	cs
 
 ovr123_116:		; Call Procedure
-call	near ptr ovr123_7D
+call	near ptr DrawRuneStoneAtPosition_ovr123_7D
 inc	sp		; Increment by 1
 
 ovr123_11A:		; Increment by 1
@@ -480414,7 +480414,7 @@ leave
 
 ovr123_135:		; Return Far from Procedure
 retf
-ovr123_D5 endp
+DrawRuneBagContents_ovr123_D5 endp
 
 
 
@@ -481793,7 +481793,7 @@ GetItemInSlot_ovr124_15	endp
 
 ; Attributes: bp-based frame
 
-ovr124_2C proc far
+FindFirstEmptyContainerSlot_ovr124_2C proc far
 push	bp
 
 ovr124_2D:
@@ -481853,7 +481853,7 @@ pop	bp
 
 ovr124_56:		; Return Far from Procedure
 retf
-ovr124_2C endp
+FindFirstEmptyContainerSlot_ovr124_2C endp
 
 
 
@@ -483196,7 +483196,7 @@ nop
 push	cs
 
 ovr124_585:		; Call Procedure
-call	near ptr ovr124_5A4
+call	near ptr GetObjectLinkedToSlot_ovr124_5A4
 
 ovr124_588:		; Increment by 1
 inc	sp
@@ -483220,7 +483220,7 @@ nop
 push	cs
 
 ovr124_59A:		; Call Procedure
-call	near ptr ovr124_79F
+call	near ptr RemoveAndRedrawInventorySlot_ovr124_79F
 
 ovr124_59D:		; Add
 add	sp, 8
@@ -483240,7 +483240,7 @@ MaybeGetObjectClickedOn_ovr124_53F endp
 
 ; Attributes: bp-based frame
 
-ovr124_5A4 proc	far
+GetObjectLinkedToSlot_ovr124_5A4 proc	far
 
 SlotNo_arg_0= word ptr	6
 
@@ -483269,7 +483269,7 @@ ovr124_5B6:		; Add
 add	sp, 4
 pop	bp
 retf			; Return Far from Procedure
-ovr124_5A4 endp
+GetObjectLinkedToSlot_ovr124_5A4 endp
 
 
 
@@ -483764,7 +483764,7 @@ RemoveQtyOfObjectFromPlayerInventory_ovr124_5E5	endp
 
 ; Attributes: bp-based frame
 
-ovr124_79F proc	far
+RemoveAndRedrawInventorySlot_ovr124_79F proc	far
 
 var_8= dword ptr -8
 var_4= word ptr	-4
@@ -483887,7 +483887,7 @@ ovr124_824:
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr124_79F endp
+RemoveAndRedrawInventorySlot_ovr124_79F endp
 
 
 
@@ -486155,7 +486155,7 @@ ovr125_287:
 push	cs
 
 ovr125_288:		; Call Procedure
-call	near ptr ovr125_19BA
+call	near ptr HitTestInventorySlot_ovr125_19BA
 add	sp, 4		; Add
 mov	si, ax
 
@@ -486573,7 +486573,7 @@ push	ax
 push	di_slot
 nop			; No Operation
 push	cs
-call	near ptr ovr125_9C2 ; Call Procedure
+call	near ptr RemoveObjectFromSlot_ovr125_9C2 ; Call Procedure
 add	sp, 4		; Add
 
 ovr125_463:		; Compare Two Operands
@@ -486679,7 +486679,7 @@ push	[bp+var_8]
 push	[bp+var_6]
 nop			; No Operation
 push	cs
-call	near ptr ovr125_19BA ; Call Procedure
+call	near ptr HitTestInventorySlot_ovr125_19BA ; Call Procedure
 
 ovr125_4F6:		; Add
 add	sp, 4
@@ -486855,7 +486855,7 @@ TradeInventorySlotClick_ovr125_242 endp
 
 ; Attributes: bp-based frame
 
-ovr125_5B4 proc	far
+PickUpObjectInHand_ovr125_5B4 proc	far
 
 var_6= word ptr	-6
 YMouse_var_4= word ptr -4
@@ -486958,7 +486958,7 @@ push	[bp+XMouse_var_2]
 ovr125_619:		; No Operation
 nop
 push	cs
-call	near ptr ovr125_19BA ; Call Procedure
+call	near ptr HitTestInventorySlot_ovr125_19BA ; Call Procedure
 
 ovr125_61E:		; Add
 add	sp, 4
@@ -487070,7 +487070,7 @@ pop	si
 ovr125_689:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr125_5B4 endp
+PickUpObjectInHand_ovr125_5B4 endp
 
 
 
@@ -487174,7 +487174,7 @@ call	GraphicsCall_seg003_0272_46E6
 push	106h		; 262d
 
 ovr125_6EB:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 ovr125_6F0:		; Increment by 1
 inc	sp
@@ -487195,7 +487195,7 @@ ovr125_6FA:		;
 push	0F0h ; ''      ; 240d
 
 ovr125_6FD:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 ovr125_702:		; Add
 add	sp, 8
@@ -487561,7 +487561,7 @@ ovr125_8C8:
 push	106h
 
 ovr125_8CB:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 push	51h ; 'Q'
@@ -487576,7 +487576,7 @@ ovr125_8DA:
 push	0F0h ; ''
 
 ovr125_8DD:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 ovr125_8E2:		; Add
 add	sp, 8
@@ -487806,7 +487806,7 @@ InventorySlotRedraw_ovr125_904 endp ; sp = -2
 
 ; Attributes: bp-based frame
 
-ovr125_9C2 proc	far
+RemoveObjectFromSlot_ovr125_9C2 proc	far
 
 var_2= byte ptr	-2
 var_1= byte ptr	-1
@@ -487976,7 +487976,7 @@ leave
 
 ovr125_A7B:		; Return Far from Procedure
 retf
-ovr125_9C2 endp
+RemoveObjectFromSlot_ovr125_9C2 endp
 
 
 
@@ -490504,7 +490504,7 @@ UseObjectOnInventorySlot_ovr125_1429 endp
 
 ; Attributes: bp-based frame
 
-ovr125_1730 proc far
+RedrawInventoryPanel_ovr125_1730 proc far
 push	bp
 mov	bp, sp
 
@@ -490560,7 +490560,7 @@ add	sp, 4		; Add
 ovr125_1774:
 pop	bp
 retf			; Return Far from Procedure
-ovr125_1730 endp ; sp =	-2
+RedrawInventoryPanel_ovr125_1730 endp ; sp =	-2
 
 
 
@@ -491085,7 +491085,7 @@ ProbablyUpdateWeightCarriedOnScreen_ovr125_1935	endp
 
 ; Attributes: bp-based frame
 
-ovr125_19BA proc far
+HitTestInventorySlot_ovr125_19BA proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -491201,7 +491201,7 @@ pop	di
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr125_19BA endp
+HitTestInventorySlot_ovr125_19BA endp
 
 ovr125 ends
 
@@ -497097,7 +497097,7 @@ ovr128_E:		; size of tilemap+objects.
 push	7E08h
 
 ovr128_11:		; Call Procedure
-call	seg005_105F_3344
+call	FarHeapMalloc_seg005_105F_3344
 
 ovr128_16:		; Add
 add	sp, 4
@@ -497143,7 +497143,7 @@ InitialiseEmptyTileMapData_ovr128_0 endp ; sp =	-2
 
 ; Attributes: bp-based frame
 
-ovr128_37 proc far
+CopyTileMapDataFromSource_ovr128_37 proc far
 
 var_4= dword ptr -4
 arg_0= word ptr	 6
@@ -497222,7 +497222,7 @@ leave
 
 ovr128_75:		; Return Far from Procedure
 retf
-ovr128_37 endp
+CopyTileMapDataFromSource_ovr128_37 endp
 
 
 
@@ -498625,7 +498625,7 @@ LoadDatFiles_ovr134_0 endp
 
 ; Attributes: bp-based frame
 
-ovr134_EE proc far
+NullReturnZero_ovr134_EE proc far
 push	bp
 
 ovr134_EF:
@@ -498639,7 +498639,7 @@ pop	bp
 
 ovr134_F4:		; Return Far from Procedure
 retf
-ovr134_EE endp
+NullReturnZero_ovr134_EE endp
 
 
 
@@ -500815,7 +500815,7 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; Attributes: bp-based frame
 
-ovr136_0 proc far
+IsMenuOptionAvailable_ovr136_0 proc far
 
 arg_0= word ptr	 6
 
@@ -500874,13 +500874,13 @@ pop	bp
 
 ovr136_2A:		; Return Far from Procedure
 retf
-ovr136_0 endp
+IsMenuOptionAvailable_ovr136_0 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_2B proc far
+MenuInputLoop_ovr136_2B proc far
 
 var_6= word ptr	-6
 var_4= word ptr	-4
@@ -500940,7 +500940,7 @@ ovr136_4F:
 push	cs
 
 ovr136_50:		; Call Procedure
-call	near ptr ovr136_680
+call	near ptr GetMenuItemFromMousePos_ovr136_680
 
 ovr136_53:
 mov	si, ax
@@ -500956,7 +500956,7 @@ ovr136_5B:
 push	cs
 
 ovr136_5C:		; Call Procedure
-call	near ptr ovr136_0
+call	near ptr IsMenuOptionAvailable_ovr136_0
 
 ovr136_5F:		; Increment by 1
 inc	sp
@@ -500986,7 +500986,7 @@ ovr136_6A:
 push	cs
 
 ovr136_6B:		; Call Procedure
-call	near ptr ovr136_649
+call	near ptr SetMenuSelection_ovr136_649
 
 ovr136_6E:		; Increment by 1
 inc	sp
@@ -501030,13 +501030,13 @@ leave
 
 ovr136_8E:		; Return Far from Procedure
 retf
-ovr136_2B endp
+MenuInputLoop_ovr136_2B endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_8F proc far
+OptionsMenuMain_ovr136_8F proc far
 
 arg_0= word ptr	 6
 
@@ -501103,7 +501103,7 @@ ovr136_C6:
 push	cs
 
 ovr136_C7:		; Call Procedure
-call	near ptr ovr136_6CF
+call	near ptr OpenMenuPanel_ovr136_6CF
 inc	sp		; Increment by 1
 
 ovr136_CB:		; Increment by 1
@@ -501261,7 +501261,7 @@ ovr136_15A:		; case 0x0
 push	cs
 
 ovr136_15B:		; Call Procedure
-call	near ptr ovr136_2B
+call	near ptr MenuInputLoop_ovr136_2B
 mov	si, ax
 
 ovr136_160:		; Compare Two Operands
@@ -501282,7 +501282,7 @@ ovr136_16B:
 push	cs
 
 ovr136_16C:		; Call Procedure
-call	near ptr ovr136_232
+call	near ptr NavigateMenuSelection_ovr136_232
 
 ovr136_16F:		; Jump
 jmp	short ovr136_1AB
@@ -501295,7 +501295,7 @@ nop
 
 ovr136_174:
 push	cs
-call	near ptr ovr136_232 ; Call Procedure
+call	near ptr NavigateMenuSelection_ovr136_232 ; Call Procedure
 
 ovr136_178:		; Jump
 jmp	short ovr136_1AB
@@ -501340,7 +501340,7 @@ push	6
 ovr136_1A6:		; No Operation
 nop
 push	cs
-call	near ptr ovr136_5D0 ; Call Procedure
+call	near ptr ExecuteMenuOption_ovr136_5D0 ; Call Procedure
 
 ovr136_1AB:		; Increment by 1
 inc	sp
@@ -501437,7 +501437,7 @@ mov	ah, 0
 push	ax
 
 ovr136_20D:		; Call Procedure
-call	seg014_11D
+call	UnhighlightOptionsSlot_seg014_11D
 
 ovr136_212:		; Increment by 1
 inc	sp
@@ -501450,7 +501450,7 @@ pop	di
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr136_8F endp ; sp = -8
+OptionsMenuMain_ovr136_8F endp ; sp = -8
 
 ovr136_218 dw offset ovr136_15A	; jump table for switch	statement
 dw offset ovr136_15A
@@ -501469,7 +501469,7 @@ dw offset ovr136_17A
 
 ; Attributes: bp-based frame
 
-ovr136_232 proc	far
+NavigateMenuSelection_ovr136_232 proc	far
 
 var_2= word ptr	-2
 arg_0= word ptr	 6
@@ -501563,7 +501563,7 @@ ovr136_284:
 push	cs
 
 ovr136_285:		; Call Procedure
-call	near ptr ovr136_0
+call	near ptr IsMenuOptionAvailable_ovr136_0
 
 ovr136_288:		; Increment by 1
 inc	sp
@@ -501586,7 +501586,7 @@ nop			; No Operation
 push	cs
 
 ovr136_295:		; Call Procedure
-call	near ptr ovr136_649
+call	near ptr SetMenuSelection_ovr136_649
 
 ovr136_298:		; Increment by 1
 inc	sp
@@ -501606,13 +501606,13 @@ pop	si
 ovr136_2A1:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr136_232 endp
+NavigateMenuSelection_ovr136_232 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_2A3 proc	far
+MenuNullCallback_ovr136_2A3 proc	far
 push	bp
 
 ovr136_2A4:
@@ -501623,13 +501623,13 @@ pop	bp
 
 ovr136_2A7:		; Return Far from Procedure
 retf
-ovr136_2A3 endp
+MenuNullCallback_ovr136_2A3 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_2A8 proc	far
+CloseOptionsMenu_ovr136_2A8 proc	far
 push	bp
 
 ovr136_2A9:
@@ -501647,7 +501647,7 @@ ovr136_2B4:
 mov	dseg_67d6_22E2,	1
 pop	bp
 retf			; Return Far from Procedure
-ovr136_2A8 endp	; sp = -2
+CloseOptionsMenu_ovr136_2A8 endp	; sp = -2
 
 
 
@@ -501717,7 +501717,7 @@ ovr136_2FE:
 push	cs
 
 ovr136_2FF:		; Call Procedure
-call	near ptr ovr136_809
+call	near ptr DrawOptionsPanelHeader_ovr136_809
 
 ovr136_302:		; Increment by 1
 inc	sp
@@ -501733,7 +501733,7 @@ nop
 push	cs
 
 ovr136_308:		; Call Procedure
-call	near ptr ovr136_4BB
+call	near ptr DrawDetailOptionIndicator_ovr136_4BB
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -501752,7 +501752,7 @@ ChangeDetailSetting_ovr136_2BC endp ; sp = -4
 
 ; Attributes: bp-based frame
 
-ovr136_315 proc	far
+SignalMenuExit_ovr136_315 proc	far
 push	bp
 
 ovr136_316:
@@ -501764,13 +501764,13 @@ mov	dseg_67d6_22E2,	1
 ovr136_31E:
 pop	bp
 retf			; Return Far from Procedure
-ovr136_315 endp
+SignalMenuExit_ovr136_315 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_320 proc	far
+HandleMusicToggleAction_ovr136_320 proc	far
 
 arg_0= word ptr	 6
 
@@ -501804,13 +501804,13 @@ pop	bp
 
 ovr136_33B:		; Return Far from Procedure
 retf
-ovr136_320 endp
+HandleMusicToggleAction_ovr136_320 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_33C proc	far
+SaveGamePrompt_ovr136_33C proc	far
 
 var_2= byte ptr	-2
 
@@ -501855,13 +501855,13 @@ leave
 
 ovr136_363:		; Return Far from Procedure
 retf
-ovr136_33C endp
+SaveGamePrompt_ovr136_33C endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_364 proc	far
+RestoreGamePrompt_ovr136_364 proc	far
 
 var_2= byte ptr	-2
 
@@ -501908,13 +501908,13 @@ leave
 
 ovr136_38B:		; Return Far from Procedure
 retf
-ovr136_364 endp
+RestoreGamePrompt_ovr136_364 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_38C proc	far
+ExecuteSaveRestoreAction_ovr136_38C proc	far
 
 arg_0= word ptr	 6
 
@@ -501977,13 +501977,13 @@ pop	bp
 
 ovr136_3DD:		; Return Far from Procedure
 retf
-ovr136_38C endp
+ExecuteSaveRestoreAction_ovr136_38C endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_3DE proc	far
+SetMusicMenuMode_ovr136_3DE proc	far
 push	bp
 
 ovr136_3DF:
@@ -501997,13 +501997,13 @@ pop	bp
 
 ovr136_3E8:		; Return Far from Procedure
 retf
-ovr136_3DE endp
+SetMusicMenuMode_ovr136_3DE endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_3E9 proc	far
+SetSoundEffectsMenuMode_ovr136_3E9 proc	far
 push	bp
 
 ovr136_3EA:
@@ -502013,7 +502013,7 @@ ovr136_3EC:
 mov	MaybeSoundMenuMode_dseg_67d6_817A, 1
 pop	bp
 retf			; Return Far from Procedure
-ovr136_3E9 endp
+SetSoundEffectsMenuMode_ovr136_3E9 endp
 
 
 
@@ -502060,7 +502060,7 @@ ovr136_412:
 push	cs
 
 ovr136_413:		; Call Procedure
-call	near ptr ovr136_649
+call	near ptr SetMenuSelection_ovr136_649
 
 ovr136_416:		; Increment by 1
 inc	sp
@@ -502141,7 +502141,7 @@ ovr136_450:
 push	cs
 
 ovr136_451:		; Call Procedure
-call	near ptr ovr136_649
+call	near ptr SetMenuSelection_ovr136_649
 
 ovr136_454:		; Increment by 1
 inc	sp
@@ -502196,7 +502196,7 @@ ovr136_479:
 push	cs
 
 ovr136_47A:		; Call Procedure
-call	near ptr ovr136_4E0
+call	near ptr DrawOptionIndicator_ovr136_4E0
 
 ovr136_47D:		; Add
 add	sp, 6
@@ -502210,20 +502210,20 @@ SoundMenuOptions_ovr136_3F4 endp ; sp =	-2
 
 ; Attributes: bp-based frame
 
-ovr136_482 proc	far
+MenuNullCallback2_ovr136_482 proc	far
 push	bp
 
 ovr136_483:
 mov	bp, sp
 pop	bp
 retf			; Return Far from Procedure
-ovr136_482 endp
+MenuNullCallback2_ovr136_482 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_487 proc	far
+SelectFirstMenuItem_ovr136_487 proc	far
 push	bp
 
 ovr136_488:
@@ -502237,7 +502237,7 @@ nop
 push	cs
 
 ovr136_48E:		; Call Procedure
-call	near ptr ovr136_649
+call	near ptr SetMenuSelection_ovr136_649
 inc	sp		; Increment by 1
 
 ovr136_492:		; Increment by 1
@@ -502246,13 +502246,13 @@ inc	sp
 ovr136_493:
 pop	bp
 retf			; Return Far from Procedure
-ovr136_487 endp	; sp = -2
+SelectFirstMenuItem_ovr136_487 endp	; sp = -2
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_495 proc	far
+ShowDetailLevel_ovr136_495 proc	far
 push	bp
 
 ovr136_496:
@@ -502280,7 +502280,7 @@ nop
 push	cs
 
 ovr136_4AB:		; Call Procedure
-call	near ptr ovr136_649
+call	near ptr SetMenuSelection_ovr136_649
 
 ovr136_4AE:		; Increment by 1
 inc	sp
@@ -502298,7 +502298,7 @@ ovr136_4B3:
 push	cs
 
 ovr136_4B4:		; Call Procedure
-call	near ptr ovr136_4BB
+call	near ptr DrawDetailOptionIndicator_ovr136_4BB
 
 ovr136_4B7:		; Increment by 1
 inc	sp
@@ -502307,13 +502307,13 @@ inc	sp		; Increment by 1
 ovr136_4B9:
 pop	bp
 retf			; Return Far from Procedure
-ovr136_495 endp	; sp = -4
+ShowDetailLevel_ovr136_495 endp	; sp = -4
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_4BB proc	far
+DrawDetailOptionIndicator_ovr136_4BB proc	far
 
 arg_0= word ptr	 6
 
@@ -502352,20 +502352,20 @@ ovr136_4D6:
 push	cs
 
 ovr136_4D7:		; Call Procedure
-call	near ptr ovr136_4E0
+call	near ptr DrawOptionIndicator_ovr136_4E0
 
 ovr136_4DA:		; Add
 add	sp, 6
 pop	si
 pop	bp
 retf			; Return Far from Procedure
-ovr136_4BB endp
+DrawDetailOptionIndicator_ovr136_4BB endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_4E0 proc	far
+DrawOptionIndicator_ovr136_4E0 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -502426,7 +502426,7 @@ ovr136_510:
 push	cs
 
 ovr136_511:		; Call Procedure
-call	near ptr ovr136_767
+call	near ptr DrawMenuButton_ovr136_767
 
 ovr136_514:		; Add
 add	sp, 0Eh
@@ -502437,13 +502437,13 @@ call	seg015_1D7C_C0
 ovr136_51C:
 pop	bp
 retf			; Return Far from Procedure
-ovr136_4E0 endp
+DrawOptionIndicator_ovr136_4E0 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_51E proc	far
+SelectSoundEffectsItem_ovr136_51E proc	far
 push	bp
 
 ovr136_51F:
@@ -502459,20 +502459,20 @@ ovr136_524:
 push	cs
 
 ovr136_525:		; Call Procedure
-call	near ptr ovr136_649
+call	near ptr SetMenuSelection_ovr136_649
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
 ovr136_52A:
 pop	bp
 retf			; Return Far from Procedure
-ovr136_51E endp	; sp = -2
+SelectSoundEffectsItem_ovr136_51E endp	; sp = -2
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_52C proc	far
+ShowSaveRestoreSlot_ovr136_52C proc	far
 push	bp
 mov	bp, sp
 
@@ -502490,7 +502490,7 @@ nop
 
 ovr136_535:
 push	cs
-call	near ptr ovr136_649 ; Call Procedure
+call	near ptr SetMenuSelection_ovr136_649 ; Call Procedure
 
 ovr136_539:		; Increment by 1
 inc	sp
@@ -502515,7 +502515,7 @@ push	1
 push	cs
 
 ovr136_549:		; Call Procedure
-call	near ptr ovr136_4E0
+call	near ptr DrawOptionIndicator_ovr136_4E0
 
 ovr136_54C:		; Add
 add	sp, 6
@@ -502523,7 +502523,7 @@ add	sp, 6
 ovr136_54F:
 pop	bp
 retf			; Return Far from Procedure
-ovr136_52C endp	; sp = -2
+ShowSaveRestoreSlot_ovr136_52C endp	; sp = -2
 
 
 
@@ -502573,7 +502573,7 @@ ovr136_572:
 push	cs
 
 ovr136_573:		; Call Procedure
-call	near ptr ovr136_649
+call	near ptr SetMenuSelection_ovr136_649
 
 ovr136_576:		; Increment by 1
 inc	sp
@@ -502636,7 +502636,7 @@ nop
 push	cs
 
 ovr136_5A6:		; Call Procedure
-call	near ptr ovr136_649
+call	near ptr SetMenuSelection_ovr136_649
 
 ovr136_5A9:		; Increment by 1
 inc	sp
@@ -502677,7 +502677,7 @@ ovr136_5C2:
 push	cs
 
 ovr136_5C3:		; Call Procedure
-call	near ptr ovr136_4E0
+call	near ptr DrawOptionIndicator_ovr136_4E0
 add	sp, 6		; Add
 pop	bp
 
@@ -502689,7 +502689,7 @@ SoundMenu_ovr136_551 endp ; sp = -2
 
 ; Attributes: bp-based frame
 
-ovr136_5CB proc	far
+MenuNullCallback3_ovr136_5CB proc	far
 push	bp
 
 ovr136_5CC:
@@ -502700,13 +502700,13 @@ pop	bp
 
 ovr136_5CF:		; Return Far from Procedure
 retf
-ovr136_5CB endp
+MenuNullCallback3_ovr136_5CB endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_5D0 proc	far
+ExecuteMenuOption_ovr136_5D0 proc	far
 
 var_6= word ptr	-6
 var_4= dword ptr -4
@@ -502795,7 +502795,7 @@ nop			; No Operation
 push	cs
 
 ovr136_614:		; Call Procedure
-call	near ptr ovr136_649
+call	near ptr SetMenuSelection_ovr136_649
 
 ovr136_617:		; Increment by 1
 inc	sp
@@ -502856,7 +502856,7 @@ ovr136_63F:
 push	cs
 
 ovr136_640:		; Call Procedure
-call	near ptr ovr136_6CF
+call	near ptr OpenMenuPanel_ovr136_6CF
 
 ovr136_643:		; Increment by 1
 inc	sp
@@ -502873,13 +502873,13 @@ leave
 
 ovr136_648:		; Return Far from Procedure
 retf
-ovr136_5D0 endp
+ExecuteMenuOption_ovr136_5D0 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_649 proc	far
+SetMenuSelection_ovr136_649 proc	far
 
 arg_0= word ptr	 6
 
@@ -502917,7 +502917,7 @@ nop
 push	cs
 
 ovr136_665:		; Call Procedure
-call	near ptr ovr136_719
+call	near ptr DrawMenuItemHighlight_ovr136_719
 
 ovr136_668:		; Add
 add	sp, 4
@@ -502933,7 +502933,7 @@ nop
 push	cs
 
 ovr136_672:		; Call Procedure
-call	near ptr ovr136_719
+call	near ptr DrawMenuItemHighlight_ovr136_719
 
 ovr136_675:		; Add
 add	sp, 4
@@ -502949,13 +502949,13 @@ pop	bp
 
 ovr136_67F:		; Return Far from Procedure
 retf
-ovr136_649 endp
+SetMenuSelection_ovr136_649 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_680 proc	far
+GetMenuItemFromMousePos_ovr136_680 proc	far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -503053,13 +503053,13 @@ leave
 
 ovr136_6CE:		; Return Far from Procedure
 retf
-ovr136_680 endp
+GetMenuItemFromMousePos_ovr136_680 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_6CF proc	far
+OpenMenuPanel_ovr136_6CF proc	far
 
 arg_0= word ptr	 6
 
@@ -503094,7 +503094,7 @@ ovr136_6E9:
 push	cs
 
 ovr136_6EA:		; Call Procedure
-call	near ptr ovr136_809
+call	near ptr DrawOptionsPanelHeader_ovr136_809
 
 ovr136_6ED:		; Increment by 1
 inc	sp
@@ -503128,7 +503128,7 @@ ovr136_701:
 push	cs
 
 ovr136_702:		; Call Procedure
-call	near ptr ovr136_767
+call	near ptr DrawMenuButton_ovr136_767
 
 ovr136_705:		; Add
 add	sp, 0Eh
@@ -503150,7 +503150,7 @@ nop
 push	cs
 
 ovr136_713:		; Call Procedure
-call	near ptr ovr136_7DD
+call	near ptr SetMenuDisplayViewport_ovr136_7DD
 
 ovr136_716:
 pop	si
@@ -503158,13 +503158,13 @@ pop	bp
 
 ovr136_718:		; Return Far from Procedure
 retf
-ovr136_6CF endp
+OpenMenuPanel_ovr136_6CF endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_719 proc	far
+DrawMenuItemHighlight_ovr136_719 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -503255,7 +503255,7 @@ ovr136_75E:
 push	cs
 
 ovr136_75F:		; Call Procedure
-call	near ptr ovr136_767
+call	near ptr DrawMenuButton_ovr136_767
 
 ovr136_762:		; Add
 add	sp, 0Eh
@@ -503265,13 +503265,13 @@ pop	bp
 
 ovr136_766:		; Return Far from Procedure
 retf
-ovr136_719 endp
+DrawMenuItemHighlight_ovr136_719 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_767 proc	far
+DrawMenuButton_ovr136_767 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -503324,7 +503324,7 @@ ovr136_793:
 push	[bp+arg_8]
 
 ovr136_796:		; Call Procedure
-call	seg003_0272_51C8
+call	ApplyShadeMapFar_seg003_0272_51C8
 
 ovr136_79B:		; Add
 add	sp, 0Ch
@@ -503332,7 +503332,7 @@ call	GraphicsCall_seg003_0272_46E6 ;	Call Procedure
 push	106h
 
 ovr136_7A6:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 ovr136_7AB:		; Increment by 1
 inc	sp
@@ -503361,7 +503361,7 @@ ovr136_7BF:
 push	[bp+arg_0]
 
 ovr136_7C2:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 ovr136_7C7:		; Add
 add	sp, 8
@@ -503387,13 +503387,13 @@ pop	bp
 
 ovr136_7DC:		; Return Far from Procedure
 retf
-ovr136_767 endp	; sp = -2
+DrawMenuButton_ovr136_767 endp	; sp = -2
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_7DD proc	far
+SetMenuDisplayViewport_ovr136_7DD proc	far
 push	bp
 mov	bp, sp
 
@@ -503402,7 +503402,7 @@ call	seg015_1D7C_D6
 push	106h
 
 ovr136_7E8:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 ovr136_7ED:		; Increment by 1
 inc	sp
@@ -503421,7 +503421,7 @@ ovr136_7F7:
 push	0ECh ; 'Ï'
 
 ovr136_7FA:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 ovr136_7FF:		; Add
 add	sp, 8
@@ -503434,13 +503434,13 @@ pop	bp
 
 ovr136_808:		; Return Far from Procedure
 retf
-ovr136_7DD endp	; sp = -2
+SetMenuDisplayViewport_ovr136_7DD endp	; sp = -2
 
 
 
 ; Attributes: bp-based frame
 
-ovr136_809 proc	far
+DrawOptionsPanelHeader_ovr136_809 proc	far
 
 arg_0= word ptr	 6
 
@@ -503597,7 +503597,7 @@ ovr136_8B1:
 push	cs
 
 ovr136_8B2:		; Call Procedure
-call	near ptr ovr136_767
+call	near ptr DrawMenuButton_ovr136_767
 
 ovr136_8B5:		; Add
 add	sp, 0Eh
@@ -503661,7 +503661,7 @@ pop	si
 ovr136_8FC:
 pop	bp
 retf			; Return Far from Procedure
-ovr136_809 endp
+DrawOptionsPanelHeader_ovr136_809 endp
 
 ovr136 ends
 
@@ -504451,7 +504451,7 @@ PrintFlaskHealthManaMessage_ovr137_14A endp
 
 ; Attributes: bp-based frame
 
-ovr137_2A8 proc	far
+RegisterStatsPanelClickAreas_ovr137_2A8 proc	far
 push	bp
 mov	bp, sp
 
@@ -504459,7 +504459,7 @@ ovr137_2AB:
 mov	dseg_67d6_384, 0
 
 ovr137_2B1:		; Call Procedure
-call	seg014_A
+call	RegisterOptionsClickArea_seg014_A
 
 ovr137_2B6:
 push	seg stub123
@@ -504588,20 +504588,20 @@ ovr137_32C:
 mov	dseg_67d6_8180,	ax
 pop	bp
 retf			; Return Far from Procedure
-ovr137_2A8 endp
+RegisterStatsPanelClickAreas_ovr137_2A8 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr137_331 proc	far
+UnregisterStatsPanelClickAreas_ovr137_331 proc	far
 push	bp
 
 ovr137_332:
 mov	bp, sp
 
 ovr137_334:		; Call Procedure
-call	seg014_4C
+call	UnregisterOptionsClickArea_seg014_4C
 
 ovr137_339:
 push	dseg_67d6_8182
@@ -504654,13 +504654,13 @@ inc	sp
 ovr137_365:
 pop	bp
 retf			; Return Far from Procedure
-ovr137_331 endp	; sp = -8
+UnregisterStatsPanelClickAreas_ovr137_331 endp	; sp = -8
 
 
 
 ; Attributes: bp-based frame
 
-ovr137_367 proc	far
+EnterStatsPanelMode_ovr137_367 proc	far
 push	bp
 
 ovr137_368:
@@ -504679,7 +504679,7 @@ ovr137_379:
 push	cs
 
 ovr137_37A:		; Call Procedure
-call	near ptr ovr137_2A8
+call	near ptr RegisterStatsPanelClickAreas_ovr137_2A8
 
 ovr137_37D:		; Compare Two Operands
 cmp	dseg_67d6_384, 0
@@ -504706,7 +504706,7 @@ ovr137_395:
 push	ax
 
 ovr137_396:		; Call Procedure
-call	seg014_11D
+call	UnhighlightOptionsSlot_seg014_11D
 inc	sp		; Increment by 1
 
 ovr137_39C:		; Increment by 1
@@ -504719,13 +504719,13 @@ ovr137_3A2:		; Call Procedure
 call	seg037_32C0_14C
 pop	bp
 retf			; Return Far from Procedure
-ovr137_367 endp	; sp = -2
+EnterStatsPanelMode_ovr137_367 endp	; sp = -2
 
 
 
 ; Attributes: bp-based frame
 
-ovr137_3A9 proc	far
+ExitStatsPanelMode_ovr137_3A9 proc	far
 push	bp
 
 ovr137_3AA:
@@ -504735,7 +504735,7 @@ ovr137_3AC:
 push	cs
 
 ovr137_3AD:		; Call Procedure
-call	near ptr ovr137_331
+call	near ptr UnregisterStatsPanelClickAreas_ovr137_331
 
 ovr137_3B0:		; Call Procedure
 call	j_DoesNothing_ovr125_1E6
@@ -504745,13 +504745,13 @@ pop	bp
 
 ovr137_3B6:		; Return Far from Procedure
 retf
-ovr137_3A9 endp
+ExitStatsPanelMode_ovr137_3A9 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr137_3B7 proc	far
+CheckPlayerBusyForOptions_ovr137_3B7 proc	far
 push	bp
 
 ovr137_3B8:
@@ -504813,13 +504813,13 @@ pop	bp
 
 ovr137_3E5:		; Return Far from Procedure
 retf
-ovr137_3B7 endp
+CheckPlayerBusyForOptions_ovr137_3B7 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr137_3E6 proc	far
+CancelPlayerAction_ovr137_3E6 proc	far
 push	bp
 
 ovr137_3E7:
@@ -504856,7 +504856,7 @@ pop	bp
 
 ovr137_402:		; Return Far from Procedure
 retf
-ovr137_3E6 endp	; sp = -2
+CancelPlayerAction_ovr137_3E6 endp	; sp = -2
 
 ovr137 ends
 
@@ -512013,7 +512013,7 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; Attributes: bp-based frame
 
-ovr139_0 proc far
+InitMessageScrollWindow_ovr139_0 proc far
 push	bp
 
 ovr139_1:
@@ -512054,13 +512054,13 @@ pop	bp
 
 ovr139_28:		; Return Far from Procedure
 retf
-ovr139_0 endp
+InitMessageScrollWindow_ovr139_0 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr139_29 proc far
+WaitForTimerOrInput_ovr139_29 proc far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -512231,13 +512231,13 @@ leave
 
 ovr139_BC:		; Return Far from Procedure
 retf
-ovr139_29 endp
+WaitForTimerOrInput_ovr139_29 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr139_BD proc far
+ShowMorePromptAndWait_ovr139_BD proc far
 
 var_2= word ptr	-2
 
@@ -512329,7 +512329,7 @@ push	0
 
 ovr139_10C:
 push	cs
-call	near ptr ovr139_29 ; Call Procedure
+call	near ptr WaitForTimerOrInput_ovr139_29 ; Call Procedure
 
 ovr139_110:		; Add
 add	sp, 4
@@ -512338,7 +512338,7 @@ ovr139_113:
 push	71h ; 'q'
 
 ovr139_115:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 ovr139_11A:		; Increment by 1
 inc	sp
@@ -512360,7 +512360,7 @@ ovr139_127:
 push	word ptr [bx+0Ch]
 
 ovr139_12A:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 ovr139_12F:		; Add
 add	sp, 8
@@ -512397,13 +512397,13 @@ leave
 
 ovr139_150:		; Return Far from Procedure
 retf
-ovr139_BD endp
+ShowMorePromptAndWait_ovr139_BD endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr139_151 proc	far
+SetTextColorFromMouseState_ovr139_151 proc	far
 push	bp
 mov	bp, sp
 
@@ -512430,13 +512430,13 @@ pop	bp
 
 ovr139_16B:		; Return Far from Procedure
 retf
-ovr139_151 endp
+SetTextColorFromMouseState_ovr139_151 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr139_16C proc	far
+WriteNumberToMessageScroll_ovr139_16C proc	far
 
 var_6= word ptr	-6
 arg_0= word ptr	 6
@@ -512480,7 +512480,7 @@ mov	si, [bx+0Ah]
 
 ovr139_190:
 push	cs
-call	near ptr ovr139_151 ; Call Procedure
+call	near ptr SetTextColorFromMouseState_ovr139_151 ; Call Procedure
 mov	bx, WriteTextRelated_dseg_67d6_34B0
 mov	al, [bx+13h]
 
@@ -512492,7 +512492,7 @@ mov	es:[bx], al
 push	71h ; 'q'
 
 ovr139_1A4:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 
@@ -512514,7 +512514,7 @@ ovr139_1BF:
 push	di
 
 ovr139_1C0:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 ovr139_1C5:		; Add
 add	sp, 8
@@ -512546,7 +512546,7 @@ pop	si
 ovr139_1E1:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr139_16C endp
+WriteNumberToMessageScroll_ovr139_16C endp
 
 
 
@@ -512572,7 +512572,7 @@ mov	si, [bx+0Ah]
 push	cs
 
 ovr139_1F4:		; Call Procedure
-call	near ptr ovr139_151
+call	near ptr SetTextColorFromMouseState_ovr139_151
 
 ovr139_1F7:
 mov	bx, WriteTextRelated_dseg_67d6_34B0
@@ -512584,7 +512584,7 @@ ovr139_1FE:		; Load Full Pointer to ES:xx
 les	bx, dseg_67d6_21C4
 mov	es:[bx], al
 push	71h ; 'q'
-call	seg003_0272_48F4 ; Call	Procedure
+call	ClearScreenFar_seg003_0272_48F4 ; Call	Procedure
 
 ovr139_20C:		; Increment by 1
 inc	sp
@@ -512606,7 +512606,7 @@ push	si
 push	di
 
 ovr139_223:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 ovr139_228:		; Add
 add	sp, 8
@@ -512687,7 +512687,7 @@ ovr139_264:
 push	cs
 
 ovr139_265:		; Call Procedure
-call	near ptr ovr139_151
+call	near ptr SetTextColorFromMouseState_ovr139_151
 
 ovr139_268:
 mov	bx, WriteTextRelated_dseg_67d6_34B0
@@ -512932,7 +512932,7 @@ mov	bx, WriteTextRelated_dseg_67d6_34B0
 push	word ptr [bx+13h]
 
 ovr139_3A7:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 les	bx, ProbablyTextPositioning_dseg_67d6_21CC ; Load Full Pointer to ES:xx
@@ -512955,7 +512955,7 @@ ovr139_3C5:
 push	[bp+var_6]
 
 ovr139_3C8:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 ovr139_3CD:		; Jump
 jmp	short ovr139_42A
@@ -512966,7 +512966,7 @@ jnz	short ovr139_42D ; Jump	if Not Zero (ZF=0)
 push	71h ; 'q'
 
 ovr139_3D8:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 ovr139_3DD:		; Increment by 1
 inc	sp
@@ -512996,7 +512996,7 @@ ovr139_3FB:
 push	[bp+var_6]
 
 ovr139_3FE:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 ovr139_403:		; Add
 add	sp, 8
@@ -513389,7 +513389,7 @@ inc	di
 
 ovr139_5E7:
 push	71h ; 'q'
-call	seg003_0272_48F4 ; Call	Procedure
+call	ClearScreenFar_seg003_0272_48F4 ; Call	Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 les	bx, ProbablyTextPositioning_dseg_67d6_21CC ; Load Full Pointer to ES:xx
@@ -513414,7 +513414,7 @@ push	word ptr [bx+0Ah]
 
 ovr139_60F:
 push	dseg_67d6_8186
-call	seg003_0272_4CF2 ; Call	Procedure
+call	SetDisplayPageFar_seg003_0272_4CF2 ; Call	Procedure
 add	sp, 8		; Add
 mov	bx, WriteTextRelated_dseg_67d6_34B0
 
@@ -513468,7 +513468,7 @@ jl	short ovr139_6C2 ; Jump	if Less	(SF!=OF)
 
 ovr139_670:
 push	71h ; 'q'
-call	seg003_0272_48F4 ; Call	Procedure
+call	ClearScreenFar_seg003_0272_48F4 ; Call	Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 les	bx, ProbablyTextPositioning_dseg_67d6_21CC ; Load Full Pointer to ES:xx
@@ -513489,7 +513489,7 @@ ovr139_690:
 push	[bp+var_6]
 
 ovr139_693:		; Call Procedure
-call	seg003_0272_4CF2
+call	SetDisplayPageFar_seg003_0272_4CF2
 
 ovr139_698:		; Add
 add	sp, 8
@@ -513530,7 +513530,7 @@ add	sp, 4
 push	71h ; 'q'
 
 ovr139_6DD:		; Call Procedure
-call	seg003_0272_48F4
+call	ClearScreenFar_seg003_0272_48F4
 
 ovr139_6E2:		; Increment by 1
 inc	sp
@@ -513557,7 +513557,7 @@ push	word ptr [bx+0Ah]
 
 ovr139_703:
 push	dseg_67d6_8186
-call	seg003_0272_4CF2 ; Call	Procedure
+call	SetDisplayPageFar_seg003_0272_4CF2 ; Call	Procedure
 add	sp, 8		; Add
 
 ovr139_70F:
@@ -513628,7 +513628,7 @@ mov	[bp+var_1], al
 mov	al, [di]
 mov	[bp+var_2], al
 push	cs
-call	near ptr ovr139_151 ; Call Procedure
+call	near ptr SetTextColorFromMouseState_ovr139_151 ; Call Procedure
 
 ovr139_75F:
 mov	bx, WriteTextRelated_dseg_67d6_34B0
@@ -513805,7 +513805,7 @@ WaitForYesNoAnswer_ovr139_747 endp
 
 ; Attributes: bp-based frame
 
-ovr139_83C proc	far
+ResetMessageScrollWindow_ovr139_83C proc	far
 
 arg_0= byte ptr	 6
 
@@ -513828,7 +513828,7 @@ call	seg015_1D7C_D6	; Call Procedure
 
 ovr139_856:
 push	71h ; 'q'
-call	seg003_0272_48F4 ; Call	Procedure
+call	ClearScreenFar_seg003_0272_48F4 ; Call	Procedure
 inc	sp		; Increment by 1
 
 ovr139_85E:		; Increment by 1
@@ -513844,7 +513844,7 @@ ovr139_866:
 push	word ptr [bx+6]
 push	word ptr [bx]
 push	word ptr [bx+4]
-call	seg003_0272_4CF2 ; Call	Procedure
+call	SetDisplayPageFar_seg003_0272_4CF2 ; Call	Procedure
 
 ovr139_873:		; Add
 add	sp, 8
@@ -513898,7 +513898,7 @@ pop	bp
 
 ovr139_8C2:		; Return Far from Procedure
 retf
-ovr139_83C endp	; sp = -2
+ResetMessageScrollWindow_ovr139_83C endp	; sp = -2
 
 ovr139 ends
 
@@ -514009,7 +514009,7 @@ LoadTextures_ovr140_0 endp
 
 ; Attributes: bp-based frame
 
-ovr140_4F proc far
+DrawScaledTextureToScreen_ovr140_4F proc far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -514029,7 +514029,7 @@ ovr140_55:
 push	[bp+arg_0]
 
 ovr140_58:		; Call Procedure
-call	seg009_392
+call	GetTexturePageAddress_seg009_392
 inc	sp		; Increment by 1
 
 ovr140_5E:		; Increment by 1
@@ -514057,7 +514057,7 @@ ovr140_70:
 push	[bp+var_4]
 
 ovr140_73:		; Call Procedure
-call	seg009_3F2
+call	ScaleBitmapToBuffer_seg009_3F2
 
 ovr140_78:		; Add
 add	sp, 0Ah
@@ -514101,7 +514101,7 @@ add	sp, 10h
 ovr140_9D:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr140_4F endp
+DrawScaledTextureToScreen_ovr140_4F endp
 
 
 
@@ -515291,12 +515291,12 @@ ResetSomePlayerValues_ovr142_200 endp
 
 ; Attributes: bp-based frame
 
-ovr142_27A proc	far
+NullStub_ovr142_27A proc	far
 push	bp
 mov	bp, sp
 pop	bp
 retf			; Return Far from Procedure
-ovr142_27A endp
+NullStub_ovr142_27A endp
 
 
 
@@ -519003,7 +519003,7 @@ InitPlayerAndRegisterKeys_ovr143_B0 endp ; sp =	-2
 
 ; Attributes: bp-based frame
 
-ovr143_722 proc	far
+RegisterCompassClickAreas_ovr143_722 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -519574,13 +519574,13 @@ pop	bp
 
 ovr143_97E:		; Return Far from Procedure
 retf
-ovr143_722 endp	; sp = -2
+RegisterCompassClickAreas_ovr143_722 endp	; sp = -2
 
 
 
 ; Attributes: bp-based frame
 
-ovr143_97F proc	far
+UnregisterCompassClickAreas_ovr143_97F proc	far
 push	bp
 
 ovr143_980:
@@ -519668,7 +519668,7 @@ ovr143_9EA:		; Increment by 1
 inc	sp
 pop	bp
 retf			; Return Far from Procedure
-ovr143_97F endp	; sp = -12h
+UnregisterCompassClickAreas_ovr143_97F endp	; sp = -12h
 
 
 
@@ -520189,7 +520189,7 @@ RoamingSight_ovr143_B4B	endp
 
 ; Attributes: bp-based frame
 
-ovr143_C4D proc	far
+SetCameraTarget_ovr143_C4D proc	far
 
 arg_0= word ptr	 6
 
@@ -520405,7 +520405,7 @@ pop	bp
 
 ovr143_D3B:		; Return Far from Procedure
 retf
-ovr143_C4D endp
+SetCameraTarget_ovr143_C4D endp
 
 ovr143_D3C dw offset ovr143_D2D	; jump table for switch	statement
 dw offset ovr143_CDF
@@ -520441,7 +520441,7 @@ push	0FFFFh
 
 ovr143_D54:
 push	cs
-call	near ptr ovr143_C4D ; Call Procedure
+call	near ptr SetCameraTarget_ovr143_C4D ; Call Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 pop	bp
@@ -520608,7 +520608,7 @@ HackTrapCamera_ovr143_D5C endp
 
 ; Attributes: bp-based frame
 
-ovr143_E09 proc	far
+CalculatePlayerDistanceAndHeading_ovr143_E09 proc	far
 
 var_8= word ptr	-8
 var_6= word ptr	-6
@@ -520641,7 +520641,7 @@ push	3
 push	cs
 
 ovr143_E1C:		; Call Procedure
-call	near ptr ovr143_C4D
+call	near ptr SetCameraTarget_ovr143_C4D
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 mov	al, dseg_67d6_33E6
@@ -520826,7 +520826,7 @@ ovr143_EF3:
 push	cs
 
 ovr143_EF4:		; Call Procedure
-call	near ptr ovr143_C4D
+call	near ptr SetCameraTarget_ovr143_C4D
 inc	sp		; Increment by 1
 
 ovr143_EF8:		; Increment by 1
@@ -520839,13 +520839,13 @@ leave			; High Level Procedure Exit
 
 ovr143_EFC:		; Return Far from Procedure
 retf
-ovr143_E09 endp
+CalculatePlayerDistanceAndHeading_ovr143_E09 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr143_EFD proc	far
+AdjustPlayerMovementAxis_ovr143_EFD proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -520945,13 +520945,13 @@ pop	bp
 
 ovr143_F57:		; Return Far from Procedure
 retf
-ovr143_EFD endp	; sp = -2
+AdjustPlayerMovementAxis_ovr143_EFD endp	; sp = -2
 
 
 
 ; Attributes: bp-based frame
 
-ovr143_F58 proc	far
+TurnLeftRight_ovr143_F58 proc	far
 
 arg_0= word ptr	 6
 
@@ -520989,7 +520989,7 @@ ovr143_F74:
 push	cs
 
 ovr143_F75:		; Call Procedure
-call	near ptr ovr143_EFD
+call	near ptr AdjustPlayerMovementAxis_ovr143_EFD
 
 ovr143_F78:		; Add
 add	sp, 6
@@ -520997,7 +520997,7 @@ pop	bp
 
 ovr143_F7C:		; Return Far from Procedure
 retf
-ovr143_F58 endp
+TurnLeftRight_ovr143_F58 endp
 
 
 
@@ -521035,7 +521035,7 @@ ovr143_F9B:
 push	cs
 
 ovr143_F9C:		; Call Procedure
-call	near ptr ovr143_EFD
+call	near ptr AdjustPlayerMovementAxis_ovr143_EFD
 
 ovr143_F9F:		; Add
 add	sp, 6
@@ -521068,7 +521068,7 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; Attributes: bp-based frame
 
-ovr146_0 proc far
+NullStub_ovr146_0 proc far
 push	bp
 
 ovr146_1:
@@ -521079,7 +521079,7 @@ pop	bp
 
 ovr146_4:		; Return Far from Procedure
 retf
-ovr146_0 endp
+NullStub_ovr146_0 endp
 
 ovr146 ends
 
@@ -521092,7 +521092,7 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; Attributes: bp-based frame
 
-ovr147_0 proc far
+AdvanceMemoryAllocPointer_ovr147_0 proc far
 
 var_4= word ptr	-4
 var_2= word ptr	-2
@@ -521135,13 +521135,13 @@ leave
 
 ovr147_21:		; Return Far from Procedure
 retf
-ovr147_0 endp
+AdvanceMemoryAllocPointer_ovr147_0 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr147_22 proc far
+RegisterMenuItemEntry_ovr147_22 proc far
 
 arg_0= dword ptr  6
 arg_4= word ptr	 0Ah
@@ -521280,13 +521280,13 @@ pop	bp
 
 ovr147_93:		; Return Far from Procedure
 retf
-ovr147_22 endp
+RegisterMenuItemEntry_ovr147_22 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr147_94 proc far
+PlayIntroIfNoSaveGames_ovr147_94 proc far
 
 var_A2=	word ptr -0A2h
 var_2= word ptr	-2
@@ -521359,13 +521359,13 @@ leave
 
 ovr147_CB:		; Return Far from Procedure
 retf
-ovr147_94 endp
+PlayIntroIfNoSaveGames_ovr147_94 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr147_CC proc far
+DrawMenuItems_ovr147_CC proc far
 
 var_A= word ptr	-0Ah
 var_8= word ptr	-8
@@ -521741,7 +521741,7 @@ leave
 
 ovr147_217:		; Return Far from Procedure
 retf
-ovr147_CC endp
+DrawMenuItems_ovr147_CC endp
 
 
 
@@ -521841,7 +521841,7 @@ ovr147_26C:
 mov	[bp+var_8], ax
 push	[bp+arg_0]
 push	cs
-call	near ptr ovr147_94 ; Call Procedure
+call	near ptr PlayIntroIfNoSaveGames_ovr147_94 ; Call Procedure
 
 ovr147_276:		; Increment by 1
 inc	sp
@@ -522016,7 +522016,7 @@ push	[bp+var_6]
 push	cs
 
 ovr147_330:		; Call Procedure
-call	near ptr ovr147_CC
+call	near ptr DrawMenuItems_ovr147_CC
 
 ovr147_333:		; Add
 add	sp, 0Ah
@@ -522498,7 +522498,7 @@ dw offset JourneyOnwards_ovr147_398
 
 ; Attributes: bp-based frame
 
-ovr147_53F proc	far
+HandleMenuSelection_ovr147_53F proc	far
 
 var_14=	word ptr -14h
 var_12=	word ptr -12h
@@ -522699,7 +522699,7 @@ ovr147_5FD:
 push	cs
 
 ovr147_5FE:		; Call Procedure
-call	near ptr ovr147_CC
+call	near ptr DrawMenuItems_ovr147_CC
 
 ovr147_601:		; Add
 add	sp, 0Ah
@@ -522881,7 +522881,7 @@ ovr147_6D8:
 push	cs
 
 ovr147_6D9:		; Call Procedure
-call	near ptr ovr147_CC
+call	near ptr DrawMenuItems_ovr147_CC
 add	sp, 0Ah		; Add
 
 ovr147_6DF:
@@ -522962,7 +522962,7 @@ pop	si
 ovr147_72A:		; High Level Procedure Exit
 leave
 retf			; Return Far from Procedure
-ovr147_53F endp
+HandleMenuSelection_ovr147_53F endp
 
 
 
@@ -523024,7 +523024,7 @@ push	[bp+arg_2]
 ovr147_756:
 push	di
 push	cs
-call	near ptr ovr147_CC ; Call Procedure
+call	near ptr DrawMenuItems_ovr147_CC ; Call Procedure
 add	sp, 0Ah		; Add
 push	1
 
@@ -523297,7 +523297,7 @@ ovr147_866:
 push	cs
 
 ovr147_867:		; Call Procedure
-call	near ptr ovr147_53F
+call	near ptr HandleMenuSelection_ovr147_53F
 
 ovr147_86A:		; Add
 add	sp, 8
@@ -524640,7 +524640,7 @@ lea	ax, [bp+SaveFolder_var_8]
 push	ax
 
 ovr149_206:		; Call Procedure
-call	seg005_105F_103F
+call	StringFindLastChar_seg005_105F_103F
 
 ovr149_20B:		; Add
 add	sp, 4
@@ -524749,7 +524749,7 @@ ovr149_270:
 push	[bp+var_6]
 
 ovr149_273:		; Call Procedure
-call	seg005_105F_5D5
+call	ReadLineFromStream_seg005_105F_5D5
 
 ovr149_278:		; Add
 add	sp, 6
@@ -525022,7 +525022,7 @@ ListSaveGames_ovr149_771E_2C2 endp
 
 ; Attributes: bp-based frame
 
-ovr149_358 proc	far
+ExecuteSaveOrRestoreGame_ovr149_358 proc	far
 
 var_CA=	word ptr -0CAh
 var_A2=	word ptr -0A2h
@@ -525240,7 +525240,7 @@ leave			; High Level Procedure Exit
 
 ovr149_41A:		; Return Far from Procedure
 retf
-ovr149_358 endp
+ExecuteSaveOrRestoreGame_ovr149_358 endp
 
 
 
@@ -525287,7 +525287,7 @@ ovr149_436:
 push	ax
 
 ovr149_437:		; Call Procedure
-call	seg005_105F_103F
+call	StringFindLastChar_seg005_105F_103F
 
 ovr149_43C:		; Add
 add	sp, 4
@@ -525705,7 +525705,7 @@ ovr149_59A:
 push	ax
 
 ovr149_59B:		; Call Procedure
-call	seg005_105F_103F
+call	StringFindLastChar_seg005_105F_103F
 
 ovr149_5A0:		; Add
 add	sp, 4
@@ -527877,7 +527877,7 @@ SetSomeValuesInSCDRows_ovr151_D3 endp
 
 ; Attributes: bp-based frame
 
-ovr151_12C proc	far
+ProcessAllSCDRows_ovr151_12C proc	far
 
 var_2= byte ptr	-2
 var_1= byte ptr	-1
@@ -527980,7 +527980,7 @@ ovr151_179:
 push	cs
 
 ovr151_17A:		; Call Procedure
-call	near ptr ovr151_6A3
+call	near ptr InsertAndExecuteSingleSCDRow_ovr151_6A3
 
 ovr151_17D:		; Add
 add	sp, 6
@@ -528032,7 +528032,7 @@ leave			; High Level Procedure Exit
 
 ovr151_1A5:		; Return Far from Procedure
 retf
-ovr151_12C endp
+ProcessAllSCDRows_ovr151_12C endp
 
 
 
@@ -528297,7 +528297,7 @@ jz	short ovr151_287
 push	cs
 
 ovr151_27B:		; Call Procedure
-call	near ptr ovr151_12C
+call	near ptr ProcessAllSCDRows_ovr151_12C
 
 ovr151_27E:
 mov	byte ptr scdBlockHasBeenModified_dseg_67d6_1A7E, 0
@@ -528896,7 +528896,7 @@ ProcessSCDARK_ovr151_3A6 endp
 
 ; Attributes: bp-based frame
 
-ovr151_457 proc	far
+ExecuteSCDBlockForCurrentLevel_ovr151_457 proc	far
 
 arg_0= word ptr	 6
 arg_2= byte ptr	 8
@@ -528933,13 +528933,13 @@ ovr151_477:		; Add
 add	sp, 4
 pop	bp
 retf			; Return Far from Procedure
-ovr151_457 endp
+ExecuteSCDBlockForCurrentLevel_ovr151_457 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr151_47C proc	far
+InsertAndExecuteSCDRows_ovr151_47C proc	far
 
 var_2= word ptr	-2
 arg_0= word ptr	 6
@@ -529255,7 +529255,7 @@ leave			; High Level Procedure Exit
 
 ovr151_5DA:		; Return Far from Procedure
 retf
-ovr151_47C endp
+InsertAndExecuteSCDRows_ovr151_47C endp
 
 
 
@@ -529466,7 +529466,7 @@ ProbablyCopyEventRow_ovr151_666	endp
 
 ; Attributes: bp-based frame
 
-ovr151_6A3 proc	far
+InsertAndExecuteSingleSCDRow_ovr151_6A3 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -529494,7 +529494,7 @@ ovr151_6B2:
 push	cs
 
 ovr151_6B3:		; Call Procedure
-call	near ptr ovr151_47C
+call	near ptr InsertAndExecuteSCDRows_ovr151_47C
 
 ovr151_6B6:		; Add
 add	sp, 8
@@ -529504,13 +529504,13 @@ pop	bp
 
 ovr151_6BA:		; Return Far from Procedure
 retf
-ovr151_6A3 endp
+InsertAndExecuteSingleSCDRow_ovr151_6A3 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr151_6BB proc	far
+GetSCDDirtyFlag_ovr151_6BB proc	far
 push	bp
 mov	bp, sp
 
@@ -529525,7 +529525,7 @@ pop	bp
 
 ovr151_6C8:		; Return Far from Procedure
 retf
-ovr151_6BB endp
+GetSCDDirtyFlag_ovr151_6BB endp
 
 ovr151 ends
 
@@ -535810,7 +535810,7 @@ FindMoonStone_ovr154_13EE endp
 
 ; Attributes: bp-based frame
 
-ovr154_1401 proc far
+DropObjectInHandOnDeath_ovr154_1401 proc far
 push	bp
 mov	bp, sp
 
@@ -535878,7 +535878,7 @@ pop	bp
 
 ovr154_145C:		; Return Far from Procedure
 retf
-ovr154_1401 endp ; sp =	-2
+DropObjectInHandOnDeath_ovr154_1401 endp ; sp =	-2
 
 
 
@@ -535902,7 +535902,7 @@ and	word ptr [bx+62h], 0FE3Fh ; set	dream plants to	0
 push	cs
 
 ovr154_1472:		; Call Procedure
-call	near ptr ovr154_1401
+call	near ptr DropObjectInHandOnDeath_ovr154_1401
 
 ovr154_1475:
 mov	word ptr CodeToCallOnTeleportOrMapChange_dseg_67d6_12C2, offset	j_ReturnFromDreamworldRestorePositionCallback_ovr154_13B2
@@ -536531,7 +536531,7 @@ call	CancelAttack_seg024_24E9_130F
 push	cs
 
 ovr154_1752:		; Call Procedure
-call	near ptr ovr154_1401
+call	near ptr DropObjectInHandOnDeath_ovr154_1401
 
 ovr154_1755:		; check	if player has died in britannia
 cmp	DungeonLevel_dseg_8292,	8
@@ -551590,7 +551590,7 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; Attributes: bp-based frame
 
-ovr162_0 proc far
+LoadTriggerObjectDat_ovr162_0 proc far
 
 arg_0= word ptr	 6
 
@@ -551622,7 +551622,7 @@ pop	bp
 
 ovr162_16:		; Return Far from Procedure
 retf
-ovr162_0 endp
+LoadTriggerObjectDat_ovr162_0 endp
 
 ovr162 ends
 
@@ -553386,7 +553386,7 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; Attributes: bp-based frame
 
-ovr165_0 proc far
+ShowEncryptionUI_ovr165_0 proc far
 push	bp
 
 ovr165_1:
@@ -553411,13 +553411,13 @@ pop	bp
 
 ovr165_D:		; Return Far from Procedure
 retf
-ovr165_0 endp ;	sp = -2
+ShowEncryptionUI_ovr165_0 endp ;	sp = -2
 
 
 
 ; Attributes: bp-based frame
 
-ovr165_E proc far
+NullStub_ovr165_E proc far
 push	bp
 
 ovr165_F:
@@ -553428,7 +553428,7 @@ pop	bp
 
 ovr165_12:		; Return Far from Procedure
 retf
-ovr165_E endp
+NullStub_ovr165_E endp
 
 ovr165 ends
 
@@ -564408,7 +564408,7 @@ assume es:nothing, ss:nothing, ds:dseg_67d6, fs:nothing, gs:nothing
 
 ; Attributes: bp-based frame
 
-ovr167_0 proc far
+ToggleBooleanFlag_ovr167_0 proc far
 
 arg_0= word ptr	 6
 
@@ -564446,13 +564446,13 @@ pop	bp
 
 ovr167_16:		; Return Far from Procedure
 retf
-ovr167_0 endp
+ToggleBooleanFlag_ovr167_0 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr167_17 proc far
+GetCoarseDirectionFromDeltas_ovr167_17 proc far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -564603,7 +564603,7 @@ pop	bp
 
 ovr167_7B:		; Return Far from Procedure
 retf
-ovr167_17 endp
+GetCoarseDirectionFromDeltas_ovr167_17 endp
 
 
 
@@ -565189,7 +565189,7 @@ GetDetectedCreatureDirections_ovr167_191 endp
 
 ; Attributes: bp-based frame
 
-ovr167_252 proc	far
+DrawAutoMapMarker_ovr167_252 proc	far
 
 arg_0= word ptr	 6
 arg_2= word ptr	 8
@@ -565322,7 +565322,7 @@ add	di, ax
 
 ovr167_2ED:
 push	[bp+arg_A]
-call	seg003_0272_48F4 ; Call	Procedure
+call	ClearScreenFar_seg003_0272_48F4 ; Call	Procedure
 inc	sp		; Increment by 1
 inc	sp		; Increment by 1
 mov	ax, si
@@ -565351,7 +565351,7 @@ dec	ax
 
 ovr167_306:
 push	ax
-call	seg003_0272_4DC2 ; Call	Procedure
+call	DrawPolygonFar_seg003_0272_4DC2 ; Call	Procedure
 add	sp, 8		; Add
 pop	di
 
@@ -565363,7 +565363,7 @@ pop	bp
 
 ovr167_312:		; Return Far from Procedure
 retf
-ovr167_252 endp	; sp = -2
+DrawAutoMapMarker_ovr167_252 endp	; sp = -2
 
 
 
@@ -565646,7 +565646,7 @@ ListFiles_ovr167_3F6 endp
 
 ; Attributes: bp-based frame
 
-ovr167_421 proc	far
+VerifyRequiredDirectories_ovr167_421 proc	far
 
 var_2= byte ptr	-2
 var_1= byte ptr	-1
@@ -565714,23 +565714,23 @@ leave
 
 ovr167_462:		; Return Far from Procedure
 retf
-ovr167_421 endp
+VerifyRequiredDirectories_ovr167_421 endp
 
 
 
 ; Attributes: bp-based frame
 
-ovr167_463 proc	far
+CheckSufficientMemory_ovr167_463 proc	far
 push	bp
 
 ovr167_464:
 mov	bp, sp
-call	seg005_105F_16E5 ; Call	Procedure
+call	GetAvailableStackSpace_seg005_105F_16E5 ; Call	Procedure
 cmp	ax, 898h	; Compare Two Operands
 jb	short ovr167_485 ; Jump	if Below (CF=1)
 
 ovr167_470:		; Call Procedure
-call	seg005_105F_4FD
+call	GetFreeHeapSize_seg005_105F_4FD
 
 ovr167_475:		; Logical Inclusive OR
 or	dx, dx
@@ -565757,7 +565757,7 @@ xor	ax, ax
 ovr167_487:
 pop	bp
 retf			; Return Far from Procedure
-ovr167_463 endp
+CheckSufficientMemory_ovr167_463 endp
 
 
 
@@ -565962,7 +565962,7 @@ DeleteTempFiles_ovr167_489 endp
 
 ; Attributes: bp-based frame
 
-ovr167_531 proc	far
+SaveDataToFile_ovr167_531 proc	far
 
 var_2= byte ptr	-2
 var_1= byte ptr	-1
@@ -566048,7 +566048,7 @@ ovr167_584:
 pop	si
 leave			; High Level Procedure Exit
 retf			; Return Far from Procedure
-ovr167_531 endp
+SaveDataToFile_ovr167_531 endp
 
 
 
@@ -566325,7 +566325,7 @@ FileWriteWithParams_ovr167_627 endp
 
 ; Attributes: bp-based frame
 
-ovr167_674 proc	far
+GenerateEncryptionKeyTable_ovr167_674 proc	far
 
 arg_0= byte ptr	 6
 arg_2= word ptr	 8
@@ -566458,7 +566458,7 @@ pop	si
 ovr167_70D:
 pop	bp
 retf			; Return Far from Procedure
-ovr167_674 endp
+GenerateEncryptionKeyTable_ovr167_674 endp
 
 
 
@@ -566571,7 +566571,7 @@ push	ax
 push	cs
 
 ovr167_784:		; Call Procedure
-call	near ptr ovr167_674
+call	near ptr GenerateEncryptionKeyTable_ovr167_674
 add	sp, 4		; Add
 jmp	short ovr167_7CD ; Jump
 
@@ -566664,7 +566664,7 @@ ovr167_7F0:
 mov	al, [bp+EncryptionKey_arg_2]
 push	ax
 push	cs
-call	near ptr ovr167_674 ; Call Procedure
+call	near ptr GenerateEncryptionKeyTable_ovr167_674 ; Call Procedure
 
 ovr167_7F8:		; Add
 add	sp, 4
