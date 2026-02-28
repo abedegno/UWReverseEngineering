@@ -30,3 +30,28 @@ Key variables to look at when researching the file:
 * `PlayerObject_dseg_828E` is the player object.
 
 IDA Pro 5 can have problems rendering fonts, making the program nigh unusable. Changing the font in the settings can fix this issue.
+
+## UW2 Code Architecture
+
+All functions in `uw2_asm.asm` have been identified and given descriptive names (532 functions across 48 segments). The major systems are:
+
+| Segment | Procs | System |
+|---------|-------|--------|
+| seg003 | 142 | VGA graphics driver |
+| seg004 | 79 | 3D rendering engine (render VM, polygon clipping, texture-mapped rasterization) |
+| seg005 | 149 | Borland C runtime library (heap, stdio, sprintf/sscanf, string ops) |
+| seg000 | 10 | Screen region / dirty rectangle manager |
+| seg009 | 11 | Cursor/sprite rendering |
+| ovr095 | 62 | NPC conversation bytecode VM |
+| ovr110 | 96 | World events, traps, tile changes |
+| ovr108 | 79 | Cutscene engine |
+| ovr097 | 46 | Trading / bartering |
+| ovr094 | 34 | Automap system |
+| ovr136 | 34 | Options/settings menu UI |
+| ovr119 | 26 | Art/texture asset loading |
+| ovr112 | 23 | Game initialization & main loop |
+| ovr151 | 18 | SCD scripting engine |
+| ovr122 | 14 | Player data save/load |
+| ovr167 | 27 | File I/O, save encryption |
+
+See [`UW2 Code Architecture.md`](UW2%20Code%20Architecture.md) for the full segment map, detailed system descriptions, and key data segment variables.
